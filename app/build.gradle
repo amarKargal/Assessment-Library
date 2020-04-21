@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.github.dcendents.android-maven'
+group='com.github.amarKargal'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -38,4 +39,6 @@ dependencies {
     //annotationsFastSave
     annotationProcessor "org.androidannotations:androidannotations:4.6.0"
     implementation "org.androidannotations:androidannotations-api:4.6.0"
+    implementation project(path: ':assessment_lib')
+
 }
