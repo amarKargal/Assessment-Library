@@ -42,7 +42,6 @@ import com.pratham.assessment_lib.custom.circular_progress_view.AnimationStyle;
 import com.pratham.assessment_lib.custom.circular_progress_view.CircleView;
 import com.pratham.assessment_lib.custom.circular_progress_view.CircleViewAnimation;
 import com.pratham.assessment_lib.custom.custom_dialogs.AssessmentTimeUpDialog;
-import com.pratham.assessment_lib.custom.dots_indicator.WormDotsIndicator;
 import com.pratham.assessment_lib.custom.swipeButton.ProSwipeButton;
 import com.pratham.assessment_lib.discrete_view.DiscreteScrollView;
 import com.pratham.assessment_lib.domain.AssessmentPaperForPush;
@@ -63,6 +62,7 @@ import com.pratham.assessment_lib.services.BkgdVideoRecordingService;
 import com.pratham.assessment_lib.supportive.ResponseListener;
 import com.pratham.assessment_lib.viewpager_fragments.ViewpagerAdapter;
 import com.robinhood.ticker.TickerView;
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import org.androidannotations.annotations.AfterExtras;
 import org.androidannotations.annotations.AfterViews;

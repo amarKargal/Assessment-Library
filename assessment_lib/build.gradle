@@ -61,8 +61,5 @@ dependencies {
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
 
     implementation 'com.nex3z:flow-layout:1.2.4'
-    dependencies {
-        // debugImplementation because LeakCanary should only run in debug builds.
-        debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
-    }
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
 }
