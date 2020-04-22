@@ -6,7 +6,7 @@
             <enum name="vertical" value="1" />
         </attr>
     </declare-styleable>
-  <!--  <declare-styleable name="DotsIndicator">
+    <declare-styleable name="DotsIndicator">
         <attr name="dotsColor" />
         <attr name="selectedDotColor" />
         <attr name="dotsSize" />
@@ -22,7 +22,7 @@
         <attr name="dotsCornerRadius" />
         <attr name="dotsStrokeWidth" />
         <attr name="dotsStrokeColor" />
-    </declare-styleable>-->
+    </declare-styleable>
     <declare-styleable name="CircleView">
         <attr name="progressCurrentValue" format="float" />
         <attr name="progressMaximumValue" format="float" />
@@ -77,7 +77,7 @@
         <attr name="gif" format="reference" />
         <attr name="paused" format="boolean" />
     </declare-styleable>
-   <!-- <declare-styleable name="SpringDotsIndicator">
+    <declare-styleable name="SpringDotsIndicator">
         <attr name="dotsColor" />
         <attr name="dotsSize" />
         <attr name="dotsSpacing" />
@@ -86,7 +86,7 @@
         <attr name="dotsStrokeColor" />
         <attr name="stiffness" />
         <attr name="dampingRatio" />
-    </declare-styleable>-->
+    </declare-styleable>
     <declare-styleable name="ProSwipeButton">
         <attr name="btn_text" format="string" />
         <attr name="text_color" format="color" />
