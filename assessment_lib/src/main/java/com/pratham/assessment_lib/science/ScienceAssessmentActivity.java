@@ -104,7 +104,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     public RelativeLayout rl_exam_info;
     @ViewById(resName = "rl_que")
     public RelativeLayout rl_que;
-  /*  List<String> examIDList = new ArrayList<>();
+    /*List<String> examIDList = new ArrayList<>();
     List<String> topicIdList = new ArrayList<>();
     List<DownloadMedia> downloadMediaList;*/
     Intent serviceIntent;
@@ -116,7 +116,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     /*
         @BindView(R.id.circle_progress_bar)
         public ProgressBar circle_progress_bar;*/
- /*   List<String> downloadFailedExamList = new ArrayList<>();
+/*    List<String> downloadFailedExamList = new ArrayList<>();
     int mediaDownloadCnt = 0;
     int queDownloadIndex = 0;
     int paperPatternCnt = 0;*/
@@ -168,9 +168,9 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     String answer = "", ansId = "";
     String questionType = "";
     CountDownTimer mCountDownTimer;
-    String supervisorId, subjectId;
+    String supervisorId;
     String assessmentSession;
-    private int correctAnsCnt = 0, wrongAnsCnt = 0, skippedCnt = 0;
+   // private int correctAnsCnt = 0, wrongAnsCnt = 0, skippedCnt = 0;
     @Extra("AssessmentLibraryInput")
     AssessmentLibrary assessmentLibrary;
 
@@ -181,9 +181,6 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     public void checkIntentValue() {
         scienceQuestionList = assessmentLibrary.getQuestionList();
         Assessment_Constants.VIDEOMONITORING = assessmentLibrary.isVideoMonitoring();
-        Assessment_Constants.SELECTED_LANGUAGE=assessmentLibrary.getSelectedLanguageCode();
-        assessPath=assessmentLibrary.getStoragePath();
-
         Assessment_Utility.initWiseF(getApplicationContext());
         //if color not set then black color is default color
         try {
@@ -198,7 +195,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 //        Assessment_Constants.assessmentSession=assessmentSession;
         //= (AssessmentLibraryInput) getIntent().getSerializableExtra("AssessmentLibraryInput");
 
-      /*  iv_prev.setOnClickListener(v -> {
+       /* iv_prev.setOnClickListener(v -> {
         });*/
 
         //todo alter
@@ -214,8 +211,8 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 //        showSelectTopicDialog();
         if (Assessment_Constants.VIDEOMONITORING) {
             frame_video_monitoring.setVisibility(View.VISIBLE);
-            btn_save_Assessment.setVisibility(View.GONE);
-            txt_next.setVisibility(View.GONE);
+           /* btn_save_Assessment.setVisibility(View.GONE);
+            txt_next.setVisibility(View.GONE);*/
             serviceIntent = new Intent(getApplicationContext(), VideoMonitoringService.class);
         }
         generatePaperPattern();
@@ -250,6 +247,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         //scienceModalClassList = fetchJson("science.json");
 
         // setQuestions();
+
 
 
         Resources res = getResources();
@@ -929,12 +927,13 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
             }
         if (isCameraQuestion) {
-            VideoMonitoringService.releaseMediaRecorder();
-            Assessment_Constants.VIDEOMONITORING = false;
-            texture_view.setVisibility(View.GONE);
-            tv_timer.setTextColor(Color.BLACK);
-            frame_video_monitoring.setVisibility(View.GONE);
-            btn_save_Assessment.setVisibility(View.VISIBLE);
+
+                VideoMonitoringService.releaseMediaRecorder();
+                Assessment_Constants.VIDEOMONITORING = false;
+                texture_view.setVisibility(View.GONE);
+                tv_timer.setTextColor(Color.BLACK);
+                frame_video_monitoring.setVisibility(View.GONE);
+//                btn_save_Assessment.setVisibility(View.VISIBLE);
 //            Toast.makeText(this, "video monitoring not prepared", Toast.LENGTH_LONG).show();
         }
 
@@ -1104,8 +1103,8 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                         btn_save_Assessment.setVisibility(View.VISIBLE);
                         txt_next.setVisibility(View.VISIBLE);
                     } else {
-                        btn_save_Assessment.setVisibility(View.GONE);
-                        txt_next.setVisibility(View.GONE);
+//                        btn_save_Assessment.setVisibility(View.GONE);
+//                        txt_next.setVisibility(View.GONE);
                     }
 //                    }
                 }
@@ -1990,7 +1989,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
     }
 
-   /* private AssessmentPaperForPush createPaperToSave() {
+  /*  private AssessmentPaperForPush createPaperToSave() {
         AssessmentPaperForPush paper = new AssessmentPaperForPush();
         paper.setPaperStartTime(examStartTime);
         paper.setPaperEndTime(examEndTime);
@@ -2114,16 +2113,16 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     }
 */
 
-    private void calculateCorrectWrongCount() {
+/*    private void calculateCorrectWrongCount() {
         for (int i = 0; i < scienceQuestionList.size(); i++) {
             if (scienceQuestionList.get(i).getIsCorrect()) correctAnsCnt++;
             else if (!scienceQuestionList.get(i).getIsCorrect() && scienceQuestionList.get(i).getIsAttempted())
                 wrongAnsCnt++;
             if (!scienceQuestionList.get(i).getIsAttempted()) skippedCnt++;
         }
-    }
+    }*/
 
-   /* private void generateResultData(AssessmentPaperForPush paper) {
+    /*private void generateResultData(AssessmentPaperForPush paper) {
         ArrayList<ResultModalClass> resultList = new ArrayList<>();
         ResultOuterModalClass outerModalClass = new ResultOuterModalClass();
 
@@ -2169,13 +2168,13 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         }
     }*/
 
-    private void calculateMarks() {
+/*    private void calculateMarks() {
         totalMarks = outOfMarks = 0;
         for (int i = 0; i < scienceQuestionList.size(); i++) {
             totalMarks += Integer.parseInt(scienceQuestionList.get(i).getMarksPerQuestion());
             outOfMarks += Integer.parseInt(scienceQuestionList.get(i).getOutofmarks());
         }
-    }
+    }*/
 
     /*private int getLevel(String qlevel) {
         int level = 0;
@@ -2333,5 +2332,6 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        viewpagerAdapter=null;
     }
 }
