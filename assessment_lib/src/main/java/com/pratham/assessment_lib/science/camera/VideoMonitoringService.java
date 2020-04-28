@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static com.pratham.assessment_lib.BaseActivity.assessPath;
+import static com.pratham.assessment_lib.Utility.Assessment_Constants.assessPath;
 
 public class VideoMonitoringService extends Service {
     private int mRandomNumber;
@@ -141,11 +141,9 @@ public class VideoMonitoringService extends Service {
             mMediaRecorder.setProfile(profile);
 
             // Step 4: Set output file
-            File sd = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups/Videos/");
-
-            File root = new File(sd + Assessment_Constants.STORE_VIDEO_MONITORING_PATH);
-            if (!root.exists()) root.mkdirs();
-            mOutputFile = new File(root  +"/"+ fileName);
+            File root = new File(assessPath + Assessment_Constants.STORE_VIDEO_MONITORING_PATH);
+            if (!root.exists()) root.mkdir();
+            mOutputFile = new File(assessPath + Assessment_Constants.STORE_VIDEO_MONITORING_PATH +"/"+ fileName);
 
 //            CameraHelper.getOutputMediaFile(CameraHelper.MEDIA_TYPE_VIDEO);
             if (mOutputFile == null) {

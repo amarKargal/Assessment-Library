@@ -14,11 +14,9 @@ import android.util.Log;
 
 
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
-import com.pratham.assessment_lib.custom.FastSave;
 
 import java.util.ArrayList;
 
-import static android.provider.MediaStore.Video.VideoColumns.LANGUAGE;
 import static com.pratham.assessment_lib.BaseActivity.setMute;
 
 
@@ -63,7 +61,6 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
 
     private String getSelectedLanguageCode() {
         String lang_code = "en";
-        Assessment_Constants.SELECTED_LANGUAGE = FastSave.getInstance().getString(LANGUAGE, "1");
         if (Assessment_Constants.SELECTED_LANGUAGE.equalsIgnoreCase(Assessment_Constants.ENGLISH_ID))
             lang_code = Assessment_Constants.ENGLISH_CODE;
         if (Assessment_Constants.SELECTED_LANGUAGE.equalsIgnoreCase(Assessment_Constants.HINDI_ID))

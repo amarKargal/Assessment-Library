@@ -1,10 +1,13 @@
 package com.pratham.temp;
 
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pratham.assessment_lib.AssessmentLibrary;
+import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.domain.ScienceQuestion;
 import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
 import com.pratham.assessment_lib.interfaces.AudioPlayerInterface;
@@ -14,6 +17,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -296,10 +300,14 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestionsList.add(scienceQuestion7);
         scienceQuestionsList.add(scienceQuestion8);
 
+        String path = getInternalPath();
+
         AssessmentLibrary.getAssessmentLibrary(this)
-                .setBackGroundColor(R.color.dark_blue)
                 .setQuestionList(scienceQuestionsList)
-                .setVideoMonitoring(true)
+                .setStoragePath(path)
+                .setBackGroundColor(R.color.dark_blue)//default black
+                .setSelectedLanguageCode("1")//default is 1
+                .setVideoMonitoring(true)//default false
                 .build()
                 .setOnAssessmentCompleteListener(new OnAssessmentComplete() {
                     @Override
@@ -335,4 +343,35 @@ public class MainActivity extends AppCompatActivity {
 
         return count;
     }*/
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public String getInternalPath() {
+        String STORING_IN;
+
+        File[] intDir = getExternalFilesDirs("");
+        try {
+            if (intDir.length > 1) {
+                try {
+                    File file = new File(intDir[1].getAbsolutePath(), "hello.txt");
+                    if (!file.exists())
+                        file.createNewFile();
+                    file.delete();
+                    STORING_IN = "SD-Card";
+                    return intDir[1].getAbsolutePath();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    STORING_IN = "Internal Storage";
+                    return intDir[0].getAbsolutePath();
+                }
+            } else {
+                STORING_IN = "Internal Storage";
+                return intDir[0].getAbsolutePath();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("getInternalPath@@@", e.getMessage());
+            return intDir[0].getAbsolutePath();
+        }
+    }
+
 }

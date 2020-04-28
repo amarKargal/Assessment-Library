@@ -41,7 +41,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pratham.assessment_lib.BaseActivity.assessPath;
+
+import static com.pratham.assessment_lib.Utility.Assessment_Constants.assessPath;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.getFileExtension;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.selectedColor;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.setOdiaFont;

@@ -6,21 +6,15 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
-
-
 import com.isupatches.wisefy.WiseFy;
 import com.pratham.assessment_lib.custom.custom_dialogs.ZoomImageDialog_;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -41,7 +35,6 @@ public class Assessment_Utility {
     }
 
 
-
     public static void setSelectedColor(int defaultColor) {
         colorStateList = new ColorStateList(
                 new int[][]{
@@ -60,35 +53,7 @@ public class Assessment_Utility {
         setSelectedColor(selectedColor);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static String getInternalPath(Context context) {
 
-
-        File[] intDir = context.getExternalFilesDirs("");
-        try {
-            if (intDir.length > 1) {
-                try {
-                    File file = new File(intDir[1].getAbsolutePath(), "hello.txt");
-                    if (!file.exists())
-                        file.createNewFile();
-                    file.delete();
-                    Assessment_Constants.STORING_IN = "SD-Card";
-                    return intDir[1].getAbsolutePath();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Assessment_Constants.STORING_IN = "Internal Storage";
-                    return intDir[0].getAbsolutePath();
-                }
-            } else {
-                Assessment_Constants.STORING_IN = "Internal Storage";
-                return intDir[0].getAbsolutePath();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d("getInternalPath@@@", e.getMessage());
-            return intDir[0].getAbsolutePath();
-        }
-    }
 
     public static String getCurrentDateTime() {
         Calendar cal = Calendar.getInstance();
@@ -146,6 +111,7 @@ public class Assessment_Utility {
 //        ZoomImageDialog zoomImageDialog = new ZoomImageDialog(context, path, localPath);
 //        zoomImageDialog.show();
     }
+
     public static String removeSpecialCharacters(String string) {
         return Normalizer.normalize(string, Normalizer.Form.NFD).replaceAll("[^a-zA-Z]", "");
     }

@@ -39,7 +39,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import static com.pratham.assessment_lib.BaseActivity.assessPath;
+import static com.pratham.assessment_lib.Utility.Assessment_Constants.assessPath;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.setOdiaFont;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.showZoomDialog;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.wiseF;

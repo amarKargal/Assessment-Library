@@ -47,7 +47,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import static android.provider.MediaStore.Video.VideoColumns.LANGUAGE;
-import static com.pratham.assessment_lib.BaseActivity.assessPath;
+import static com.pratham.assessment_lib.Utility.Assessment_Constants.assessPath;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.getFileName;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.setOdiaFont;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.wiseF;

@@ -5,18 +5,19 @@ import androidx.annotation.ColorRes;
 import com.pratham.assessment_lib.R;
 
 public class Assessment_Constants {
-    public static String STORING_IN;
+   // public static String STORING_IN;
 
 
     public static boolean VIDEOMONITORING=false;
-    public static boolean isShowcaseDisplayed=false;
-    public static boolean isTablet=false;
-    public static String SELECTED_EXAM_ID="2035";
-    public static String SELECTED_LANGUAGE="1";
-    public static final String ASSESSMENT_TYPE = "practice";
-    public static final String SELECTED_SUBJECT_ID = "21";
+    public static String assessPath;
+    //public static boolean isShowcaseDisplayed=false;
+  //  public static boolean isTablet=false;
+  //  public static String SELECTED_EXAM_ID="2035";
+    public static String SELECTED_LANGUAGE;
+    //public static final String ASSESSMENT_TYPE = "practice";
+    //public static final String SELECTED_SUBJECT_ID = "21";
     public static final String currentSession = "211111";
-    public static final String currentStudentID = "11111111";
+    //public static final String currentStudentID = "11111111";
 
 
     //Assessment question types
@@ -27,20 +28,20 @@ public class Assessment_Constants {
     public static final String FILL_IN_THE_BLANK_WITH_OPTION = "5";
     public static final String FILL_IN_THE_BLANK = "6";
     public static final String ARRANGE_SEQUENCE = "7";
-    public static final String VIDEO = "8";
-    public static final String AUDIO = "9";
+    /*public static final String VIDEO = "8";
+    public static final String AUDIO = "9";*/
     public static final String KEYWORDS_QUESTION = "11";
     public static final String IMAGE_ANSWER = "12";
     public static final String TEXT_PARAGRAPH = "13";
 
-    public static String DOWNLOAD_MEDIA_TYPE_ANSWER_VIDEO = "answerVideo";
+    /*public static String DOWNLOAD_MEDIA_TYPE_ANSWER_VIDEO = "answerVideo";
     public static String DOWNLOAD_MEDIA_TYPE_ANSWER_AUDIO = "answerAudio";
-    public static String DOWNLOAD_MEDIA_TYPE_ANSWER_IMAGE = "answerImage";
+    public static String DOWNLOAD_MEDIA_TYPE_ANSWER_IMAGE = "answerImage";*/
     public static String STORE_DOWNLOADED_MEDIA_PATH = "/.Assessment/Content/Downloaded";
     public static String DOWNLOAD_MEDIA_TYPE_VIDEO_MONITORING = "videoMonitoring";
     public static String STORE_VIDEO_MONITORING_PATH = "/.Assessment/Content/VideoMonitoring";
     public static String STORE_ANSWER_MEDIA_PATH = "/.Assessment/Content/Answers";
-    public static final String STT_REGEX = "[\"\\-+\\.'^?!@#%-_;&*,:|।<>()]";
+    /*public static final String STT_REGEX = "[\"\\-+\\.'^?!@#%-_;&*,:|।<>()]";*/
 
 
 

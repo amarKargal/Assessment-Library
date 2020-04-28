@@ -44,21 +44,15 @@ import com.pratham.assessment_lib.custom.circular_progress_view.CircleViewAnimat
 import com.pratham.assessment_lib.custom.custom_dialogs.AssessmentTimeUpDialog;
 import com.pratham.assessment_lib.custom.swipeButton.ProSwipeButton;
 import com.pratham.assessment_lib.discrete_view.DiscreteScrollView;
-import com.pratham.assessment_lib.domain.AssessmentPaperForPush;
 import com.pratham.assessment_lib.domain.AssessmentPaperPattern;
 import com.pratham.assessment_lib.domain.AssessmentPatternDetails;
 import com.pratham.assessment_lib.domain.DownloadMedia;
-import com.pratham.assessment_lib.domain.ResultModalClass;
-import com.pratham.assessment_lib.domain.ResultOuterModalClass;
 import com.pratham.assessment_lib.domain.ScienceQuestion;
 import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
-import com.pratham.assessment_lib.domain.Score;
-import com.pratham.assessment_lib.domain.Student;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.interfaces.QuestionTrackerListener;
 import com.pratham.assessment_lib.science.bottomFragment.BottomQuestionFragment;
 import com.pratham.assessment_lib.science.camera.VideoMonitoringService;
-import com.pratham.assessment_lib.services.BkgdVideoRecordingService;
 import com.pratham.assessment_lib.supportive.ResponseListener;
 import com.pratham.assessment_lib.viewpager_fragments.ViewpagerAdapter;
 import com.robinhood.ticker.TickerView;
@@ -90,9 +84,7 @@ import static com.pratham.assessment_lib.Utility.Assessment_Constants.MULTIPLE_C
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.MULTIPLE_SELECT;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.TEXT_PARAGRAPH;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.TRUE_FALSE;
-import static com.pratham.assessment_lib.Utility.Assessment_Constants.currentSession;
-import static com.pratham.assessment_lib.Utility.Assessment_Constants.currentStudentID;
-import static com.pratham.assessment_lib.Utility.Assessment_Constants.isTablet;
+import static com.pratham.assessment_lib.Utility.Assessment_Constants.assessPath;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.selectedColor;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.wiseF;
 
@@ -112,9 +104,9 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     public RelativeLayout rl_exam_info;
     @ViewById(resName = "rl_que")
     public RelativeLayout rl_que;
-    List<String> examIDList = new ArrayList<>();
+  /*  List<String> examIDList = new ArrayList<>();
     List<String> topicIdList = new ArrayList<>();
-    List<DownloadMedia> downloadMediaList;
+    List<DownloadMedia> downloadMediaList;*/
     Intent serviceIntent;
     Fragment currentFragment;
     ProgressDialog progressDialog, mediaProgressDialog;
@@ -124,10 +116,10 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     /*
         @BindView(R.id.circle_progress_bar)
         public ProgressBar circle_progress_bar;*/
-    List<String> downloadFailedExamList = new ArrayList<>();
+ /*   List<String> downloadFailedExamList = new ArrayList<>();
     int mediaDownloadCnt = 0;
     int queDownloadIndex = 0;
-    int paperPatternCnt = 0;
+    int paperPatternCnt = 0;*/
     int ansCnt = 0, queCnt = 0;
     boolean showSubmit = false;
     List attemptedQIds = new ArrayList();
@@ -189,6 +181,9 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     public void checkIntentValue() {
         scienceQuestionList = assessmentLibrary.getQuestionList();
         Assessment_Constants.VIDEOMONITORING = assessmentLibrary.isVideoMonitoring();
+        Assessment_Constants.SELECTED_LANGUAGE=assessmentLibrary.getSelectedLanguageCode();
+        assessPath=assessmentLibrary.getStoragePath();
+
         Assessment_Utility.initWiseF(getApplicationContext());
         //if color not set then black color is default color
         try {
@@ -203,8 +198,8 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 //        Assessment_Constants.assessmentSession=assessmentSession;
         //= (AssessmentLibraryInput) getIntent().getSerializableExtra("AssessmentLibraryInput");
 
-        iv_prev.setOnClickListener(v -> {
-        });
+      /*  iv_prev.setOnClickListener(v -> {
+        });*/
 
         //todo alter
         rl_que.setBackgroundColor(selectedColor);
@@ -255,8 +250,6 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         //scienceModalClassList = fetchJson("science.json");
 
         // setQuestions();
-
-        Assessment_Constants.isShowcaseDisplayed = false;
 
 
         Resources res = getResources();
@@ -936,15 +929,13 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
             }
         if (isCameraQuestion) {
-            if (!isTablet) {
-                VideoMonitoringService.releaseMediaRecorder();
-                Assessment_Constants.VIDEOMONITORING = false;
-                texture_view.setVisibility(View.GONE);
-                tv_timer.setTextColor(Color.BLACK);
-                frame_video_monitoring.setVisibility(View.GONE);
-                btn_save_Assessment.setVisibility(View.VISIBLE);
+            VideoMonitoringService.releaseMediaRecorder();
+            Assessment_Constants.VIDEOMONITORING = false;
+            texture_view.setVisibility(View.GONE);
+            tv_timer.setTextColor(Color.BLACK);
+            frame_video_monitoring.setVisibility(View.GONE);
+            btn_save_Assessment.setVisibility(View.VISIBLE);
 //            Toast.makeText(this, "video monitoring not prepared", Toast.LENGTH_LONG).show();
-            }
         }
 
 
@@ -1999,7 +1990,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
     }
 
-    private AssessmentPaperForPush createPaperToSave() {
+   /* private AssessmentPaperForPush createPaperToSave() {
         AssessmentPaperForPush paper = new AssessmentPaperForPush();
         paper.setPaperStartTime(examStartTime);
         paper.setPaperEndTime(examEndTime);
@@ -2031,7 +2022,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         }
         paper.setExamName(assessmentPaperPatterns.getExamname());
         return paper;
-    }
+    }*/
 
 
     private void saveAttemptedQuestionsInDB() {
@@ -2132,7 +2123,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         }
     }
 
-    private void generateResultData(AssessmentPaperForPush paper) {
+   /* private void generateResultData(AssessmentPaperForPush paper) {
         ArrayList<ResultModalClass> resultList = new ArrayList<>();
         ResultOuterModalClass outerModalClass = new ResultOuterModalClass();
 
@@ -2163,20 +2154,20 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         if (resultList.size() > 0) {
             endTestSession();
             //todo alter
-          /*  Intent intent = new Intent(this, ResultActivity_.class);
+          *//*  Intent intent = new Intent(this, ResultActivity_.class);
             intent.putExtra("result", outerModalClass);
-           *//* intent.putExtra("outOfMarks", "" + outOfMarks);
+           *//**//* intent.putExtra("outOfMarks", "" + outOfMarks);
             intent.putExtra("marksObtained", "" + totalMarks);
             intent.putExtra("studentId", Assessment_Constants.currentStudentID);
             intent.putExtra("examStartTime", examStartTime);
             intent.putExtra("examId", paper.getExamId());
             intent.putExtra("subjectId", paper.getSubjectId());
             intent.putExtra("examEndTime", examEndTime);
-            intent.putExtra("paperId", assessmentSession);*//*
+            intent.putExtra("paperId", assessmentSession);*//**//*
             startActivity(intent);
-            finish();*/
+            finish();*//*
         }
-    }
+    }*/
 
     private void calculateMarks() {
         totalMarks = outOfMarks = 0;
@@ -2342,6 +2333,5 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        viewpagerAdapter=null;
     }
 }

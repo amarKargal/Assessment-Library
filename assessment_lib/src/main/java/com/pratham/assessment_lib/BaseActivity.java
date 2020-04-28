@@ -10,13 +10,12 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.pratham.assessment_lib.Utility.Assessment_Utility;
 
 import org.androidannotations.annotations.EActivity;
 
 @EActivity(resName = "activity_base")
 public class BaseActivity extends AppCompatActivity {
-    public static String assessPath = "";
+  //  public static String assessPath = "";
     //public static int defaultColor;
     public static ColorStateList colorStateList;
     public static boolean muteFlg = false;
@@ -25,7 +24,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        assessPath= Assessment_Utility.getInternalPath(this);
+    //    assessPath= Assessment_Utility.getInternalPath(this);
 
       //  Assessment_Utility.setDefaultColor(defaultColor);
     }

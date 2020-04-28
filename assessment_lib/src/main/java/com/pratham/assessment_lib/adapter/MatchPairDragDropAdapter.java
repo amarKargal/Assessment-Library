@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.assessment_lib.BaseActivity.assessPath;
+import static com.pratham.assessment_lib.Utility.Assessment_Constants.assessPath;
 
 public class MatchPairDragDropAdapter extends RecyclerView.Adapter<MatchPairDragDropAdapter.MyViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
     List<ScienceQuestionChoice> draggedList = new ArrayList<>();
