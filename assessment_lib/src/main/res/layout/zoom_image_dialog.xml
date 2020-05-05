@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/main_card_bg">-->
 
-    <com.pratham.assessment.custom.zoom_image.ZoomageView
+    <com.pratham.assessment_lib.custom.zoom_image.ZoomageView
         android:id="@+id/iv_zoom_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,7 +30,7 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true">
 
-        <com.pratham.assessment.custom.gif_viewer.GifViewZoom
+        <com.pratham.assessment_lib.custom.gif_viewer.GifViewZoom
             android:id="@+id/iv_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -60,6 +60,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/_5sdp"
+        android:src="@drawable/ic_close_black_24dp"
         android:background="@drawable/ripple_round"
         android:elevation="@dimen/_10sdp"
         android:textSize="@dimen/_15sdp" />

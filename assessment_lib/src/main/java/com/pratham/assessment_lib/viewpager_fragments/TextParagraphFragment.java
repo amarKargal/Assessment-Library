@@ -24,7 +24,6 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
-import com.pratham.assessment_lib.custom.FastSave;
 import com.pratham.assessment_lib.custom.gif_viewer.GifView;
 import com.pratham.assessment_lib.domain.ScienceQuestion;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
@@ -503,7 +502,7 @@ public class TextParagraphFragment extends Fragment implements STT_Result_New.st
 //        addSttResultDB(sttResult);
 
         for (int j = 0; j < splitRes.length; j++) {
-            if (FastSave.getInstance().getString(LANGUAGE, "1").equalsIgnoreCase("1"))
+            if (Assessment_Constants.SELECTED_LANGUAGE.equalsIgnoreCase("1"))
                 splitRes[j].replaceAll("[^a-zA-Z ]", "");
             else
                 splitRes[j] = Assessment_Utility.removeSpecialCharacters(splitRes[j]);

@@ -187,11 +187,11 @@ public class ArrangeSeqDragDropAdapter extends RecyclerView.Adapter<ArrangeSeqDr
                 }
             }
             notifyItemMoved(fromPosition, toPosition);
-            draggedList = data;
+//            draggedList = data;
             Log.d("sss", draggedList.toString());
 //        dragDropListener.setList(draggedList, data.get(0).getQid());
 //        questionTypeListener.setAnswer("", "", data.get(0).getQid(), draggedList);
-            assessmentAnswerListener.setAnswerInActivity("", "", data.get(0).getQid(), draggedList);
+            assessmentAnswerListener.setAnswerInActivity("", "", data.get(0).getQid(), data);
         } catch (Exception e) {
             e.printStackTrace();
         }

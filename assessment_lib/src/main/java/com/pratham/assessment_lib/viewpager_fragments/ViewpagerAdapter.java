@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.pratham.assessment_lib.Utility.QuestionType;
 import com.pratham.assessment_lib.domain.ScienceQuestion;
 
 import java.util.ArrayList;
@@ -29,11 +30,11 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
         fragmentList = new ArrayList<>();
         for (int i = 0; i < scienceQuestionList.size(); i++) {
             ScienceQuestion scienceQuestion = scienceQuestionList.get(i);
-            String questionType = scienceQuestion.getQtid();
-
+            //String questionType = scienceQuestion.getQtid();
+            QuestionType questionType = scienceQuestion.getQtid();
 
             //todo #alter
-            switch (questionType) {
+            /*switch (questionType) {
                 case "1":
                     fragmentList.add(McqFillInTheBlanksFragment.newInstance(i, scienceQuestion));
                     break;
@@ -67,9 +68,50 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
                case "12":
                     fragmentList.add(ImageAnswerFragment.newInstance(i, scienceQuestion));
                     break;
-                /* case "13":
+                *//* case "13":
                     fragmentList.add(TextParagraphFragment.newInstance(i, scienceQuestion));
-                    break;*/
+                    break;*//*
+                default:
+                    break;
+            }*/
+
+            switch (questionType) {
+                case MULTIPLE_CHOICE:
+                    fragmentList.add(McqFillInTheBlanksFragment.newInstance(i, scienceQuestion));
+                    break;
+                case MULTIPLE_SELECT:
+                    fragmentList.add(MultipleSelectFragment.newInstance(i, scienceQuestion));
+                    break;
+                case TRUE_FALSE:
+                    fragmentList.add(TrueFalseFragment.newInstance(i, scienceQuestion));
+                    break;
+                case MATCHING_PAIR:
+                    fragmentList.add(MatchThePairFragment.newInstance(i, scienceQuestion));
+                    break;
+                case FILL_IN_THE_BLANK_WITH_OPTION:
+                    fragmentList.add(McqFillInTheBlanksFragment.newInstance(i, scienceQuestion));
+                    break;
+                case FILL_IN_THE_BLANK:
+                    fragmentList.add(FillInTheBlanksWithoutOptionFragment.newInstance(i, scienceQuestion));
+                    break;
+                case ARRANGE_SEQUENCE:
+                    fragmentList.add(ArrangeSequenceFragment.newInstance(i, scienceQuestion));
+                    break;
+                case VIDEO:
+                    fragmentList.add(VideoFragment.newInstance(i, scienceQuestion));
+                    break;
+                case AUDIO:
+                    fragmentList.add(AudioFragment.newInstance(i, scienceQuestion));
+                    break;
+                case KEYWORDS_QUESTION:
+                    fragmentList.add(FillInTheBlanksWithoutOptionFragment.newInstance(i, scienceQuestion));
+                    break;
+                case IMAGE_ANSWER:
+                    fragmentList.add(ImageAnswerFragment.newInstance(i, scienceQuestion));
+                    break;
+                case TEXT_PARAGRAPH:
+                    fragmentList.add(TextParagraphFragment.newInstance(i, scienceQuestion));
+                    break;
                 default:
                     break;
             }

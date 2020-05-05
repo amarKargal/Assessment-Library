@@ -47,7 +47,7 @@ public class ContinuousSpeechService implements RecognitionListener {
 
     private String getSelectedLanguageCode() {
         String lang_code = "en";
-        Assessment_Constants.SELECTED_LANGUAGE ="1";
+        Assessment_Constants.SELECTED_LANGUAGE = "1";
         if (Assessment_Constants.SELECTED_LANGUAGE.equalsIgnoreCase(Assessment_Constants.ENGLISH_ID))
             lang_code = Assessment_Constants.ENGLISH_CODE;
         if (Assessment_Constants.SELECTED_LANGUAGE.equalsIgnoreCase(Assessment_Constants.HINDI_ID))
@@ -148,6 +148,7 @@ public class ContinuousSpeechService implements RecognitionListener {
 
     @Override
     public void onResults(Bundle results) {
+        voiceStart = false;
         Log.i(LOG_TAG, "onResults");
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);

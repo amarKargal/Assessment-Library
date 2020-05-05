@@ -1,11 +1,16 @@
 package com.pratham.assessment_lib.domain;
 
 
+import androidx.annotation.NonNull;
+
+
 import java.io.Serializable;
 
-
+//@Entity
 public class ScienceQuestionChoice implements Serializable {
 
+    @NonNull
+   // @PrimaryKey
     private String qcid;
 
     private String qid;
@@ -14,12 +19,11 @@ public class ScienceQuestionChoice implements Serializable {
     private String correct;
     private String matchingurl;
     private String choiceurl;
-
+    //@Ignore
     private String myIscorrect = "false";
 
-    public ScienceQuestionChoice() {
-    }
-//todo #alter remove
+
+    //todo #alter remove
     public ScienceQuestionChoice(String qcid, String qid, String matchingname, String choicename, String correct, String matchingurl, String choiceurl) {
         this.qcid = qcid;
         this.qid = qid;
@@ -28,6 +32,9 @@ public class ScienceQuestionChoice implements Serializable {
         this.correct = correct;
         this.matchingurl = matchingurl;
         this.choiceurl = choiceurl;
+    }
+
+    public ScienceQuestionChoice() {
     }
 
     public String getMyIscorrect() {
@@ -51,10 +58,10 @@ public class ScienceQuestionChoice implements Serializable {
     }
 
     public String getChoiceurl() {
-        if (choiceurl != null)
-            return choiceurl;
-        else
+        if (choiceurl == null) {
             return "";
+        }
+        return choiceurl;
     }
 
     public void setChoiceurl(String choiceurl) {

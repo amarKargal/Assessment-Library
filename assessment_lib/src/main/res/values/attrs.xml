@@ -6,6 +6,7 @@
             <enum name="vertical" value="1" />
         </attr>
     </declare-styleable>
+
     <!--<declare-styleable name="DotsIndicator">
         <attr name="dotsColor" />
         <attr name="selectedDotColor" />

@@ -344,7 +344,9 @@ public class VideoFragment extends Fragment {
                 out.close();
                 showCapturedVideo();
 //                assessmentAnswerListener.resumeVideoMonitoring();
-                scienceAssessmentActivity.startCameraService();
+                if (Assessment_Constants.VIDEOMONITORING)
+                    scienceAssessmentActivity.startCameraService();
+
             }
 
 

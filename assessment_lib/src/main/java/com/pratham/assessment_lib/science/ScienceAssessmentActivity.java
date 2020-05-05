@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+
 import com.pratham.assessment_lib.AssessmentLibrary;
 import com.pratham.assessment_lib.BaseActivity;
 import com.pratham.assessment_lib.R;
@@ -38,15 +39,17 @@ import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
 import com.pratham.assessment_lib.Utility.AudioUtil;
 import com.pratham.assessment_lib.custom.NonSwipeableViewPager;
+import com.pratham.assessment_lib.custom.cameraRecorder.CameraRecorder;
+import com.pratham.assessment_lib.custom.cameraRecorder.CameraRecorderBuilder;
+import com.pratham.assessment_lib.custom.cameraRecorder.LensFacing;
+import com.pratham.assessment_lib.custom.cameraRecorder.VideoMonitor;
 import com.pratham.assessment_lib.custom.circular_progress_view.AnimationStyle;
 import com.pratham.assessment_lib.custom.circular_progress_view.CircleView;
 import com.pratham.assessment_lib.custom.circular_progress_view.CircleViewAnimation;
 import com.pratham.assessment_lib.custom.custom_dialogs.AssessmentTimeUpDialog;
-import com.pratham.assessment_lib.custom.swipeButton.ProSwipeButton;
+import com.pratham.assessment_lib.custom.ticker.TickerView;
 import com.pratham.assessment_lib.discrete_view.DiscreteScrollView;
-import com.pratham.assessment_lib.domain.AssessmentPaperPattern;
 import com.pratham.assessment_lib.domain.AssessmentPatternDetails;
-import com.pratham.assessment_lib.domain.DownloadMedia;
 import com.pratham.assessment_lib.domain.ScienceQuestion;
 import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
@@ -55,7 +58,6 @@ import com.pratham.assessment_lib.science.bottomFragment.BottomQuestionFragment;
 import com.pratham.assessment_lib.science.camera.VideoMonitoringService;
 import com.pratham.assessment_lib.supportive.ResponseListener;
 import com.pratham.assessment_lib.viewpager_fragments.ViewpagerAdapter;
-import com.robinhood.ticker.TickerView;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import org.androidannotations.annotations.AfterExtras;
@@ -67,14 +69,12 @@ import org.androidannotations.annotations.ViewById;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.ARRANGE_SEQUENCE;
-import static com.pratham.assessment_lib.Utility.Assessment_Constants.DOWNLOAD_MEDIA_TYPE_VIDEO_MONITORING;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.FILL_IN_THE_BLANK;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.FILL_IN_THE_BLANK_WITH_OPTION;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.IMAGE_ANSWER;
@@ -100,8 +100,8 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     public ProgressBar timer_progress_bar;
     /*  @BindView(R.id.ll_count_down)
       public RelativeLayout ll_count_down;*/
-    @ViewById(resName = "rl_exam_info")
-    public RelativeLayout rl_exam_info;
+  /*  @ViewById(resName = "rl_exam_info")
+    public RelativeLayout rl_exam_info;*/
     @ViewById(resName = "rl_que")
     public RelativeLayout rl_que;
     /*List<String> examIDList = new ArrayList<>();
@@ -111,7 +111,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     Fragment currentFragment;
     ProgressDialog progressDialog, mediaProgressDialog;
     List<ScienceQuestion> scienceQuestionList = new ArrayList<>();
-    AssessmentPaperPattern assessmentPaperPatterns;
+
     List<AssessmentPatternDetails> assessmentPatternDetails;
     /*
         @BindView(R.id.circle_progress_bar)
@@ -134,26 +134,24 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     ImageView btn_save_Assessment;
     @ViewById(resName = "btn_submit")
     Button btn_submit;
-    @ViewById(resName = "swipe_btn")
-    ProSwipeButton swipe_btn;
     @ViewById(resName = "circle_view")
     CircleView circle_view;
     @ViewById(resName = "texture_view")
-    TextureView texture_view;
+    FrameLayout texture_view;
     @ViewById(resName = "iv_prev")
     ImageView iv_prev;
     @ViewById(resName = "txt_prev")
     TextView txt_prev;
     @ViewById(resName = "txt_next")
     TextView txt_next;
-    @ViewById(resName = "tv_exam_name")
+    /*@ViewById(resName = "tv_exam_name")
     TextView tv_exam_name;
     @ViewById(resName = "tv_marks")
     TextView tv_marks;
     @ViewById(resName = "tv_time")
     TextView tv_time;
     @ViewById(resName = "tv_total_que")
-    TextView tv_total_que;
+    TextView tv_total_que;*/
     @ViewById(resName = "frame_video_monitoring")
     FrameLayout frame_video_monitoring;
 
@@ -163,28 +161,33 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     TextView txt_question_cnt;
     boolean isEndTimeSet = false;
 
-    int totalMarks = 0, outOfMarks = 0;
+   // int totalMarks = 0, outOfMarks = 0;
     String examStartTime, examEndTime;
     String answer = "", ansId = "";
     String questionType = "";
     CountDownTimer mCountDownTimer;
     String supervisorId;
     String assessmentSession;
-   // private int correctAnsCnt = 0, wrongAnsCnt = 0, skippedCnt = 0;
+    // private int correctAnsCnt = 0, wrongAnsCnt = 0, skippedCnt = 0;
     @Extra("AssessmentLibraryInput")
     AssessmentLibrary assessmentLibrary;
 
     // call back of exam completed or back pressed
     ResponseListener responseListener;
 
+    GLSurfaceView  sampleGLView;
+    CameraRecorder cameraRecorder;
     @AfterExtras
     public void checkIntentValue() {
         scienceQuestionList = assessmentLibrary.getQuestionList();
         Assessment_Constants.VIDEOMONITORING = assessmentLibrary.isVideoMonitoring();
         Assessment_Utility.initWiseF(getApplicationContext());
+        assessPath = assessmentLibrary.getStoragePath();
+        Assessment_Constants.SELECTED_LANGUAGE = assessmentLibrary.getSelectedLanguageCode();
+
         //if color not set then black color is default color
         try {
-            Assessment_Utility.setDefaultColor(getResources().getColor(assessmentLibrary.getBackGroundColor()));
+            Assessment_Utility.setDefaultColor(assessmentLibrary.getBackGroundColor());
         } catch (Exception e) {
             Assessment_Utility.setDefaultColor(getResources().getColor(R.color.black));
         }
@@ -210,10 +213,11 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         mediaProgressDialog = new ProgressDialog(this);
 //        showSelectTopicDialog();
         if (Assessment_Constants.VIDEOMONITORING) {
-            frame_video_monitoring.setVisibility(View.VISIBLE);
+            VideoMonitor.initCamera(this,texture_view);
+            //  frame_video_monitoring.setVisibility(View.VISIBLE);
            /* btn_save_Assessment.setVisibility(View.GONE);
             txt_next.setVisibility(View.GONE);*/
-            serviceIntent = new Intent(getApplicationContext(), VideoMonitoringService.class);
+         //   serviceIntent = new Intent(getApplicationContext(), VideoMonitoringService.class);
         }
         generatePaperPattern();
         //downloadPaperPattern();
@@ -247,7 +251,6 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         //scienceModalClassList = fetchJson("science.json");
 
         // setQuestions();
-
 
 
         Resources res = getResources();
@@ -857,7 +860,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
      /*   assessmentPaperPatterns = AppDatabase.getDatabaseInstance(this).getAssessmentPaperPatternDao().getAssessmentPaperPatternsByExamId(Assessment_Constants.SELECTED_EXAM_ID);
         assessmentPatternDetails = AppDatabase.getDatabaseInstance(this).getAssessmentPatternDetailsDao().getAssessmentPatternDetailsByExamId(Assessment_Constants.SELECTED_EXAM_ID);
      */   // topicIdList = AppDatabase.getDatabaseInstance(ScienceAssessmentActivity.this).getAssessmentPatternDetailsDao().getDistinctTopicIds();
-
+/*
         assessmentPaperPatterns = new AssessmentPaperPattern();
         assessmentPaperPatterns.setSubjectname("Internet Literacy");
         assessmentPaperPatterns.setExamname("Single Search- Basic");
@@ -869,7 +872,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         assessmentPaperPatterns.setCertificateQuestion5("");
         assessmentPaperPatterns.setOutofmarks("50");
         assessmentPaperPatterns.setExamid("2035");
-        assessmentPaperPatterns.setSubjectid("21");
+        assessmentPaperPatterns.setSubjectid("21");*/
 
         assessmentPatternDetails = new ArrayList<>();
         AssessmentPatternDetails assessmentPattern = new AssessmentPatternDetails();
@@ -928,18 +931,18 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
             }
         if (isCameraQuestion) {
 
-                VideoMonitoringService.releaseMediaRecorder();
-                Assessment_Constants.VIDEOMONITORING = false;
-                texture_view.setVisibility(View.GONE);
-                tv_timer.setTextColor(Color.BLACK);
-                frame_video_monitoring.setVisibility(View.GONE);
+            VideoMonitoringService.releaseMediaRecorder();
+            Assessment_Constants.VIDEOMONITORING = false;
+            texture_view.setVisibility(View.GONE);
+            tv_timer.setTextColor(Color.BLACK);
+            frame_video_monitoring.setVisibility(View.GONE);
 //                btn_save_Assessment.setVisibility(View.VISIBLE);
 //            Toast.makeText(this, "video monitoring not prepared", Toast.LENGTH_LONG).show();
         }
 
 
-        if (!assessmentPaperPatterns.getSubjectid().equalsIgnoreCase("30") || !assessmentPaperPatterns.getSubjectname().equalsIgnoreCase("aser"))
-            Collections.shuffle(scienceQuestionList);
+    /*    if (!assessmentPaperPatterns.getSubjectid().equalsIgnoreCase("30") || !assessmentPaperPatterns.getSubjectname().equalsIgnoreCase("aser"))
+            Collections.shuffle(scienceQuestionList);*/
 
         if (scienceQuestionList.size() <= 0) {
             finish();
@@ -948,13 +951,14 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
             else
                 Toast.makeText(ScienceAssessmentActivity.this, "No questions.", Toast.LENGTH_SHORT).show();
         }
+        showQuestions();
 
-        tv_exam_name.setText("Exam : " + assessmentPaperPatterns.getExamname());
+     /*   tv_exam_name.setText("Exam : " + assessmentPaperPatterns.getExamname());
         tv_time.setText("Time : " + assessmentPaperPatterns.getExamduration() + " mins.");
         tv_marks.setText("Marks : " + assessmentPaperPatterns.getOutofmarks());
         tv_total_que.setText("Total questions : " + scienceQuestionList.size());
-
-        swipe_btn.setOnSwipeListener(new ProSwipeButton.OnSwipeListener() {
+*/
+       /* swipe_btn.setOnSwipeListener(new ProSwipeButton.OnSwipeListener() {
             @Override
             public void onSwipeConfirm() {
                 // user has swiped the btn. Perform your async operation now
@@ -982,7 +986,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                 }, 2000);
             }
         });
-
+*/
 
     }
 
@@ -990,7 +994,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     private void showQuestions() {
 
 //        ll_count_down.setVisibility(View.GONE);
-        rl_exam_info.setVisibility(View.GONE);
+//        rl_exam_info.setVisibility(View.GONE);
         rl_que.setVisibility(View.VISIBLE);
 //        showStartAssessment();
         setProgressBarAndTimer();
@@ -1252,7 +1256,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
     private void setProgressBarAndTimer() {
 //        progressBarTimer.setProgress(100);
-        ExamTime = Integer.parseInt(assessmentPaperPatterns.getExamduration());
+        ExamTime = Integer.parseInt("20");
 //        ExamTime = 1;
         if (ExamTime == 0)
             ExamTime = 30;
@@ -1526,10 +1530,10 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                 if (scienceQuestionList.get(i).getQid().equalsIgnoreCase(qid)) {
                     scienceQuestionList.get(i).setIsAttempted(true);
                     if (scienceQuestionList.get(i).getMatchingNameList().size() > 0) {
-                        if (scienceQuestionList.get(i).getQtid().equalsIgnoreCase(MATCHING_PAIR) || scienceQuestionList.get(i).getQtid().equalsIgnoreCase(MULTIPLE_SELECT) || scienceQuestionList.get(i).getQtid().equalsIgnoreCase(ARRANGE_SEQUENCE)) {
+                        if (scienceQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(MATCHING_PAIR) || scienceQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(MULTIPLE_SELECT) || scienceQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(ARRANGE_SEQUENCE)) {
                             String ans = "";
                             for (int m = 0; m < scienceQuestionList.get(i).getMatchingNameList().size(); m++) {
-                                if (scienceQuestionList.get(i).getQtid().equalsIgnoreCase(MULTIPLE_SELECT)) {
+                                if (scienceQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(MULTIPLE_SELECT)) {
                                     if (scienceQuestionList.get(i).getMatchingNameList().get(m).getMyIscorrect().equalsIgnoreCase("true"))
                                         ans += scienceQuestionList.get(i).getMatchingNameList().get(m).getQcid() + ",";
 
@@ -1671,7 +1675,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
     private void checkAssessment(int queCnt) {
         ScienceQuestion scienceQuestion = scienceQuestionList.get(queCnt);
-        questionType = scienceQuestion.getQtid();
+        questionType = scienceQuestion.getQtid().getQuestionID();
         switch (questionType) {
             case FILL_IN_THE_BLANK_WITH_OPTION:
             case MULTIPLE_CHOICE:
@@ -1912,7 +1916,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
     @Override
     public void onSaveAssessmentClick() {
-        responseListener.OnResult(scienceQuestionList);
+//        responseListener.OnResult(scienceQuestionList);
         //insertInDB(scienceQuestionList, " Exam completed");
         //  AssessmentPaperForPush paper = createPaperToSave();
       /*  stopService(new Intent(this, BkgdVideoRecordingService.class));
@@ -2304,8 +2308,10 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
             startService(serviceIntent);
         String fileName = "session" + "_" + Assessment_Utility.getCurrentDateTime() + ".mp4";
         String videoPath = assessPath + Assessment_Constants.STORE_VIDEO_MONITORING_PATH + "/" + fileName;
-        VideoMonitoringService.releaseMediaRecorder();
-        new Handler().postDelayed(new Runnable() {
+
+        VideoMonitor.startRecording(videoPath);
+       // VideoMonitoringService.releaseMediaRecorder();
+       /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (VideoMonitoringService.prepareVideoRecorder(texture_view, fileName)) {
@@ -2326,12 +2332,12 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                 }
 
             }
-        }, 300);
+        }, 300);*/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        viewpagerAdapter=null;
+        viewpagerAdapter = null;
     }
 }

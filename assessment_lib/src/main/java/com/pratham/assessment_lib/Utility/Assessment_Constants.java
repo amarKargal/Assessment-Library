@@ -5,15 +5,15 @@ import androidx.annotation.ColorRes;
 import com.pratham.assessment_lib.R;
 
 public class Assessment_Constants {
-   // public static String STORING_IN;
+    // public static String STORING_IN;
 
 
-    public static boolean VIDEOMONITORING=false;
+    public static boolean VIDEOMONITORING = false;
     public static String assessPath;
     //public static boolean isShowcaseDisplayed=false;
-  //  public static boolean isTablet=false;
-  //  public static String SELECTED_EXAM_ID="2035";
-    public static String SELECTED_LANGUAGE;
+    //  public static boolean isTablet=false;
+    //  public static String SELECTED_EXAM_ID="2035";
+    public static String SELECTED_LANGUAGE = "1";
     //public static final String ASSESSMENT_TYPE = "practice";
     //public static final String SELECTED_SUBJECT_ID = "21";
     public static final String currentSession = "211111";
@@ -44,7 +44,6 @@ public class Assessment_Constants {
     /*public static final String STT_REGEX = "[\"\\-+\\.'^?!@#%-_;&*,:|।<>()]";*/
 
 
-
     public static String ENGLISH_CODE = "en";
     public static String HINDI_CODE = "hi";
     public static String MARATHI_CODE = "mr";
@@ -70,10 +69,6 @@ public class Assessment_Constants {
     public static String TAMIL_ID = "13";
     public static String TELUGU_ID = "14";
     public static String URDU_ID = "15";
-
-
-
-
 
 
 }

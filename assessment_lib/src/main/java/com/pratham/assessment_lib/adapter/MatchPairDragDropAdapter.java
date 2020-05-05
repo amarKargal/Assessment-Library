@@ -3,6 +3,7 @@ package com.pratham.assessment_lib.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.pratham.assessment_lib.R;
@@ -96,11 +98,20 @@ public class MatchPairDragDropAdapter extends RecyclerView.Adapter<MatchPairDrag
                 holder.rl_img.setVisibility(View.VISIBLE);
                 holder.mTitle.setVisibility(View.GONE);
                 holder.mTitle.setTextColor(Color.WHITE);
-                Glide.with(context).asBitmap().
+               /* Glide.with(context).asBitmap().
                         load(path).apply(new RequestOptions()
                         .fitCenter()
                         .format(DecodeFormat.PREFER_ARGB_8888)
                         .override(Target.SIZE_ORIGINAL))
+                        .into(holder.iv_choice_image);*/
+
+                Glide.with(context)
+                        .load(path)
+//                            .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
+                        .apply(new RequestOptions()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
+                                .placeholder(Drawable.createFromPath(localPath)))
                         .into(holder.iv_choice_image);
 
 //                holder.iv_choice_image.setOnClickListener(new View.OnClickListener() {

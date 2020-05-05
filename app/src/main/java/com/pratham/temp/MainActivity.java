@@ -7,10 +7,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.pratham.assessment_lib.AssessmentLibrary;
-import com.pratham.assessment_lib.Utility.Assessment_Constants;
+import com.pratham.assessment_lib.Utility.QuestionType;
 import com.pratham.assessment_lib.domain.ScienceQuestion;
 import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
-import com.pratham.assessment_lib.interfaces.AudioPlayerInterface;
 import com.pratham.assessment_lib.interfaces.OnAssessmentComplete;
 
 import org.androidannotations.annotations.AfterViews;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestion.setAddedby("1");
         scienceQuestion.setLanguageid("1");
         scienceQuestion.setLessonid("36");
-        scienceQuestion.setQtid("1");
+        scienceQuestion.setQtid(QuestionType.MULTIPLE_CHOICE);
         scienceQuestion.setQid("1254");
         scienceQuestion.setSubjectid("21");
         scienceQuestion.setAddedtime("2019-06-11T11:33:35.763");
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestion2.setAddedby("1");
         scienceQuestion2.setLanguageid("1");
         scienceQuestion2.setLessonid("42");
-        scienceQuestion2.setQtid("2");
+        scienceQuestion2.setQtid(QuestionType.MULTIPLE_SELECT);
         scienceQuestion2.setQid("5341");
         scienceQuestion2.setSubjectid("27");
         scienceQuestion2.setAddedtime("2019-06-11T11:33:35.763");
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestionTrueFalse.setAddedby("1");
         scienceQuestionTrueFalse.setLanguageid("1");
         scienceQuestionTrueFalse.setLessonid("42");
-        scienceQuestionTrueFalse.setQtid("3");
+        scienceQuestionTrueFalse.setQtid(QuestionType.TRUE_FALSE);
         scienceQuestionTrueFalse.setQid("5342");
         scienceQuestionTrueFalse.setSubjectid("27");
         scienceQuestionTrueFalse.setAddedtime("2019-06-11T11:33:35.763");
@@ -108,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestion5.setAddedby("1");
         scienceQuestion5.setLanguageid("1");
         scienceQuestion5.setLessonid("42");
-        scienceQuestion5.setQtid("5");
+        scienceQuestion5.setQtid(QuestionType.FILL_IN_THE_BLANK_WITH_OPTION);
         scienceQuestion5.setQid("5382");
         scienceQuestion5.setSubjectid("27");
         scienceQuestion5.setAddedtime("2019-06-11T11:33:35.763");
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestion6.setAddedby("1");
         scienceQuestion6.setLanguageid("1");
         scienceQuestion6.setLessonid("42");
-        scienceQuestion6.setQtid("6");
+        scienceQuestion6.setQtid(QuestionType.FILL_IN_THE_BLANK);
         scienceQuestion6.setQid("5383");
         scienceQuestion6.setSubjectid("27");
         scienceQuestion6.setAddedtime("2019-06-11T11:33:35.763");
@@ -148,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestion7.setAddedby("1");
         scienceQuestion7.setLanguageid("1");
         scienceQuestion7.setLessonid("42");
-        scienceQuestion7.setQtid("7");
+        scienceQuestion7.setQtid(QuestionType.ARRANGE_SEQUENCE);
         scienceQuestion7.setQid("5384");
         scienceQuestion7.setSubjectid("27");
         scienceQuestion7.setAddedtime("2019-06-11T11:33:35.763");
@@ -168,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestion8.setAddedby("1");
         scienceQuestion8.setLanguageid("1");
         scienceQuestion8.setLessonid("42");
-        scienceQuestion8.setQtid("8");
+        scienceQuestion8.setQtid(QuestionType.VIDEO);
         scienceQuestion8.setQid("5385");
         scienceQuestion8.setSubjectid("27");
         scienceQuestion8.setAddedtime("2019-06-11T11:33:35.763");
@@ -188,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestion9.setAddedby("1");
         scienceQuestion9.setLanguageid("1");
         scienceQuestion9.setLessonid("42");
-        scienceQuestion9.setQtid("9");
+        scienceQuestion9.setQtid(QuestionType.AUDIO);
         scienceQuestion9.setQid("5386");
         scienceQuestion9.setSubjectid("27");
         scienceQuestion9.setAddedtime("2019-06-11T11:33:35.763");
@@ -209,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestion11.setAddedby("1");
         scienceQuestion11.setLanguageid("1");
         scienceQuestion11.setLessonid("42");
-        scienceQuestion11.setQtid("9");
+        scienceQuestion11.setQtid(QuestionType.AUDIO);
         scienceQuestion11.setQid("5387");
         scienceQuestion11.setSubjectid("27");
         scienceQuestion11.setAddedtime("2019-06-11T11:33:35.763");
@@ -255,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         scienceQuestionMatchThePair.setAddedby("1");
         scienceQuestionMatchThePair.setLanguageid("1");
         scienceQuestionMatchThePair.setLessonid("42");
-        scienceQuestionMatchThePair.setQtid("4");
+        scienceQuestionMatchThePair.setQtid(QuestionType.MATCHING_PAIR);
         scienceQuestionMatchThePair.setQid("5343");
         scienceQuestionMatchThePair.setSubjectid("27");
         scienceQuestionMatchThePair.setAddedtime("2019-06-11T11:33:35.763");

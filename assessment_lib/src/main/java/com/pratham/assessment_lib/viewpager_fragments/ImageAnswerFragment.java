@@ -417,7 +417,9 @@ public class ImageAnswerFragment extends Fragment {
             }
 
 //            assessmentAnswerListener.resumeVideoMonitoring();
-            scienceAssessmentActivity.startCameraService();
+            if (Assessment_Constants.VIDEOMONITORING)
+                scienceAssessmentActivity.startCameraService();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

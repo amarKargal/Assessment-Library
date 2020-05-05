@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/rl_exam_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,7 +73,7 @@
                 android:gravity="center_horizontal" />
         </RelativeLayout>
 
-        <com.pratham.assessment_lib.custom.swipeButton.ProSwipeButton
+    &lt;!&ndash;    <com.pratham.assessment_lib.custom.swipeButton.ProSwipeButton
             android:id="@+id/swipe_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,8 +83,8 @@
             app:bg_color="@android:color/holo_blue_dark"
             app:btn_text="Swipe to start assessment" />
 
-
-    </RelativeLayout>
+&ndash;&gt;
+    </RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/rl_que"
@@ -92,7 +92,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/rl_nav"
         android:background="@color/green"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:context=".ui.choose_assessment.science.ScienceAssessmentActivity"
         tools:ignore="NotSibling">
 
@@ -127,7 +127,7 @@
             <!--</FrameLayout>-->
 
 
-            <com.robinhood.ticker.TickerView
+            <com.pratham.assessment_lib.custom.ticker.TickerView
                 android:id="@+id/tickerView"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_40sdp"
@@ -198,7 +198,7 @@
                 android:layout_marginTop="@dimen/_3sdp"
                 android:visibility="gone">
 
-                <TextureView
+                <FrameLayout
                     android:id="@+id/texture_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

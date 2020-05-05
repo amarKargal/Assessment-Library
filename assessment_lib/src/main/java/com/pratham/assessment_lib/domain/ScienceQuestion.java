@@ -2,11 +2,14 @@ package com.pratham.assessment_lib.domain;
 
 
 
+import androidx.annotation.NonNull;
+
+
+import com.pratham.assessment_lib.Utility.QuestionType;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-
 public class ScienceQuestion implements Serializable {
 
     private String ansdesc;
@@ -22,13 +25,14 @@ public class ScienceQuestion implements Serializable {
     private String active;
 
     private String lessonid;
-
+    //@Embedded
     private ArrayList<ScienceQuestionChoice> lstquestionchoice;
-
+    //@Ignore
     List<ScienceQuestionChoice> matchingNameList = null;
 
-    private String qtid;
-
+    private QuestionType qtid;
+    @NonNull
+    //@PrimaryKey
     private String qid;
 
     private String subjectid;
@@ -55,7 +59,7 @@ public class ScienceQuestion implements Serializable {
 
     private String pdid;
     private String startTime;
-
+    //@Ignore
     boolean isMediaDownloaded;
 
     private String endTime;
@@ -72,6 +76,10 @@ public class ScienceQuestion implements Serializable {
     private boolean isAttempted;
 
     private boolean isCorrect;
+
+  /*  // new 27-04-2020
+    public boolean IsParaQuestion;
+    private String RefParaID;*/
 
     public String getUserAnswer() {
         if (userAnswer == null)
@@ -186,11 +194,11 @@ public class ScienceQuestion implements Serializable {
         this.lstquestionchoice = lstquestionchoice;
     }
 
-    public String getQtid() {
+    public QuestionType getQtid() {
         return qtid;
     }
 
-    public void setQtid(String qtid) {
+    public void setQtid(QuestionType qtid) {
         this.qtid = qtid;
     }
 
@@ -227,10 +235,7 @@ public class ScienceQuestion implements Serializable {
     }
 
     public String getPhotourl() {
-        if(photourl!=null)
         return photourl;
-        else
-            return "";
     }
 
     public void setPhotourl(String photourl) {
@@ -340,4 +345,20 @@ public class ScienceQuestion implements Serializable {
     public void setMediaDownloaded(boolean mediaDownloaded) {
         isMediaDownloaded = mediaDownloaded;
     }
+
+   /* public boolean isParaQuestion() {
+        return IsParaQuestion;
+    }
+
+    public void setIsParaQuestion(boolean paraQuestion) {
+        IsParaQuestion = paraQuestion;
+    }
+
+    public String getRefParaID() {
+        return RefParaID;
+    }
+
+    public void setRefParaID(String refParaID) {
+        RefParaID = refParaID;
+    }*/
 }

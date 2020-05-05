@@ -26,9 +26,8 @@ import com.pratham.assessment_lib.custom.gif_viewer.GifView;
 import com.pratham.assessment_lib.domain.ScienceQuestion;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity;
-import com.pratham.assessment_lib.services.stt_service_new.ContinuousSpeechService_New;
-import com.pratham.assessment_lib.services.stt_service_new.STT_Result_New;
-
+import com.pratham.assessment_lib.services.stt_service.ContinuousSpeechService;
+import com.pratham.assessment_lib.services.stt_service.STT_Result;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -47,7 +46,7 @@ import static com.pratham.assessment_lib.science.ScienceAssessmentActivity.viewp
 
 
 @EFragment(resName = "layout_fill_in_the_blanks_wo_option_row")
-public class FillInTheBlanksWithoutOptionFragment extends Fragment implements STT_Result_New.sttView {
+public class FillInTheBlanksWithoutOptionFragment extends Fragment implements STT_Result {
 
     @ViewById(resName = "tv_question")
     TextView question;
@@ -60,7 +59,7 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
     @ViewById(resName = "ib_mic")
     ImageButton ib_mic;
 
-    ContinuousSpeechService_New speechService;
+    ContinuousSpeechService speechService;
 
     private float perc = 0;
 
@@ -88,7 +87,7 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
             scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
             assessmentAnswerListener = (ScienceAssessmentActivity) getActivity();
             context = getActivity();
-            speechService = new ContinuousSpeechService_New(context, this, "");
+            speechService = new ContinuousSpeechService(context, this);
             speechService.resetSpeechRecognizer();
         }
         question.setMovementMethod(new ScrollingMovementMethod());
@@ -372,22 +371,27 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
     }
 
     @Override
+    public void Stt_onError() {
+
+    }
+
+  /*  @Override
     public void Stt_onPartialResult(String sttResult) {
 
     }
-
-    @Override
+*/
+  /*  @Override
     public void silenceDetected() {
         if (voiceStart) {
             speechService.resetHandler(true);
-           /* silence_outer_layout.setVisibility(View.VISIBLE);
+           *//* silence_outer_layout.setVisibility(View.VISIBLE);
             silenceViewHandler = new Handler();
             silence_iv.startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotate_continuous_shake));
-            AnimateTextView(context, silence_main_layout);*/
+            AnimateTextView(context, silence_main_layout);*//*
         }
     }
-
-    @Override
+*/
+  /*  @Override
     public void stoppedPressed() {
 
     }
@@ -396,7 +400,7 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
     public void sttEngineReady() {
 
     }
-
+*/
 
     /*@Override
     public void Stt_onError() {
