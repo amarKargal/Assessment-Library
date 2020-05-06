@@ -8,4 +8,5 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="Permissions_denied_message">"Permissions denied, photo tagging will not work. To enable now click here"</string>
 </resources>

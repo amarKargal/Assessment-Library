@@ -1,15 +1,16 @@
 package com.pratham.assessment_lib.Utility;
 
-import androidx.annotation.ColorRes;
 
-import com.pratham.assessment_lib.R;
+import android.Manifest;
 
 public class Assessment_Constants {
     // public static String STORING_IN;
+    public static final String [] permissionsNeededAssessmentLib =new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
 
 
     public static boolean VIDEOMONITORING = false;
     public static String assessPath;
+    public static int LIBRARY_PERMISSIONS=100;
     //public static boolean isShowcaseDisplayed=false;
     //  public static boolean isTablet=false;
     //  public static String SELECTED_EXAM_ID="2035";

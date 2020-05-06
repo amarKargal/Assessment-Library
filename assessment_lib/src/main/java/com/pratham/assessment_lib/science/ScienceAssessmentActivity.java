@@ -3,6 +3,7 @@ package com.pratham.assessment_lib.science;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,12 +27,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 
+import com.google.android.material.snackbar.Snackbar;
 import com.pratham.assessment_lib.AssessmentLibrary;
 import com.pratham.assessment_lib.BaseActivity;
 import com.pratham.assessment_lib.R;
@@ -40,8 +44,6 @@ import com.pratham.assessment_lib.Utility.Assessment_Utility;
 import com.pratham.assessment_lib.Utility.AudioUtil;
 import com.pratham.assessment_lib.custom.NonSwipeableViewPager;
 import com.pratham.assessment_lib.custom.cameraRecorder.CameraRecorder;
-import com.pratham.assessment_lib.custom.cameraRecorder.CameraRecorderBuilder;
-import com.pratham.assessment_lib.custom.cameraRecorder.LensFacing;
 import com.pratham.assessment_lib.custom.cameraRecorder.VideoMonitor;
 import com.pratham.assessment_lib.custom.circular_progress_view.AnimationStyle;
 import com.pratham.assessment_lib.custom.circular_progress_view.CircleView;
@@ -79,12 +81,14 @@ import static com.pratham.assessment_lib.Utility.Assessment_Constants.FILL_IN_TH
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.FILL_IN_THE_BLANK_WITH_OPTION;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.IMAGE_ANSWER;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.KEYWORDS_QUESTION;
+import static com.pratham.assessment_lib.Utility.Assessment_Constants.LIBRARY_PERMISSIONS;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.MATCHING_PAIR;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.MULTIPLE_CHOICE;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.MULTIPLE_SELECT;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.TEXT_PARAGRAPH;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.TRUE_FALSE;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.assessPath;
+import static com.pratham.assessment_lib.Utility.Assessment_Constants.permissionsNeededAssessmentLib;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.selectedColor;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.wiseF;
 
@@ -161,7 +165,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     TextView txt_question_cnt;
     boolean isEndTimeSet = false;
 
-   // int totalMarks = 0, outOfMarks = 0;
+    // int totalMarks = 0, outOfMarks = 0;
     String examStartTime, examEndTime;
     String answer = "", ansId = "";
     String questionType = "";
@@ -175,8 +179,9 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     // call back of exam completed or back pressed
     ResponseListener responseListener;
 
-    GLSurfaceView  sampleGLView;
+    GLSurfaceView sampleGLView;
     CameraRecorder cameraRecorder;
+
     @AfterExtras
     public void checkIntentValue() {
         scienceQuestionList = assessmentLibrary.getQuestionList();
@@ -212,14 +217,19 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         progressDialog = new ProgressDialog(this);
         mediaProgressDialog = new ProgressDialog(this);
 //        showSelectTopicDialog();
-        if (Assessment_Constants.VIDEOMONITORING) {
-            VideoMonitor.initCamera(this,texture_view);
-            //  frame_video_monitoring.setVisibility(View.VISIBLE);
+        if (checkWhetherAllPermissionsPresentForPhotoTagging(permissionsNeededAssessmentLib)) {
+            if (Assessment_Constants.VIDEOMONITORING) {
+                VideoMonitor.initCamera(this, texture_view);
+                frame_video_monitoring.setVisibility(View.VISIBLE);
            /* btn_save_Assessment.setVisibility(View.GONE);
             txt_next.setVisibility(View.GONE);*/
-         //   serviceIntent = new Intent(getApplicationContext(), VideoMonitoringService.class);
+                //   serviceIntent = new Intent(getApplicationContext(), VideoMonitoringService.class);
+            }
+            generatePaperPattern();
+        } else {
+            requestRunTimePermissions(ScienceAssessmentActivity.this, permissionsNeededAssessmentLib, LIBRARY_PERMISSIONS);
         }
-        generatePaperPattern();
+
         //downloadPaperPattern();
       /*  if (wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
             downloadPaperPattern();
@@ -2310,7 +2320,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         String videoPath = assessPath + Assessment_Constants.STORE_VIDEO_MONITORING_PATH + "/" + fileName;
 
         VideoMonitor.startRecording(videoPath);
-       // VideoMonitoringService.releaseMediaRecorder();
+        // VideoMonitoringService.releaseMediaRecorder();
        /* new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -2339,5 +2349,47 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     protected void onDestroy() {
         super.onDestroy();
         viewpagerAdapter = null;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LIBRARY_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (checkWhetherAllPermissionsPresentForPhotoTagging(permissionsNeededAssessmentLib)) {
+                if (Assessment_Constants.VIDEOMONITORING) {
+                    VideoMonitor.initCamera(this, texture_view);
+                    frame_video_monitoring.setVisibility(View.VISIBLE);
+                }
+                generatePaperPattern();
+            } else if (requestCode == LIBRARY_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                Snackbar.make(findViewById(android.R.id.content), "Permission denied, photo tagging will not work, to enable now click here",
+                        Snackbar.LENGTH_INDEFINITE).setAction("ENABLE", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ActivityCompat.requestPermissions(ScienceAssessmentActivity.this, getDeniedPermissionsAmongPhototaggingPermissions(permissionsNeededAssessmentLib), LIBRARY_PERMISSIONS);
+                    }
+                }).show();
+            }
+        } else if (permissions.length > 1) {
+            if (requestCode == LIBRARY_PERMISSIONS) {
+                if (checkWhetherAllPermissionsPresentForPhotoTagging(permissionsNeededAssessmentLib)) {
+                    if (checkWhetherAllPermissionsPresentForPhotoTagging(permissionsNeededAssessmentLib)) {
+                        if (Assessment_Constants.VIDEOMONITORING) {
+                            VideoMonitor.initCamera(this, texture_view);
+                            frame_video_monitoring.setVisibility(View.VISIBLE);
+                        }
+                        generatePaperPattern();
+                    } else {
+                        Snackbar.make(findViewById(android.R.id.content), getString(R.string.Permissions_denied_message),
+                                Snackbar.LENGTH_INDEFINITE).setAction("ENABLE", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ActivityCompat.requestPermissions(ScienceAssessmentActivity.this, getDeniedPermissionsAmongPhototaggingPermissions(permissionsNeededAssessmentLib), LIBRARY_PERMISSIONS);
+                            }
+                        }).show();
+                    }
+                }
+            }
+        }
     }
 }
