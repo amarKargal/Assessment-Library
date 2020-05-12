@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.pratham.assessment_lib.Utility.QuestionType;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +23,15 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragmentList;
     Fragment currentFragment;
 
-    public ViewpagerAdapter(FragmentManager fm, Context context, List<ScienceQuestion> scienceQuestionList) {
+    public ViewpagerAdapter(FragmentManager fm, Context context, List<AssessmentQuestion> assessmentQuestionList) {
         super(fm);
 //        this.context = context;
-        NUM_ITEMS = scienceQuestionList.size();
+        NUM_ITEMS = assessmentQuestionList.size();
         fragmentList = new ArrayList<>();
-        for (int i = 0; i < scienceQuestionList.size(); i++) {
-            ScienceQuestion scienceQuestion = scienceQuestionList.get(i);
+        for (int i = 0; i < assessmentQuestionList.size(); i++) {
+            AssessmentQuestion assessmentQuestion = assessmentQuestionList.get(i);
             //String questionType = scienceQuestion.getQtid();
-            QuestionType questionType = scienceQuestion.getQtid();
+            QuestionType questionType = assessmentQuestion.getQtid();
 
             //todo #alter
             /*switch (questionType) {
@@ -77,40 +77,40 @@ public class ViewpagerAdapter extends FragmentPagerAdapter {
 
             switch (questionType) {
                 case MULTIPLE_CHOICE:
-                    fragmentList.add(McqFillInTheBlanksFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(McqFillInTheBlanksFragment.newInstance(i, assessmentQuestion));
                     break;
                 case MULTIPLE_SELECT:
-                    fragmentList.add(MultipleSelectFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(MultipleSelectFragment.newInstance(i, assessmentQuestion));
                     break;
                 case TRUE_FALSE:
-                    fragmentList.add(TrueFalseFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(TrueFalseFragment.newInstance(i, assessmentQuestion));
                     break;
                 case MATCHING_PAIR:
-                    fragmentList.add(MatchThePairFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(MatchThePairFragment.newInstance(i, assessmentQuestion));
                     break;
                 case FILL_IN_THE_BLANK_WITH_OPTION:
-                    fragmentList.add(McqFillInTheBlanksFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(McqFillInTheBlanksFragment.newInstance(i, assessmentQuestion));
                     break;
                 case FILL_IN_THE_BLANK:
-                    fragmentList.add(FillInTheBlanksWithoutOptionFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(FillInTheBlanksWithoutOptionFragment.newInstance(i, assessmentQuestion));
                     break;
                 case ARRANGE_SEQUENCE:
-                    fragmentList.add(ArrangeSequenceFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(ArrangeSequenceFragment.newInstance(i, assessmentQuestion));
                     break;
                 case VIDEO:
-                    fragmentList.add(VideoFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(VideoFragment.newInstance(i, assessmentQuestion));
                     break;
                 case AUDIO:
-                    fragmentList.add(AudioFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(AudioFragment.newInstance(i, assessmentQuestion));
                     break;
                 case KEYWORDS_QUESTION:
-                    fragmentList.add(FillInTheBlanksWithoutOptionFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(FillInTheBlanksWithoutOptionFragment.newInstance(i, assessmentQuestion));
                     break;
                 case IMAGE_ANSWER:
-                    fragmentList.add(ImageAnswerFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(ImageAnswerFragment.newInstance(i, assessmentQuestion));
                     break;
                 case TEXT_PARAGRAPH:
-                    fragmentList.add(TextParagraphFragment.newInstance(i, scienceQuestion));
+                    fragmentList.add(TextParagraphFragment.newInstance(i, assessmentQuestion));
                     break;
                 default:
                     break;

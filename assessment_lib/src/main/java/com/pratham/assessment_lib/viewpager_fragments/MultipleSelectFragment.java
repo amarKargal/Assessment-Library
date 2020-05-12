@@ -20,8 +20,8 @@ import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
 import com.pratham.assessment_lib.custom.gif_viewer.GifView;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
-import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
+import com.pratham.assessment_lib.domain.SubOptions;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity;
 
@@ -58,7 +58,7 @@ public class MultipleSelectFragment extends Fragment {
     private static final String SCIENCE_QUESTION = "scienceQuestion";
 
     private int pos;
-    private ScienceQuestion scienceQuestion;
+    private AssessmentQuestion assessmentQuestion;
     AssessmentAnswerListener assessmentAnswerListener;
 
 
@@ -66,11 +66,11 @@ public class MultipleSelectFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static MultipleSelectFragment newInstance(int pos, ScienceQuestion scienceQuestion) {
+    public static MultipleSelectFragment newInstance(int pos, AssessmentQuestion assessmentQuestion) {
         MultipleSelectFragment_ multipleSelectFragment = new MultipleSelectFragment_();
         Bundle args = new Bundle();
         args.putInt("pos", pos);
-        args.putSerializable("scienceQuestion", scienceQuestion);
+        args.putSerializable("scienceQuestion", assessmentQuestion);
         multipleSelectFragment.setArguments(args);
         return multipleSelectFragment;
     }
@@ -79,7 +79,7 @@ public class MultipleSelectFragment extends Fragment {
     public void init() {
         if (getArguments() != null) {
             pos = getArguments().getInt(POS, 0);
-            scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
+            assessmentQuestion = (AssessmentQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
             assessmentAnswerListener = (ScienceAssessmentActivity) getActivity();
         }
         setMultipleSelectQuestion();
@@ -114,17 +114,17 @@ public class MultipleSelectFragment extends Fragment {
     public void setMultipleSelectQuestion() {
         setOdiaFont(getActivity(), question);
 
-        question.setText(scienceQuestion.getQname());
-        final String fileName = getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
+        question.setText(assessmentQuestion.getQname());
+        final String fileName = getFileName(assessmentQuestion.getQid(), assessmentQuestion.getPhotourl());
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
         final String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
-        if (!scienceQuestion.getPhotourl().equalsIgnoreCase("")) {
+        if (!assessmentQuestion.getPhotourl().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
 
-            String path = scienceQuestion.getPhotourl();
+            String path = assessmentQuestion.getPhotourl();
             String[] imgPath = path.split("\\.");
             int len;
             if (imgPath.length > 0)
@@ -169,17 +169,17 @@ public class MultipleSelectFragment extends Fragment {
         questionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showZoomDialog(getActivity(), scienceQuestion.getPhotourl(), localPath);
+                showZoomDialog(getActivity(), assessmentQuestion.getPhotourl(), localPath);
             }
         });
         questionGif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showZoomDialog(getActivity(), scienceQuestion.getPhotourl(), localPath);
+                showZoomDialog(getActivity(), assessmentQuestion.getPhotourl(), localPath);
             }
         });
 
-        final List<ScienceQuestionChoice> choices = scienceQuestion.getLstquestionchoice();
+        final List<SubOptions> choices = assessmentQuestion.getLstquestionchoice();
 
         gridLayout.setColumnCount(1);
         gridLayout.removeAllViews();
@@ -198,7 +198,7 @@ public class MultipleSelectFragment extends Fragment {
 
                 final String path = choices.get(j).getChoiceurl();
 
-                String fileNameChoice = Assessment_Utility.getFileName(scienceQuestion.getQid(), choices.get(j).getChoiceurl());
+                String fileNameChoice = Assessment_Utility.getFileName(assessmentQuestion.getQid(), choices.get(j).getChoiceurl());
                 final String localPathChoice = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileNameChoice;
 
 
@@ -241,7 +241,7 @@ public class MultipleSelectFragment extends Fragment {
                     }
                 }
             } else {*/
-                if (scienceQuestion.getIsAttempted()) {
+                if (assessmentQuestion.getIsAttempted()) {
                     if (choices.get(j).getMyIscorrect().equalsIgnoreCase("TRUE")) {
                         checkBox.setChecked(true);
                         checkBox.setTextColor(selectedColor);
@@ -258,19 +258,19 @@ public class MultipleSelectFragment extends Fragment {
 //                    Toast.makeText(context, "" + checkBox.getText(), Toast.LENGTH_SHORT).show();
                     String mQcID = buttonView.getTag().toString();
 //                    buttonView.setTextColor(Assessment_Utility.selectedColor);
-                    ScienceQuestionChoice mScienceQuestionChoice = null;
-                    for (ScienceQuestionChoice scienceQuestionChoice : choices) {
-                        if (scienceQuestionChoice.getQcid().equals(mQcID)) {
-                            mScienceQuestionChoice = scienceQuestionChoice;
+                    SubOptions mSubOptions = null;
+                    for (SubOptions subOptions : choices) {
+                        if (subOptions.getQcid().equals(mQcID)) {
+                            mSubOptions = subOptions;
                             break;
                         }
                     }
                     if (isChecked) {
-                        if (mScienceQuestionChoice != null)
-                            mScienceQuestionChoice.setMyIscorrect("true");
+                        if (mSubOptions != null)
+                            mSubOptions.setMyIscorrect("true");
                     } else {
-                        if (mScienceQuestionChoice != null)
-                            mScienceQuestionChoice.setMyIscorrect("false");
+                        if (mSubOptions != null)
+                            mSubOptions.setMyIscorrect("false");
                     }
 
                     for (int i = 0; i < gridLayout.getRowCount(); i++) {
@@ -283,7 +283,7 @@ public class MultipleSelectFragment extends Fragment {
 
 
 //                    questionTypeListener.setAnswer("", "", scienceQuestion.getQid(), choices);
-                    assessmentAnswerListener.setAnswerInActivity("", "", scienceQuestion.getQid(), choices);
+                    assessmentAnswerListener.setAnswerInActivity("", "", assessmentQuestion.getQid(), choices);
                 }
             });
             GridLayout.LayoutParams paramGrid = new GridLayout.LayoutParams();

@@ -23,7 +23,7 @@ import com.bumptech.glide.request.target.Target;
 import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
-import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
+import com.pratham.assessment_lib.domain.SubOptions;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.interfaces.StartDragListener;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity;
@@ -40,8 +40,8 @@ import static com.pratham.assessment_lib.Utility.Assessment_Utility.setOdiaFont;
 
 
 public class ArrangeSeqDragDropAdapter extends RecyclerView.Adapter<ArrangeSeqDragDropAdapter.MyViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
-    List<ScienceQuestionChoice> draggedList = new ArrayList<>();
-    private List<ScienceQuestionChoice> data;
+    List<SubOptions> draggedList = new ArrayList<>();
+    private List<SubOptions> data;
     Context context;
     //    DragDropListener dragDropListener;
     //    QuestionTypeListener questionTypeListener;
@@ -67,7 +67,7 @@ public class ArrangeSeqDragDropAdapter extends RecyclerView.Adapter<ArrangeSeqDr
     }
 
 
-    public ArrangeSeqDragDropAdapter(ArrangeSequenceFragment fragment, List<ScienceQuestionChoice> data, Context context) {
+    public ArrangeSeqDragDropAdapter(ArrangeSequenceFragment fragment, List<SubOptions> data, Context context) {
         this.data = data;
         this.context = context;
 //        questionTypeListener = scienceAdapter;
@@ -98,11 +98,11 @@ public class ArrangeSeqDragDropAdapter extends RecyclerView.Adapter<ArrangeSeqDr
 
         draggedList.clear();
         if (data.size() > 0) {
-            ScienceQuestionChoice scienceQuestionChoice = data.get(position);
-            if (!scienceQuestionChoice.getChoiceurl().equalsIgnoreCase("")) {
-                final String path = /*Assessment_Constants.loadOnlineImagePath +*/ scienceQuestionChoice.getChoiceurl();
+            SubOptions subOptions = data.get(position);
+            if (!subOptions.getChoiceurl().equalsIgnoreCase("")) {
+                final String path = /*Assessment_Constants.loadOnlineImagePath +*/ subOptions.getChoiceurl();
 
-                String fileName = Assessment_Utility.getFileName(scienceQuestionChoice.getQid(), scienceQuestionChoice.getChoiceurl());
+                String fileName = Assessment_Utility.getFileName(subOptions.getQid(), subOptions.getChoiceurl());
                 final String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
 
@@ -124,7 +124,7 @@ public class ArrangeSeqDragDropAdapter extends RecyclerView.Adapter<ArrangeSeqDr
                         Assessment_Utility.showZoomDialog(context, path, localPath);
                     }
                 });
-            } else holder.mTitle.setText(scienceQuestionChoice.getChoicename());
+            } else holder.mTitle.setText(subOptions.getChoicename());
 
             holder.mTitle.setOnTouchListener(new View.OnTouchListener() {
                 @Override

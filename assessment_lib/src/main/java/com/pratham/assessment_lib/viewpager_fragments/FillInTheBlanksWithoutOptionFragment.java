@@ -23,7 +23,7 @@ import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
 import com.pratham.assessment_lib.custom.gif_viewer.GifView;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity;
 import com.pratham.assessment_lib.services.stt_service.ContinuousSpeechService;
@@ -72,7 +72,7 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
     private static final String SCIENCE_QUESTION = "scienceQuestion";
 
     private int pos;
-    private ScienceQuestion scienceQuestion;
+    private AssessmentQuestion assessmentQuestion;
     AssessmentAnswerListener assessmentAnswerListener;
     private Context context;
 
@@ -84,7 +84,7 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
     public void init() {
         if (getArguments() != null) {
             pos = getArguments().getInt(POS, 0);
-            scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
+            assessmentQuestion = (AssessmentQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
             assessmentAnswerListener = (ScienceAssessmentActivity) getActivity();
             context = getActivity();
             speechService = new ContinuousSpeechService(context, this);
@@ -94,11 +94,11 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
         setFillInTheBlanksQuestion();
     }
 
-    public static FillInTheBlanksWithoutOptionFragment newInstance(int pos, ScienceQuestion scienceQuestion) {
+    public static FillInTheBlanksWithoutOptionFragment newInstance(int pos, AssessmentQuestion assessmentQuestion) {
         FillInTheBlanksWithoutOptionFragment_ fragment = new FillInTheBlanksWithoutOptionFragment_();
         Bundle args = new Bundle();
         args.putInt("pos", pos);
-        args.putSerializable("scienceQuestion", scienceQuestion);
+        args.putSerializable("scienceQuestion", assessmentQuestion);
         fragment.setArguments(args);
 
         return fragment;
@@ -147,20 +147,20 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
             }
 
         etAnswer.setTextColor(Assessment_Utility.selectedColor);
-        etAnswer.setText(scienceQuestion.getUserAnswer());
-        question.setText(scienceQuestion.getQname());
+        etAnswer.setText(assessmentQuestion.getUserAnswer());
+        question.setText(assessmentQuestion.getQname());
         setOdiaFont(getActivity(), question);
 
-        if (!scienceQuestion.getPhotourl().equalsIgnoreCase("")) {
+        if (!assessmentQuestion.getPhotourl().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
-            String fileName = Assessment_Utility.getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
+            String fileName = Assessment_Utility.getFileName(assessmentQuestion.getQid(), assessmentQuestion.getPhotourl());
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
             final String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
 
-            String path = scienceQuestion.getPhotourl();
+            String path = assessmentQuestion.getPhotourl();
             String[] imgPath = path.split("\\.");
             int len;
             if (imgPath.length > 0)
@@ -196,13 +196,13 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
             questionImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showZoomDialog(getActivity(), scienceQuestion.getPhotourl(), localPath);
+                    showZoomDialog(getActivity(), assessmentQuestion.getPhotourl(), localPath);
                 }
             });
             questionGif.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showZoomDialog(getActivity(), scienceQuestion.getPhotourl(), localPath);
+                    showZoomDialog(getActivity(), assessmentQuestion.getPhotourl(), localPath);
                 }
             });
 
@@ -231,7 +231,7 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
             @Override
             public void afterTextChanged(Editable s) {
 //                Log.d("@@@"+scienceQuestion.getQid(), s+"");
-                assessmentAnswerListener.setAnswerInActivity("", s.toString(), scienceQuestion.getQid(), null);
+                assessmentAnswerListener.setAnswerInActivity("", s.toString(), assessmentQuestion.getQid(), null);
             }
         });
 
@@ -316,11 +316,11 @@ public class FillInTheBlanksWithoutOptionFragment extends Fragment implements ST
         for (int i = 0; i < matches.size(); i++) {
             System.out.println("LogTag" + " onResults :  " + matches.get(i));
 
-            if (matches.get(i).equalsIgnoreCase(scienceQuestion.getAnswer()))
+            if (matches.get(i).equalsIgnoreCase(assessmentQuestion.getAnswer()))
                 sttResult = matches.get(i);
             else sttResult = matches.get(0);
         }
-        sttQuestion = scienceQuestion.getAnswer();
+        sttQuestion = assessmentQuestion.getAnswer();
         String regex = "[\\-+.\"^?!@#%&*,:]";
         String quesFinal = sttQuestion.replaceAll(regex, "");
 

@@ -2,7 +2,10 @@ package com.pratham.assessment_lib.custom.cameraRecorder;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
+import android.os.Environment;
 import android.widget.FrameLayout;
+
+import java.io.File;
 
 public class VideoMonitor {
     static GLSurfaceView sampleGLView;
@@ -20,10 +23,14 @@ public class VideoMonitor {
     }
 
     public static void startRecording(String path) {
-        cameraRecorder.start(path);
+        File sd = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups/");
+        if (!sd.exists())
+            sd.mkdir();
+
+        cameraRecorder.start(Environment.getExternalStorageDirectory() + "/PrathamBackups/frfrf");
     }
 
-    public static void stopRecording(String path) {
+    public static void stopRecording() {
         cameraRecorder.stop();
     }
 

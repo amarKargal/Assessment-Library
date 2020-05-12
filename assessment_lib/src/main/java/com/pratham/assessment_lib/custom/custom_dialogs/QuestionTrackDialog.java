@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pratham.assessment_lib.R;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 
 import java.util.List;
 
@@ -27,12 +27,12 @@ public class QuestionTrackDialog extends Dialog {
 
 
     Context context;
-    List<ScienceQuestion> scienceQuestionList;
+    List<AssessmentQuestion> assessmentQuestionList;
 
 
-    public QuestionTrackDialog(@NonNull Context context, List<ScienceQuestion> scienceQuestions) {
+    public QuestionTrackDialog(@NonNull Context context, List<AssessmentQuestion> assessmentQuestions) {
         super(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar_MinWidth);
-        this.scienceQuestionList = scienceQuestions;
+        this.assessmentQuestionList = assessmentQuestions;
         this.context = context;
 
     }

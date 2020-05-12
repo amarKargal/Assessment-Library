@@ -14,13 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.adapter.MatchPairAdapter;
 import com.pratham.assessment_lib.adapter.MatchPairDragDropAdapter;
 import com.pratham.assessment_lib.custom.gif_viewer.GifView;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
-import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
+import com.pratham.assessment_lib.domain.SubOptions;
 import com.pratham.assessment_lib.interfaces.StartDragListener;
 
 
@@ -57,14 +56,14 @@ public class MatchThePairFragment extends Fragment implements StartDragListener 
     private static final String SCIENCE_QUESTION = "scienceQuestion";
 
     private int pos;
-    private ScienceQuestion scienceQuestion;
+    private AssessmentQuestion assessmentQuestion;
     ItemTouchHelper touchHelper;
 
     @AfterViews
     public void init() {
         if (getArguments() != null) {
             pos = getArguments().getInt(POS, 0);
-            scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
+            assessmentQuestion = (AssessmentQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
         }
         setMatchPairQuestion();
     }
@@ -74,11 +73,11 @@ public class MatchThePairFragment extends Fragment implements StartDragListener 
         // Required empty public constructor
     }
 
-    public static MatchThePairFragment newInstance(int pos, ScienceQuestion scienceQuestion) {
+    public static MatchThePairFragment newInstance(int pos, AssessmentQuestion assessmentQuestion) {
         MatchThePairFragment_ matchThePairFragment = new MatchThePairFragment_();
         Bundle args = new Bundle();
         args.putInt("pos", pos);
-        args.putSerializable("scienceQuestion", scienceQuestion);
+        args.putSerializable("scienceQuestion", assessmentQuestion);
         matchThePairFragment.setArguments(args);
         return matchThePairFragment;
     }
@@ -108,17 +107,17 @@ public class MatchThePairFragment extends Fragment implements StartDragListener 
 
     public void setMatchPairQuestion() {
         setOdiaFont(getActivity(), question);
-        question.setText(scienceQuestion.getQname());
-        final String fileName = getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
+        question.setText(assessmentQuestion.getQname());
+        final String fileName = getFileName(assessmentQuestion.getQid(), assessmentQuestion.getPhotourl());
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
         final String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
-        if (!scienceQuestion.getPhotourl().equalsIgnoreCase("")) {
+        if (!assessmentQuestion.getPhotourl().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
 
-            String path = scienceQuestion.getPhotourl();
+            String path = assessmentQuestion.getPhotourl();
             String[] imgPath = path.split("\\.");
             int len;
             if (imgPath.length > 0)
@@ -163,33 +162,33 @@ public class MatchThePairFragment extends Fragment implements StartDragListener 
         questionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showZoomDialog(getActivity(), scienceQuestion.getPhotourl(), localPath);
+                showZoomDialog(getActivity(), assessmentQuestion.getPhotourl(), localPath);
             }
         });
         questionGif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showZoomDialog(getActivity(), scienceQuestion.getPhotourl(), localPath);
+                showZoomDialog(getActivity(), assessmentQuestion.getPhotourl(), localPath);
             }
         });
 
-        List<ScienceQuestionChoice> AnswerList = new ArrayList<>();
+        List<SubOptions> AnswerList = new ArrayList<>();
 
-        if (!scienceQuestion.getUserAnswer().equalsIgnoreCase("")) {
-            String[] ansIds = scienceQuestion.getUserAnswer().split(",");
+        if (!assessmentQuestion.getUserAnswer().equalsIgnoreCase("")) {
+            String[] ansIds = assessmentQuestion.getUserAnswer().split(",");
             for (int i = 0; i < ansIds.length; i++) {
-                if (ansIds[i].equalsIgnoreCase(scienceQuestion.getMatchingNameList().get(i).getQcid()))
-                    AnswerList.add(scienceQuestion.getMatchingNameList().get(i));
+                if (ansIds[i].equalsIgnoreCase(assessmentQuestion.getMatchingNameList().get(i).getQcid()))
+                    AnswerList.add(assessmentQuestion.getMatchingNameList().get(i));
             }
 
         }
 
-        List<ScienceQuestionChoice> pairList = new ArrayList<>();
-        List<ScienceQuestionChoice> shuffledList = new ArrayList<>();
+        List<SubOptions> pairList = new ArrayList<>();
+        List<SubOptions> shuffledList = new ArrayList<>();
 
         pairList.clear();
 //        pairList = AppDatabase.getDatabaseInstance(context).getScienceQuestionChoicesDao().getQuestionChoicesByQID(scienceQuestion.getQid());
-        pairList = scienceQuestion.getLstquestionchoice();
+        pairList = assessmentQuestion.getLstquestionchoice();
         Log.d("wwwwwwwwwww", pairList.size() + "");
         if (!pairList.isEmpty()) {
           /*  for (int p = 0; p < pairList.size(); p++) {
@@ -200,7 +199,7 @@ public class MatchThePairFragment extends Fragment implements StartDragListener 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
             recyclerView1.setLayoutManager(linearLayoutManager);
             recyclerView1.setAdapter(matchPairAdapter);
-            if (scienceQuestion.getMatchingNameList() == null) {
+            if (assessmentQuestion.getMatchingNameList() == null) {
                 shuffledList.clear();
 
                 shuffledList.addAll(pairList);
@@ -210,7 +209,7 @@ public class MatchThePairFragment extends Fragment implements StartDragListener 
                 if (AnswerList.size() > 0)
                     shuffledList.addAll(AnswerList);
                 else {
-                    shuffledList = scienceQuestion.getMatchingNameList();
+                    shuffledList = assessmentQuestion.getMatchingNameList();
                     Collections.shuffle(shuffledList);
                 }
 

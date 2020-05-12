@@ -21,11 +21,10 @@ import android.widget.VideoView;
 
 import androidx.fragment.app.Fragment;
 
-import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.PermissionUtils;
 import com.pratham.assessment_lib.custom.gif_viewer.GifView;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity;
 import com.pratham.assessment_lib.science.camera.VideoMonitoringService;
@@ -75,7 +74,7 @@ public class VideoFragment extends Fragment {
     private static final String SCIENCE_QUESTION = "scienceQuestion";
 
     private int pos;
-    private ScienceQuestion scienceQuestion;
+    private AssessmentQuestion assessmentQuestion;
     private String answerPath;
     private boolean VideoCaptured;
     String videoName = "";
@@ -89,7 +88,7 @@ public class VideoFragment extends Fragment {
     public void init() {
         if (getArguments() != null) {
             pos = getArguments().getInt(POS, 0);
-            scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
+            assessmentQuestion = (AssessmentQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
             assessmentAnswerListener = (ScienceAssessmentActivity) getActivity();
             scienceAssessmentActivity = (ScienceAssessmentActivity) getActivity();
 
@@ -98,11 +97,11 @@ public class VideoFragment extends Fragment {
 
     }
 
-    public static VideoFragment newInstance(int pos, ScienceQuestion scienceQuestion) {
+    public static VideoFragment newInstance(int pos, AssessmentQuestion assessmentQuestion) {
         VideoFragment_ videoFragment = new VideoFragment_();
         Bundle args = new Bundle();
         args.putInt("pos", pos);
-        args.putSerializable("scienceQuestion", scienceQuestion);
+        args.putSerializable("scienceQuestion", assessmentQuestion);
         videoFragment.setArguments(args);
         return videoFragment;
     }
@@ -136,13 +135,13 @@ public class VideoFragment extends Fragment {
     public void setVideoQuestion() {
         setOdiaFont(getActivity(), question);
 
-        fileName = getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
+        fileName = getFileName(assessmentQuestion.getQid(), assessmentQuestion.getPhotourl());
         rl_answer_video.setVisibility(View.GONE);
 //        questionPath = Environment.getExternalStorageDirectory().toString() + "/.Assessment/Content/Downloaded" + "/" + fileName;
         questionPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
-        if (scienceQuestion.getQname().equalsIgnoreCase(""))
+        if (assessmentQuestion.getQname().equalsIgnoreCase(""))
             question.setText("Watch the video");
-        else question.setText(scienceQuestion.getQname());
+        else question.setText(assessmentQuestion.getQname());
         rl_answer_video.setVisibility(View.GONE);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -190,7 +189,7 @@ public class VideoFragment extends Fragment {
         }
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 //        assessmentAnswerListener.setVideoResult(intent, VIDEO_CAPTURE, scienceQuestion);
-        setVideoResult(intent, VIDEO_CAPTURE, scienceQuestion);
+        setVideoResult(intent, VIDEO_CAPTURE, assessmentQuestion);
        /* if (VideoCaptured) {
             rl_answer_video.setVisibility(View.VISIBLE);
         } else rl_answer_video.setVisibility(View.GONE);
@@ -257,7 +256,7 @@ public class VideoFragment extends Fragment {
 
             rl_answer_video.setVisibility(View.VISIBLE);
 //        answerPath = Environment.getExternalStorageDirectory().toString() + Assessment_Constants.STORE_ANSWER_MEDIA_PATH + "/" +scienceQuestion.getUserAnswer();
-            answerPath = assessPath + Assessment_Constants.STORE_ANSWER_MEDIA_PATH + "/" + scienceQuestion.getUserAnswer();
+            answerPath = assessPath + Assessment_Constants.STORE_ANSWER_MEDIA_PATH + "/" + assessmentQuestion.getUserAnswer();
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 1;
             Bitmap thumb = ThumbnailUtils.createVideoThumbnail(answerPath, MediaStore.Images.Thumbnails.MICRO_KIND);
@@ -270,7 +269,7 @@ public class VideoFragment extends Fragment {
 
     }
 
-    public void setVideoResult(Intent intent, int videoCapture, ScienceQuestion scienceQuestion) {
+    public void setVideoResult(Intent intent, int videoCapture, AssessmentQuestion assessmentQuestion) {
 
         try {
             if (hasCamera()) {
@@ -280,16 +279,16 @@ public class VideoFragment extends Fragment {
                     if (!((ScienceAssessmentActivity) getActivity()).isPermissionsGranted(getActivity(), permissionArray)) {
                         Toast.makeText(getActivity(), "Give Camera permissions through settings and restart the app.", Toast.LENGTH_LONG).show();
                     } else {
-                        videoName = scienceQuestion.getPaperid() + "_" + scienceQuestion.getQid() + ".mp4";
-                        scienceQuestion.setUserAnswer(videoName);
+                        videoName = assessmentQuestion.getPaperid() + "_" + assessmentQuestion.getQid() + ".mp4";
+                        assessmentQuestion.setUserAnswer(videoName);
                         //                    Intent takePicture = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                         intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 3 * 60);
                         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
                         //                    startActivityForResult(intent, VIDEO_CAPTURE);
                     }
                 } else {
-                    videoName = scienceQuestion.getPaperid() + "_" + scienceQuestion.getQid() + ".mp4";
-                    scienceQuestion.setUserAnswer(videoName);
+                    videoName = assessmentQuestion.getPaperid() + "_" + assessmentQuestion.getQid() + ".mp4";
+                    assessmentQuestion.setUserAnswer(videoName);
 
                     //                Intent takePicture = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                     intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 3 * 60);
@@ -359,7 +358,7 @@ public class VideoFragment extends Fragment {
         try {
 
             showAnswerVideo();
-            assessmentAnswerListener.setAnswerInActivity("", filePath, scienceQuestion.getQid(), null);
+            assessmentAnswerListener.setAnswerInActivity("", filePath, assessmentQuestion.getQid(), null);
 //        checkAssessment(queCnt);
         } catch (Exception e) {
             e.printStackTrace();

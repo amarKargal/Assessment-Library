@@ -52,8 +52,8 @@ import com.pratham.assessment_lib.custom.custom_dialogs.AssessmentTimeUpDialog;
 import com.pratham.assessment_lib.custom.ticker.TickerView;
 import com.pratham.assessment_lib.discrete_view.DiscreteScrollView;
 import com.pratham.assessment_lib.domain.AssessmentPatternDetails;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
-import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
+import com.pratham.assessment_lib.domain.SubOptions;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.interfaces.QuestionTrackerListener;
 import com.pratham.assessment_lib.science.bottomFragment.BottomQuestionFragment;
@@ -114,7 +114,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     Intent serviceIntent;
     Fragment currentFragment;
     ProgressDialog progressDialog, mediaProgressDialog;
-    List<ScienceQuestion> scienceQuestionList = new ArrayList<>();
+    List<AssessmentQuestion> assessmentQuestionList = new ArrayList<>();
 
     List<AssessmentPatternDetails> assessmentPatternDetails;
     /*
@@ -179,17 +179,15 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     // call back of exam completed or back pressed
     ResponseListener responseListener;
 
-    GLSurfaceView sampleGLView;
-    CameraRecorder cameraRecorder;
 
     @AfterExtras
     public void checkIntentValue() {
-        scienceQuestionList = assessmentLibrary.getQuestionList();
+        assessmentQuestionList = assessmentLibrary.getQuestionList();
         Assessment_Constants.VIDEOMONITORING = assessmentLibrary.isVideoMonitoring();
         Assessment_Utility.initWiseF(getApplicationContext());
         assessPath = assessmentLibrary.getStoragePath();
         Assessment_Constants.SELECTED_LANGUAGE = assessmentLibrary.getSelectedLanguageCode();
-
+        Assessment_Constants.EXAM_DURATION = assessmentLibrary.getSelectedLanguageCode();
         //if color not set then black color is default color
         try {
             Assessment_Utility.setDefaultColor(assessmentLibrary.getBackGroundColor());
@@ -908,7 +906,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                 int noOfQues = Integer.parseInt(assessmentPatternDetails.get(j).getNoofquestion());
 
 
-                List<ScienceQuestion> scienceQuestions = new ArrayList<>();
+                List<AssessmentQuestion> assessmentQuestions = new ArrayList<>();
                 /*if (!assessmentPaperPatterns.getSubjectid().equalsIgnoreCase("30") || !assessmentPaperPatterns.getSubjectname().equalsIgnoreCase("aser")) {
                     scienceQuestions = AppDatabase.getDatabaseInstance(ScienceAssessmentActivity.this).
                             getScienceQuestionDao().getQuestionListByPattern(Assessment_Constants.SELECTED_LANGUAGE,
@@ -927,12 +925,12 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                 scienceQuestions.add(scienceQuestion);
                 scienceQuestions.add(scienceQuestion2);
 */
-                for (int i = 0; i < scienceQuestions.size(); i++) {
-                    scienceQuestions.get(i).setOutofmarks(assessmentPatternDetails.get(j).getMarksperquestion());
-                    scienceQuestions.get(i).setExamid(assessmentPatternDetails.get(j).getExamId());
+                for (int i = 0; i < assessmentQuestions.size(); i++) {
+                    assessmentQuestions.get(i).setOutofmarks(assessmentPatternDetails.get(j).getMarksperquestion());
+                    assessmentQuestions.get(i).setExamid(assessmentPatternDetails.get(j).getExamId());
                 }
-                if (scienceQuestions.size() > 0)
-                    scienceQuestionList.addAll(scienceQuestions);
+                if (assessmentQuestions.size() > 0)
+                    assessmentQuestionList.addAll(assessmentQuestions);
 
                 String qtid = assessmentPatternDetails.get(j).getQtid();
                 if (qtid.equalsIgnoreCase("8") || qtid.equalsIgnoreCase("12"))
@@ -954,7 +952,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     /*    if (!assessmentPaperPatterns.getSubjectid().equalsIgnoreCase("30") || !assessmentPaperPatterns.getSubjectname().equalsIgnoreCase("aser"))
             Collections.shuffle(scienceQuestionList);*/
 
-        if (scienceQuestionList.size() <= 0) {
+        if (assessmentQuestionList.size() <= 0) {
             finish();
             if (!wiseF.isDeviceConnectedToMobileOrWifiNetwork())
                 Toast.makeText(ScienceAssessmentActivity.this, "Connect to internet to download questions.", Toast.LENGTH_SHORT).show();
@@ -1066,18 +1064,18 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
 //            selectTopicDialog.dismiss();
 
-        viewpagerAdapter = new ViewpagerAdapter(getSupportFragmentManager(), this, scienceQuestionList);
+        viewpagerAdapter = new ViewpagerAdapter(getSupportFragmentManager(), this, assessmentQuestionList);
 //        fragment_view_pager.setOffscreenPageLimit(scienceQuestionList.size());
         fragment_view_pager.setSaveFromParentEnabled(true);
         fragment_view_pager.setAdapter(viewpagerAdapter);
         dots_indicator.setViewPager(fragment_view_pager);
         currentFragment = viewpagerAdapter.getItem(0);
         examStartTime = Assessment_Utility.getCurrentDateTime();
-        scienceQuestionList.get(0).setStartTime(Assessment_Utility.getCurrentDateTime());
+        assessmentQuestionList.get(0).setStartTime(Assessment_Utility.getCurrentDateTime());
 
         iv_prev.setVisibility(View.GONE);
         txt_prev.setVisibility(View.GONE);
-        txt_question_cnt.setText("Question : " + "1" + "/" + scienceQuestionList.size());
+        txt_question_cnt.setText("Question : " + "1" + "/" + assessmentQuestionList.size());
 
         fragment_view_pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -1088,8 +1086,8 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                             "Selected page position: " + position, Toast.LENGTH_SHORT).show();
                   */
                 if (position > 0) {
-                    scienceQuestionList.get(position - 1).setEndTime(Assessment_Utility.getCurrentDateTime());
-                    scienceQuestionList.get(position).setStartTime(Assessment_Utility.getCurrentDateTime());
+                    assessmentQuestionList.get(position - 1).setEndTime(Assessment_Utility.getCurrentDateTime());
+                    assessmentQuestionList.get(position).setStartTime(Assessment_Utility.getCurrentDateTime());
                 }
                 if (!showSubmit)
                     btn_submit.setVisibility(View.GONE);
@@ -1107,7 +1105,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                 }
 
 //                if (!Assessment_Constants.VIDEOMONITORING) {
-                if (position == scienceQuestionList.size() - 1) {
+                if (position == assessmentQuestionList.size() - 1) {
                     btn_save_Assessment.setVisibility(View.GONE);
                     showDoneAnimation();
                 } else {
@@ -1123,7 +1121,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 //                    }
                 }
                 queCnt = position;
-                txt_question_cnt.setText("Question : " + (position + 1) + "/" + scienceQuestionList.size());
+                txt_question_cnt.setText("Question : " + (position + 1) + "/" + assessmentQuestionList.size());
 
                 if (currentFragment != null) {
                     currentFragment.onPause();
@@ -1230,14 +1228,14 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                 if (!Assessment_Constants.VIDEOMONITORING) {
 //                    btn_save_Assessment.setVisibility(View.VISIBLE);
 //                    btn_save_Assessment.startAnimation(animation);
-                    if (scienceQuestionList.size() == (queCnt + 1)) {
+                    if (assessmentQuestionList.size() == (queCnt + 1)) {
                         btn_submit.setVisibility(View.VISIBLE);
                         btn_submit.startAnimation(animation);
                         txt_next.setVisibility(View.GONE);
                         dots_indicator.setVisibility(View.GONE);
                     }
                 } else {
-                    if (scienceQuestionList.size() == (queCnt + 1)) {
+                    if (assessmentQuestionList.size() == (queCnt + 1)) {
                         btn_submit.setVisibility(View.VISIBLE);
                         dots_indicator.setVisibility(View.GONE);
 
@@ -1252,13 +1250,13 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     public void onSubmitClick() {
        /* if (mCountDownTimer != null)
             mCountDownTimer.cancel();*/
-        scienceQuestionList.get(queCnt).setEndTime(Assessment_Utility.getCurrentDateTime());
+        assessmentQuestionList.get(queCnt).setEndTime(Assessment_Utility.getCurrentDateTime());
         //todo alter
         BottomQuestionFragment bottomQuestionFragment = new BottomQuestionFragment();
         if (!bottomQuestionFragment.isVisible()) {
             bottomQuestionFragment.show(getSupportFragmentManager(), BottomQuestionFragment.class.getSimpleName());
             Bundle args = new Bundle();
-            args.putSerializable("questionList", (Serializable) scienceQuestionList);
+            args.putSerializable("questionList", (Serializable) assessmentQuestionList);
             bottomQuestionFragment.setArguments(args);
         }
     }
@@ -1266,7 +1264,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
     private void setProgressBarAndTimer() {
 //        progressBarTimer.setProgress(100);
-        ExamTime = Integer.parseInt("20");
+        ExamTime = Integer.parseInt(Assessment_Constants.EXAM_DURATION);
 //        ExamTime = 1;
         if (ExamTime == 0)
             ExamTime = 30;
@@ -1463,11 +1461,11 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
         if (queCnt > 0) {
 
-            scienceQuestionList.get(queCnt - 1).setEndTime(Assessment_Utility.getCurrentDateTime());
+            assessmentQuestionList.get(queCnt - 1).setEndTime(Assessment_Utility.getCurrentDateTime());
             queCnt--;
             fragment_view_pager.setCurrentItem(queCnt);
 //            discreteScrollView.smoothScrollToPosition(queCnt - 1);
-            scienceQuestionList.get(queCnt).setStartTime(Assessment_Utility.getCurrentDateTime());
+            assessmentQuestionList.get(queCnt).setStartTime(Assessment_Utility.getCurrentDateTime());
         }
 
 
@@ -1484,13 +1482,13 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         Assessment_Utility.HideInputKeypad(this);
         Animation animation;
 
-        if (queCnt < scienceQuestionList.size()) {
+        if (queCnt < assessmentQuestionList.size()) {
 
-            scienceQuestionList.get(queCnt).setEndTime(Assessment_Utility.getCurrentDateTime());
+            assessmentQuestionList.get(queCnt).setEndTime(Assessment_Utility.getCurrentDateTime());
 //            discreteScrollView.smoothScrollToPosition(queCnt);
             queCnt++;
             fragment_view_pager.setCurrentItem(queCnt);
-            scienceQuestionList.get(queCnt).setStartTime(Assessment_Utility.getCurrentDateTime());
+            assessmentQuestionList.get(queCnt).setStartTime(Assessment_Utility.getCurrentDateTime());
 
         } /*else if (queCnt == scienceQuestionList.size()) {
             queCnt = scienceQuestionList.size();
@@ -1505,60 +1503,60 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
 
     @Override
-    public void setAnswerInActivity(String ansId, String answer, String qid, List<ScienceQuestionChoice> list) {
+    public void setAnswerInActivity(String ansId, String answer, String qid, List<SubOptions> list) {
         if (!ansId.equalsIgnoreCase("") || !answer.equalsIgnoreCase("")) {
             if (!attemptedQIds.contains(qid)) {
                 attemptedQIds.add(qid);
                 ansCnt++;
             }
-            for (int i = 0; i < scienceQuestionList.size(); i++) {
-                if (scienceQuestionList.get(i).getQid().equalsIgnoreCase(qid)) {
-                    scienceQuestionList.get(i).setIsAttempted(true);
+            for (int i = 0; i < assessmentQuestionList.size(); i++) {
+                if (assessmentQuestionList.get(i).getQid().equalsIgnoreCase(qid)) {
+                    assessmentQuestionList.get(i).setIsAttempted(true);
                     if (answer != null) {
-                        scienceQuestionList.get(i).setUserAnswer(answer);
-                        scienceQuestionList.get(i).setUserAnswerId(ansId);
+                        assessmentQuestionList.get(i).setUserAnswer(answer);
+                        assessmentQuestionList.get(i).setUserAnswerId(ansId);
 //                        scienceQuestionList.get(i).setMarksPerQuestion(marksPerQuestion);
                     } else {
-                        scienceQuestionList.get(i).setUserAnswer("");
-                        scienceQuestionList.get(i).setUserAnswerId("");
-                        scienceQuestionList.get(i).setUserAnswerId("");
+                        assessmentQuestionList.get(i).setUserAnswer("");
+                        assessmentQuestionList.get(i).setUserAnswerId("");
+                        assessmentQuestionList.get(i).setUserAnswerId("");
                     }
                     break;
                 }
             }
         } else if (list != null) {
-            for (int i = 0; i < scienceQuestionList.size(); i++) {
-                if (scienceQuestionList.get(i).getQid().equalsIgnoreCase(qid)) {
-                    scienceQuestionList.get(i).setMatchingNameList(list);
+            for (int i = 0; i < assessmentQuestionList.size(); i++) {
+                if (assessmentQuestionList.get(i).getQid().equalsIgnoreCase(qid)) {
+                    assessmentQuestionList.get(i).setMatchingNameList(list);
                 }
             }
             if (!attemptedQIds.contains(qid)) {
                 attemptedQIds.add(qid);
                 ansCnt++;
             }
-            for (int i = 0; i < scienceQuestionList.size(); i++) {
-                if (scienceQuestionList.get(i).getQid().equalsIgnoreCase(qid)) {
-                    scienceQuestionList.get(i).setIsAttempted(true);
-                    if (scienceQuestionList.get(i).getMatchingNameList().size() > 0) {
-                        if (scienceQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(MATCHING_PAIR) || scienceQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(MULTIPLE_SELECT) || scienceQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(ARRANGE_SEQUENCE)) {
+            for (int i = 0; i < assessmentQuestionList.size(); i++) {
+                if (assessmentQuestionList.get(i).getQid().equalsIgnoreCase(qid)) {
+                    assessmentQuestionList.get(i).setIsAttempted(true);
+                    if (assessmentQuestionList.get(i).getMatchingNameList().size() > 0) {
+                        if (assessmentQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(MATCHING_PAIR) || assessmentQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(MULTIPLE_SELECT) || assessmentQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(ARRANGE_SEQUENCE)) {
                             String ans = "";
-                            for (int m = 0; m < scienceQuestionList.get(i).getMatchingNameList().size(); m++) {
-                                if (scienceQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(MULTIPLE_SELECT)) {
-                                    if (scienceQuestionList.get(i).getMatchingNameList().get(m).getMyIscorrect().equalsIgnoreCase("true"))
-                                        ans += scienceQuestionList.get(i).getMatchingNameList().get(m).getQcid() + ",";
+                            for (int m = 0; m < assessmentQuestionList.get(i).getMatchingNameList().size(); m++) {
+                                if (assessmentQuestionList.get(i).getQtid().getQuestionID().equalsIgnoreCase(MULTIPLE_SELECT)) {
+                                    if (assessmentQuestionList.get(i).getMatchingNameList().get(m).getMyIscorrect().equalsIgnoreCase("true"))
+                                        ans += assessmentQuestionList.get(i).getMatchingNameList().get(m).getQcid() + ",";
 
                                 } else
-                                    ans += scienceQuestionList.get(i).getMatchingNameList().get(m).getQcid() + ",";
+                                    ans += assessmentQuestionList.get(i).getMatchingNameList().get(m).getQcid() + ",";
                             }
-                            scienceQuestionList.get(i).setUserAnswer(ans);
+                            assessmentQuestionList.get(i).setUserAnswer(ans);
                         } else {
-                            scienceQuestionList.get(i).setUserAnswer(scienceQuestionList.get(i).getMatchingNameList().get(0).getChoicename());
-                            scienceQuestionList.get(i).setUserAnswerId(scienceQuestionList.get(i).getMatchingNameList().get(0).getQcid());
+                            assessmentQuestionList.get(i).setUserAnswer(assessmentQuestionList.get(i).getMatchingNameList().get(0).getChoicename());
+                            assessmentQuestionList.get(i).setUserAnswerId(assessmentQuestionList.get(i).getMatchingNameList().get(0).getQcid());
 //                        scienceQuestionList.get(i).setMarksPerQuestion(marksPerQuestion);
                         }
                     } else {
-                        scienceQuestionList.get(i).setUserAnswer("");
-                        scienceQuestionList.get(i).setUserAnswerId(ansId);
+                        assessmentQuestionList.get(i).setUserAnswer("");
+                        assessmentQuestionList.get(i).setUserAnswerId(ansId);
                     }
                     break;
                 }
@@ -1684,26 +1682,26 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
 
     private void checkAssessment(int queCnt) {
-        ScienceQuestion scienceQuestion = scienceQuestionList.get(queCnt);
-        questionType = scienceQuestion.getQtid().getQuestionID();
+        AssessmentQuestion assessmentQuestion = assessmentQuestionList.get(queCnt);
+        questionType = assessmentQuestion.getQtid().getQuestionID();
         switch (questionType) {
             case FILL_IN_THE_BLANK_WITH_OPTION:
             case MULTIPLE_CHOICE:
 
-                if (scienceQuestion.getIsAttempted()) {
-                    if (scienceQuestion.getMatchingNameList().get(0).getCorrect().equalsIgnoreCase("true") || scienceQuestion.getUserAnswerId().equalsIgnoreCase(ansId)) {
-                        scienceQuestionList.get(queCnt).setIsCorrect(true);
-                        scienceQuestionList.get(queCnt).
-                                setMarksPerQuestion(scienceQuestionList.get(queCnt).getOutofmarks());
+                if (assessmentQuestion.getIsAttempted()) {
+                    if (assessmentQuestion.getMatchingNameList().get(0).getCorrect().equalsIgnoreCase("true") || assessmentQuestion.getUserAnswerId().equalsIgnoreCase(ansId)) {
+                        assessmentQuestionList.get(queCnt).setIsCorrect(true);
+                        assessmentQuestionList.get(queCnt).
+                                setMarksPerQuestion(assessmentQuestionList.get(queCnt).getOutofmarks());
 
                     } else {
-                        scienceQuestionList.get(queCnt).setIsCorrect(false);
-                        scienceQuestionList.get(queCnt).
+                        assessmentQuestionList.get(queCnt).setIsCorrect(false);
+                        assessmentQuestionList.get(queCnt).
                                 setMarksPerQuestion("0");
                     }
                 } else {
-                    scienceQuestionList.get(queCnt).setIsCorrect(false);
-                    scienceQuestionList.get(queCnt).
+                    assessmentQuestionList.get(queCnt).setIsCorrect(false);
+                    assessmentQuestionList.get(queCnt).
                             setMarksPerQuestion("0");
                 }
                 //todo alter
@@ -1720,47 +1718,47 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                 break;
             case MULTIPLE_SELECT:
                 boolean flag = true;
-                if (scienceQuestion.getIsAttempted()) {
-                    for (ScienceQuestionChoice scienceQuestionChoice : scienceQuestion.getMatchingNameList()) {
-                        if (!scienceQuestionChoice.getCorrect().trim().equals(scienceQuestionChoice.getMyIscorrect().trim())) {
+                if (assessmentQuestion.getIsAttempted()) {
+                    for (SubOptions subOptions : assessmentQuestion.getMatchingNameList()) {
+                        if (!subOptions.getCorrect().trim().equals(subOptions.getMyIscorrect().trim())) {
                             flag = false;
                             break;
                         }
                     }
                     if (flag) {
-                        scienceQuestionList.get(queCnt).setIsCorrect(true);
-                        scienceQuestionList.get(queCnt).
-                                setMarksPerQuestion(scienceQuestionList.get(queCnt).getOutofmarks());
+                        assessmentQuestionList.get(queCnt).setIsCorrect(true);
+                        assessmentQuestionList.get(queCnt).
+                                setMarksPerQuestion(assessmentQuestionList.get(queCnt).getOutofmarks());
 
                     } else {
-                        scienceQuestionList.get(queCnt).setIsCorrect(false);
-                        scienceQuestionList.get(queCnt).
+                        assessmentQuestionList.get(queCnt).setIsCorrect(false);
+                        assessmentQuestionList.get(queCnt).
                                 setMarksPerQuestion("0");
                     }
                 }
                 break;
             case FILL_IN_THE_BLANK:
-                if (scienceQuestion.getIsAttempted()) {
-                    if ((scienceQuestion.getAnswer().equalsIgnoreCase(answer.trim()))) {
-                        scienceQuestionList.get(queCnt).setIsCorrect(true);
-                        scienceQuestionList.get(queCnt).
-                                setMarksPerQuestion(scienceQuestionList.get(queCnt).getOutofmarks());
+                if (assessmentQuestion.getIsAttempted()) {
+                    if ((assessmentQuestion.getAnswer().equalsIgnoreCase(answer.trim()))) {
+                        assessmentQuestionList.get(queCnt).setIsCorrect(true);
+                        assessmentQuestionList.get(queCnt).
+                                setMarksPerQuestion(assessmentQuestionList.get(queCnt).getOutofmarks());
                     } else {
-                        scienceQuestionList.get(queCnt).setIsCorrect(false);
-                        scienceQuestionList.get(queCnt).
+                        assessmentQuestionList.get(queCnt).setIsCorrect(false);
+                        assessmentQuestionList.get(queCnt).
                                 setMarksPerQuestion("0");
                     }
                 }
                 break;
             case TRUE_FALSE:
-                if (scienceQuestion.getIsAttempted())
-                    if (scienceQuestion.getAnswer().equalsIgnoreCase(answer.trim())) {
-                        scienceQuestionList.get(queCnt).setIsCorrect(true);
-                        scienceQuestionList.get(queCnt).
-                                setMarksPerQuestion(scienceQuestionList.get(queCnt).getOutofmarks());
+                if (assessmentQuestion.getIsAttempted())
+                    if (assessmentQuestion.getAnswer().equalsIgnoreCase(answer.trim())) {
+                        assessmentQuestionList.get(queCnt).setIsCorrect(true);
+                        assessmentQuestionList.get(queCnt).
+                                setMarksPerQuestion(assessmentQuestionList.get(queCnt).getOutofmarks());
                     } else {
-                        scienceQuestionList.get(queCnt).setIsCorrect(false);
-                        scienceQuestionList.get(queCnt).
+                        assessmentQuestionList.get(queCnt).setIsCorrect(false);
+                        assessmentQuestionList.get(queCnt).
                                 setMarksPerQuestion("0");
                     }
                 break;
@@ -1820,14 +1818,14 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                 break;*/
             case TEXT_PARAGRAPH:
             case KEYWORDS_QUESTION:
-                if (scienceQuestion.getIsAttempted()) {
+                if (assessmentQuestion.getIsAttempted()) {
                     if (!answer.equalsIgnoreCase("")) {
-                        scienceQuestionList.get(queCnt).setIsCorrect(true);
-                        scienceQuestionList.get(queCnt).
-                                setMarksPerQuestion(scienceQuestionList.get(queCnt).getOutofmarks());
+                        assessmentQuestionList.get(queCnt).setIsCorrect(true);
+                        assessmentQuestionList.get(queCnt).
+                                setMarksPerQuestion(assessmentQuestionList.get(queCnt).getOutofmarks());
                     } else {
-                        scienceQuestionList.get(queCnt).setIsCorrect(false);
-                        scienceQuestionList.get(queCnt).
+                        assessmentQuestionList.get(queCnt).setIsCorrect(false);
+                        assessmentQuestionList.get(queCnt).
                                 setMarksPerQuestion("0");
                     }
                 }
@@ -1899,11 +1897,11 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
 
         } else {*/
-        if (queCnt < scienceQuestionList.size() - 1)
+        if (queCnt < assessmentQuestionList.size() - 1)
             nextClick();
         else {
 //            mCountDownTimer.cancel();
-            scienceQuestionList.get(queCnt).setEndTime(Assessment_Utility.getCurrentDateTime());
+            assessmentQuestionList.get(queCnt).setEndTime(Assessment_Utility.getCurrentDateTime());
             //todo alter
            /* BottomQuestionFragment bottomQuestionFragment = new BottomQuestionFragment();
             bottomQuestionFragment.show(getSupportFragmentManager(), BottomQuestionFragment.class.getSimpleName());
@@ -2039,13 +2037,15 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 
 
     private void saveAttemptedQuestionsInDB() {
-        List<ScienceQuestion> attemptedQuestion = new ArrayList<>();
-        for (int i = 0; i < scienceQuestionList.size(); i++) {
-            if (scienceQuestionList.get(i).getIsAttempted())
-                attemptedQuestion.add(scienceQuestionList.get(i));
+        List<AssessmentQuestion> attemptedQuestion = new ArrayList<>();
+        for (int i = 0; i < assessmentQuestionList.size(); i++) {
+            if (assessmentQuestionList.get(i).getIsAttempted())
+                attemptedQuestion.add(assessmentQuestionList.get(i));
         }
 
-        responseListener.OnResult(scienceQuestionList);
+        responseListener.OnResult(assessmentQuestionList);
+        VideoMonitor.stopRecording();
+        VideoMonitor.realease();
         //insertInDB(attemptedQuestion, " Exam incomplete");
     }
 

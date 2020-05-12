@@ -24,8 +24,8 @@ import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
 import com.pratham.assessment_lib.Utility.AudioUtil;
 import com.pratham.assessment_lib.custom.gif_viewer.GifView;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
-import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
+import com.pratham.assessment_lib.domain.SubOptions;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.interfaces.AudioPlayerInterface;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity;
@@ -68,14 +68,14 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
     @ViewById(resName = "grid_mcq")
     GridLayout gridMcq;
     private AssessmentAnswerListener assessmentAnswerListener;
-    private List<ScienceQuestionChoice> options;
+    private List<SubOptions> options;
     int clickedOption = 0;
 
     private static final String POS = "pos";
     private static final String SCIENCE_QUESTION = "scienceQuestion";
 
     private int imgCnt = 0, textCnt = 0, audioCnt = 0;
-    private ScienceQuestion scienceQuestion;
+    private AssessmentQuestion assessmentQuestion;
 
     boolean isQuestionPlaying = false;
     boolean isOptionPlaying = false;
@@ -90,7 +90,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
     public void init() {
         if (getArguments() != null) {
 //            pos = getArguments().getInt(POS, 0);
-            scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
+            assessmentQuestion = (AssessmentQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
             assessmentAnswerListener = (ScienceAssessmentActivity) getActivity();
 
         }
@@ -98,11 +98,11 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
 
     }
 
-    public static McqFillInTheBlanksFragment newInstance(int pos, ScienceQuestion scienceQuestion) {
+    public static McqFillInTheBlanksFragment newInstance(int pos, AssessmentQuestion assessmentQuestion) {
         McqFillInTheBlanksFragment_ fragmentFirst = new McqFillInTheBlanksFragment_();
         Bundle args = new Bundle();
         args.putInt("pos", pos);
-        args.putSerializable("scienceQuestion", scienceQuestion);
+        args.putSerializable("scienceQuestion", assessmentQuestion);
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -134,17 +134,17 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
 
     private void setMcqsQuestion() {
         options = new ArrayList<>();
-        question.setText(scienceQuestion.getQname());
+        question.setText(assessmentQuestion.getQname());
         setOdiaFont(getActivity(), question);
 
         question.setMovementMethod(new ScrollingMovementMethod());
-        if (!scienceQuestion.getPhotourl().equalsIgnoreCase("")) {
-            String questionExtension = getFileExtension(scienceQuestion.getPhotourl());
-            String fileName = Assessment_Utility.getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
+        if (!assessmentQuestion.getPhotourl().equalsIgnoreCase("")) {
+            String questionExtension = getFileExtension(assessmentQuestion.getPhotourl());
+            String fileName = Assessment_Utility.getFileName(assessmentQuestion.getQid(), assessmentQuestion.getPhotourl());
             final String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
 
-            final String path = scienceQuestion.getPhotourl();
+            final String path = assessmentQuestion.getPhotourl();
             if (questionExtension.equalsIgnoreCase("gif") || questionExtension.equalsIgnoreCase("png") || questionExtension.equalsIgnoreCase("jpg")) {
                 questionImage.setVisibility(View.VISIBLE);
                 rl_question_img.setVisibility(View.VISIBLE);
@@ -191,7 +191,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
                 iv_view_question_img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showZoomDialog(getActivity(), scienceQuestion.getPhotourl(), localPath);
+                        showZoomDialog(getActivity(), assessmentQuestion.getPhotourl(), localPath);
                   /*  MaryPopup marypopup = MaryPopup.with(getActivity())
                             .cancellable(true)
                             .blackOverlayColor(Color.parseColor("#DD444444"))
@@ -252,7 +252,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
         options.clear();
        //todo alter
         // options = AppDatabase.getDatabaseInstance(getActivity()).getScienceQuestionChoicesDao().getQuestionChoicesByQID(scienceQuestion.getQid());
-        options=scienceQuestion.getLstquestionchoice();
+        options= assessmentQuestion.getLstquestionchoice();
         imgCnt = 0;
         textCnt = 0;
         if (options != null) {
@@ -278,9 +278,9 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
             for (int r = 0; r < options.size(); r++) {
 
                 String ans = "$";
-                if (!scienceQuestion.getUserAnswer().equalsIgnoreCase(""))
-                    ans = scienceQuestion.getUserAnswer();
-                String ansId = scienceQuestion.getUserAnswerId();
+                if (!assessmentQuestion.getUserAnswer().equalsIgnoreCase(""))
+                    ans = assessmentQuestion.getUserAnswer();
+                String ansId = assessmentQuestion.getUserAnswerId();
 
                 if (textCnt == options.size()) {
                     radioGroupMcq.setVisibility(View.GONE);
@@ -296,7 +296,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
                         setOdiaFont(getActivity(), textView);
 
                         gridMcq.addView(textView);
-                        if (scienceQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
+                        if (assessmentQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
                             textView.setTextColor(selectedColor);
                             textView.setBackground(getActivity().getResources().getDrawable(R.drawable.gradient_selector));
                         } else {
@@ -365,7 +365,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
                 } else if (imgCnt == options.size()) {
                     radioGroupMcq.setVisibility(View.GONE);
                     gridMcq.setVisibility(View.VISIBLE);
-                    String fileName = Assessment_Utility.getFileName(scienceQuestion.getQid(), options.get(r).getChoiceurl());
+                    String fileName = Assessment_Utility.getFileName(assessmentQuestion.getQid(), options.get(r).getChoiceurl());
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                     String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
@@ -432,17 +432,17 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
                             /*} else {
                                  showZoomDialog(localPath);
                             }*/
-                            List<ScienceQuestionChoice> ans = new ArrayList<>();
+                            List<SubOptions> ans = new ArrayList<>();
                             ans.add(options.get(finalR));
-                            scienceQuestion.setMatchingNameList(ans);
-                            assessmentAnswerListener.setAnswerInActivity("", "", scienceQuestion.getQid(), ans);
+                            assessmentQuestion.setMatchingNameList(ans);
+                            assessmentAnswerListener.setAnswerInActivity("", "", assessmentQuestion.getQid(), ans);
                         }
                     });
 
                     zoomImg.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String fileName = Assessment_Utility.getFileName(scienceQuestion.getQid(), options.get(finalR).getChoiceurl());
+                            String fileName = Assessment_Utility.getFileName(assessmentQuestion.getQid(), options.get(finalR).getChoiceurl());
                             String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                             showZoomDialog(getActivity(), options.get(finalR).getChoiceurl(), localPath);
 
@@ -450,7 +450,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
                     });
 
 
-                    if (scienceQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
+                    if (assessmentQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
                         rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                         tick.setVisibility(View.VISIBLE);
 
@@ -515,7 +515,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
 
 //                        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_mcq_image_item, gridMcq, false);
 
-                        String fileName = Assessment_Utility.getFileName(scienceQuestion.getQid(), options.get(r).getChoiceurl());
+                        String fileName = Assessment_Utility.getFileName(assessmentQuestion.getQid(), options.get(r).getChoiceurl());
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                         String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
@@ -526,7 +526,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
 
                         gridMcq.addView(viewRoot);
 
-                        if (scienceQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
+                        if (assessmentQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
                             rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                             tick.setVisibility(View.VISIBLE);
 
@@ -554,7 +554,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
                         zoomImg.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                String fileName = Assessment_Utility.getFileName(scienceQuestion.getQid(), options.get(finalR1).getChoiceurl());
+                                String fileName = Assessment_Utility.getFileName(assessmentQuestion.getQid(), options.get(finalR1).getChoiceurl());
                                 String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                                 showZoomDialog(getActivity(), options.get(finalR1).getChoiceurl(), localPath);
 
@@ -567,7 +567,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
                         textView.setMovementMethod(new ScrollingMovementMethod());
                         textView.setText(options.get(r).getChoicename());
                         gridMcq.addView(textView);
-                        if (scienceQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
+                        if (assessmentQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
                             textView.setTextColor(selectedColor);
                             textView.setBackground(getActivity().getResources().getDrawable(R.drawable.gradient_selector));
                         } else {
@@ -591,7 +591,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
                 } else if (audioCnt == options.size()) {
                     radioGroupMcq.setVisibility(View.GONE);
                     gridMcq.setVisibility(View.VISIBLE);
-                    String fileName = Assessment_Utility.getFileName(scienceQuestion.getQid(), options.get(r).getChoiceurl());
+                    String fileName = Assessment_Utility.getFileName(assessmentQuestion.getQid(), options.get(r).getChoiceurl());
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                     final String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
@@ -644,10 +644,10 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
 //                                ((ImageView) ((LinearLayout) ((CardView) ((RelativeLayout) gridMcq.getChildAt(g)).getChildAt(0)).getChildAt(0)).getChildAt(1)).setImageResource(R.drawable.ic_play);
                             }
                             tick.setVisibility(View.VISIBLE);
-                            List<ScienceQuestionChoice> ans = new ArrayList<>();
+                            List<SubOptions> ans = new ArrayList<>();
                             ans.add(options.get(finalR));
-                            scienceQuestion.setMatchingNameList(ans);
-                            assessmentAnswerListener.setAnswerInActivity("", "", scienceQuestion.getQid(), ans);
+                            assessmentQuestion.setMatchingNameList(ans);
+                            assessmentAnswerListener.setAnswerInActivity("", "", assessmentQuestion.getQid(), ans);
 
                         }
                     });
@@ -668,7 +668,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
                         }
                     });
 //                    zoomImg.setVisibility(View.GONE);
-                    if (scienceQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
+                    if (assessmentQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
 //                        rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                         tick.setVisibility(View.VISIBLE);
 
@@ -698,10 +698,10 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
                     if ((group.getChildAt(i)).getId() == checkedId) {
                         ((RadioButton) group.getChildAt(i)).setTextColor(selectedColor);
 
-                        List<ScienceQuestionChoice> ans = new ArrayList<>();
+                        List<SubOptions> ans = new ArrayList<>();
                         ans.add(options.get(i));
-                        scienceQuestion.setMatchingNameList(ans);
-                        assessmentAnswerListener.setAnswerInActivity("", "", scienceQuestion.getQid(), ans);
+                        assessmentQuestion.setMatchingNameList(ans);
+                        assessmentAnswerListener.setAnswerInActivity("", "", assessmentQuestion.getQid(), ans);
                     } else {
                         ((RadioButton) group.getChildAt(i)).setTextColor(getActivity().getResources().getColor(R.color.white));
                     }
@@ -733,7 +733,7 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
     }
 
 
-    private void setOnclickOnItem(View v, ScienceQuestionChoice scienceQuestionChoice) {
+    private void setOnclickOnItem(View v, SubOptions subOptions) {
         for (int g = 0; g < gridMcq.getChildCount(); g++) {
             gridMcq.getChildAt(g).setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
             View view = gridMcq.getChildAt(g);
@@ -745,10 +745,10 @@ public class McqFillInTheBlanksFragment extends Fragment implements AudioPlayerI
 
         }
 
-        List<ScienceQuestionChoice> ans = new ArrayList<>();
-        ans.add(scienceQuestionChoice);
-        scienceQuestion.setMatchingNameList(ans);
-        assessmentAnswerListener.setAnswerInActivity("", "", scienceQuestion.getQid(), ans);
+        List<SubOptions> ans = new ArrayList<>();
+        ans.add(subOptions);
+        assessmentQuestion.setMatchingNameList(ans);
+        assessmentAnswerListener.setAnswerInActivity("", "", assessmentQuestion.getQid(), ans);
 
     }
 

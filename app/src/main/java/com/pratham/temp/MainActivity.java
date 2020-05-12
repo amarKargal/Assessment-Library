@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.pratham.assessment_lib.AssessmentLibrary;
 import com.pratham.assessment_lib.Utility.QuestionType;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
-import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
+import com.pratham.assessment_lib.domain.SubOptions;
 import com.pratham.assessment_lib.interfaces.OnAssessmentComplete;
 
 import org.androidannotations.annotations.AfterViews;
@@ -39,278 +39,279 @@ public class MainActivity extends AppCompatActivity {
         String assessmentSession = "" + UUID.randomUUID().toString();
 
 
-        final ScienceQuestion scienceQuestion = new ScienceQuestion();
-        scienceQuestion.setAnsdesc("Uttar Pradesh");
-        scienceQuestion.setUpdatedby("1");
-        scienceQuestion.setQlevel("2");
-        scienceQuestion.setAddedby("1");
-        scienceQuestion.setLanguageid("1");
-        scienceQuestion.setLessonid("36");
-        scienceQuestion.setQtid(QuestionType.MULTIPLE_CHOICE);
-        scienceQuestion.setQid("1254");
-        scienceQuestion.setSubjectid("21");
-        scienceQuestion.setAddedtime("2019-06-11T11:33:35.763");
-        scienceQuestion.setUpdatedtime("2019-06-11T11:33:35.763");
-        scienceQuestion.setTopicid("21");
-        scienceQuestion.setAnswer("Uttar Pradesh");
-        scienceQuestion.setQname("Which is the most populated state in India?");
-        scienceQuestion.setMarksPerQuestion("0");
-        scienceQuestion.setIsAttempted(false);
-        scienceQuestion.setIsCorrect(false);
-        scienceQuestion.setPhotourl("");
+        final AssessmentQuestion assessmentQuestion = new AssessmentQuestion();
+        assessmentQuestion.setAnsdesc("Uttar Pradesh");
+        assessmentQuestion.setUpdatedby("1");
+        assessmentQuestion.setQlevel("2");
+        assessmentQuestion.setAddedby("1");
+        assessmentQuestion.setLanguageid("1");
+        assessmentQuestion.setLessonid("36");
+        assessmentQuestion.setQtid(QuestionType.MULTIPLE_CHOICE);
+        assessmentQuestion.setQid("1254");
+        assessmentQuestion.setSubjectid("21");
+        assessmentQuestion.setAddedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion.setUpdatedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion.setTopicid("21");
+        assessmentQuestion.setAnswer("Uttar Pradesh");
+        assessmentQuestion.setQname("Which is the most populated state in India?");
+        assessmentQuestion.setMarksPerQuestion("0");
+        assessmentQuestion.setIsAttempted(false);
+        assessmentQuestion.setIsCorrect(false);
+        assessmentQuestion.setPhotourl("");
 
-        ScienceQuestion scienceQuestion2 = new ScienceQuestion();
-        scienceQuestion2.setAnsdesc("2,3");
-        scienceQuestion2.setUpdatedby("1");
-        scienceQuestion2.setQlevel("1");
-        scienceQuestion2.setAddedby("1");
-        scienceQuestion2.setLanguageid("1");
-        scienceQuestion2.setLessonid("42");
-        scienceQuestion2.setQtid(QuestionType.MULTIPLE_SELECT);
-        scienceQuestion2.setQid("5341");
-        scienceQuestion2.setSubjectid("27");
-        scienceQuestion2.setAddedtime("2019-06-11T11:33:35.763");
-        scienceQuestion2.setUpdatedtime("2019-06-11T11:33:35.763");
-        scienceQuestion2.setTopicid("27");
-        scienceQuestion2.setAnswer("2,3");
-        scienceQuestion2.setQname("test");
-        scienceQuestion2.setMarksPerQuestion("0");
-        scienceQuestion2.setIsAttempted(false);
-        scienceQuestion2.setIsCorrect(false);
-        scienceQuestion2.setPhotourl("");
+        AssessmentQuestion assessmentQuestion2 = new AssessmentQuestion();
+        assessmentQuestion2.setAnsdesc("2,3");
+        assessmentQuestion2.setUpdatedby("1");
+        assessmentQuestion2.setQlevel("1");
+        assessmentQuestion2.setAddedby("1");
+        assessmentQuestion2.setLanguageid("1");
+        assessmentQuestion2.setLessonid("42");
+        assessmentQuestion2.setQtid(QuestionType.MULTIPLE_SELECT);
+        assessmentQuestion2.setQid("5341");
+        assessmentQuestion2.setSubjectid("27");
+        assessmentQuestion2.setAddedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion2.setUpdatedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion2.setTopicid("27");
+        assessmentQuestion2.setAnswer("2,3");
+        assessmentQuestion2.setQname("test");
+        assessmentQuestion2.setMarksPerQuestion("0");
+        assessmentQuestion2.setIsAttempted(false);
+        assessmentQuestion2.setIsCorrect(false);
+        assessmentQuestion2.setPhotourl("");
 
-        ScienceQuestion scienceQuestionTrueFalse = new ScienceQuestion();
-        scienceQuestionTrueFalse.setAnsdesc("test");
-        scienceQuestionTrueFalse.setUpdatedby("1");
-        scienceQuestionTrueFalse.setQlevel("1");
-        scienceQuestionTrueFalse.setAddedby("1");
-        scienceQuestionTrueFalse.setLanguageid("1");
-        scienceQuestionTrueFalse.setLessonid("42");
-        scienceQuestionTrueFalse.setQtid(QuestionType.TRUE_FALSE);
-        scienceQuestionTrueFalse.setQid("5342");
-        scienceQuestionTrueFalse.setSubjectid("27");
-        scienceQuestionTrueFalse.setAddedtime("2019-06-11T11:33:35.763");
-        scienceQuestionTrueFalse.setUpdatedtime("2019-06-11T11:33:35.763");
-        scienceQuestionTrueFalse.setTopicid("27");
-        scienceQuestionTrueFalse.setAnswer("True");
-        scienceQuestionTrueFalse.setQname("test True False");
-        scienceQuestionTrueFalse.setMarksPerQuestion("0");
-        scienceQuestionTrueFalse.setIsAttempted(false);
-        scienceQuestionTrueFalse.setIsCorrect(false);
-        scienceQuestionTrueFalse.setPhotourl("");
-
-
-        ScienceQuestion scienceQuestion5 = new ScienceQuestion();
-        scienceQuestion5.setAnsdesc("test");
-        scienceQuestion5.setUpdatedby("1");
-        scienceQuestion5.setQlevel("2");
-        scienceQuestion5.setAddedby("1");
-        scienceQuestion5.setLanguageid("1");
-        scienceQuestion5.setLessonid("42");
-        scienceQuestion5.setQtid(QuestionType.FILL_IN_THE_BLANK_WITH_OPTION);
-        scienceQuestion5.setQid("5382");
-        scienceQuestion5.setSubjectid("27");
-        scienceQuestion5.setAddedtime("2019-06-11T11:33:35.763");
-        scienceQuestion5.setUpdatedtime("2019-06-11T11:33:35.763");
-        scienceQuestion5.setTopicid("27");
-        scienceQuestion5.setAnswer("True");
-        scienceQuestion5.setQname("Fill in the blank with option (If our body did not have bones ...........)");
-        scienceQuestion5.setMarksPerQuestion("0");
-        scienceQuestion5.setIsAttempted(false);
-        scienceQuestion5.setIsCorrect(false);
-        scienceQuestion5.setPhotourl("");
-
-        ScienceQuestion scienceQuestion6 = new ScienceQuestion();
-        scienceQuestion6.setAnsdesc("Movement would have been impossible ");
-        scienceQuestion6.setUpdatedby("1");
-        scienceQuestion6.setQlevel("2");
-        scienceQuestion6.setAddedby("1");
-        scienceQuestion6.setLanguageid("1");
-        scienceQuestion6.setLessonid("42");
-        scienceQuestion6.setQtid(QuestionType.FILL_IN_THE_BLANK);
-        scienceQuestion6.setQid("5383");
-        scienceQuestion6.setSubjectid("27");
-        scienceQuestion6.setAddedtime("2019-06-11T11:33:35.763");
-        scienceQuestion6.setUpdatedtime("2019-06-11T11:33:35.763");
-        scienceQuestion6.setTopicid("27");
-        scienceQuestion6.setAnswer("Movement would have been impossible ");
-        scienceQuestion6.setQname("Fill in the blank (If there were no joints between the bones ...........)");
-        scienceQuestion6.setMarksPerQuestion("0");
-        scienceQuestion6.setIsAttempted(false);
-        scienceQuestion6.setIsCorrect(false);
-        scienceQuestion6.setPhotourl("");
-
-        ScienceQuestion scienceQuestion7 = new ScienceQuestion();
-        scienceQuestion7.setAnsdesc("Movement would have been impossible ");
-        scienceQuestion7.setUpdatedby("1");
-        scienceQuestion7.setQlevel("2");
-        scienceQuestion7.setAddedby("1");
-        scienceQuestion7.setLanguageid("1");
-        scienceQuestion7.setLessonid("42");
-        scienceQuestion7.setQtid(QuestionType.ARRANGE_SEQUENCE);
-        scienceQuestion7.setQid("5384");
-        scienceQuestion7.setSubjectid("27");
-        scienceQuestion7.setAddedtime("2019-06-11T11:33:35.763");
-        scienceQuestion7.setUpdatedtime("2019-06-11T11:33:35.763");
-        scienceQuestion7.setTopicid("27");
-        scienceQuestion7.setAnswer("Movement would have been impossible ");
-        scienceQuestion7.setQname("Arrange Sequence (1. Word  2. Paragraph  3. Sentence  4. Letters  5. Phrase)");
-        scienceQuestion7.setMarksPerQuestion("0");
-        scienceQuestion7.setIsAttempted(false);
-        scienceQuestion7.setIsCorrect(false);
-        scienceQuestion7.setPhotourl("");
-
-        ScienceQuestion scienceQuestion8 = new ScienceQuestion();
-        scienceQuestion8.setAnsdesc("We would't have been able to bend");
-        scienceQuestion8.setUpdatedby("1");
-        scienceQuestion8.setQlevel("2");
-        scienceQuestion8.setAddedby("1");
-        scienceQuestion8.setLanguageid("1");
-        scienceQuestion8.setLessonid("42");
-        scienceQuestion8.setQtid(QuestionType.VIDEO);
-        scienceQuestion8.setQid("5385");
-        scienceQuestion8.setSubjectid("27");
-        scienceQuestion8.setAddedtime("2019-06-11T11:33:35.763");
-        scienceQuestion8.setUpdatedtime("2019-06-11T11:33:35.763");
-        scienceQuestion8.setTopicid("27");
-        scienceQuestion8.setAnswer("We would't have been able to bend");
-        scienceQuestion8.setQname("Video (If our backbone was made of one single bone .....)");
-        scienceQuestion8.setMarksPerQuestion("0");
-        scienceQuestion8.setIsAttempted(false);
-        scienceQuestion8.setIsCorrect(false);
-        scienceQuestion8.setPhotourl("");
-
-        ScienceQuestion scienceQuestion9 = new ScienceQuestion();
-        scienceQuestion9.setAnsdesc("Convection of heat");
-        scienceQuestion9.setUpdatedby("1");
-        scienceQuestion9.setQlevel("2");
-        scienceQuestion9.setAddedby("1");
-        scienceQuestion9.setLanguageid("1");
-        scienceQuestion9.setLessonid("42");
-        scienceQuestion9.setQtid(QuestionType.AUDIO);
-        scienceQuestion9.setQid("5386");
-        scienceQuestion9.setSubjectid("27");
-        scienceQuestion9.setAddedtime("2019-06-11T11:33:35.763");
-        scienceQuestion9.setUpdatedtime("2019-06-11T11:33:35.763");
-        scienceQuestion9.setTopicid("27");
-        scienceQuestion9.setAnswer("Convection of heat");
-        scienceQuestion9.setQname("Audio (What is the main reason behind wind blowing on Earth?)");
-        scienceQuestion9.setMarksPerQuestion("0");
-        scienceQuestion9.setIsAttempted(false);
-        scienceQuestion9.setIsCorrect(false);
-        scienceQuestion9.setPhotourl("");
+        AssessmentQuestion assessmentQuestionTrueFalse = new AssessmentQuestion();
+        assessmentQuestionTrueFalse.setAnsdesc("test");
+        assessmentQuestionTrueFalse.setUpdatedby("1");
+        assessmentQuestionTrueFalse.setQlevel("1");
+        assessmentQuestionTrueFalse.setAddedby("1");
+        assessmentQuestionTrueFalse.setLanguageid("1");
+        assessmentQuestionTrueFalse.setLessonid("42");
+        assessmentQuestionTrueFalse.setQtid(QuestionType.TRUE_FALSE);
+        assessmentQuestionTrueFalse.setQid("5342");
+        assessmentQuestionTrueFalse.setSubjectid("27");
+        assessmentQuestionTrueFalse.setAddedtime("2019-06-11T11:33:35.763");
+        assessmentQuestionTrueFalse.setUpdatedtime("2019-06-11T11:33:35.763");
+        assessmentQuestionTrueFalse.setTopicid("27");
+        assessmentQuestionTrueFalse.setAnswer("True");
+        assessmentQuestionTrueFalse.setQname("test True False");
+        assessmentQuestionTrueFalse.setMarksPerQuestion("0");
+        assessmentQuestionTrueFalse.setIsAttempted(false);
+        assessmentQuestionTrueFalse.setIsCorrect(false);
+        assessmentQuestionTrueFalse.setPhotourl("");
 
 
-        ScienceQuestion scienceQuestion11 = new ScienceQuestion();
-        scienceQuestion11.setAnsdesc("Mercury expands on heating");
-        scienceQuestion11.setUpdatedby("1");
-        scienceQuestion11.setQlevel("2");
-        scienceQuestion11.setAddedby("1");
-        scienceQuestion11.setLanguageid("1");
-        scienceQuestion11.setLessonid("42");
-        scienceQuestion11.setQtid(QuestionType.AUDIO);
-        scienceQuestion11.setQid("5387");
-        scienceQuestion11.setSubjectid("27");
-        scienceQuestion11.setAddedtime("2019-06-11T11:33:35.763");
-        scienceQuestion11.setUpdatedtime("2019-06-11T11:33:35.763");
-        scienceQuestion11.setTopicid("27");
-        scienceQuestion11.setAnswer("Mercury expands on heating");
-        scienceQuestion11.setQname("Text question with Keywords (Why does the mercury in a thermometer rise with increase in temperature?)");
-        scienceQuestion11.setMarksPerQuestion("0");
-        scienceQuestion11.setIsAttempted(false);
-        scienceQuestion11.setIsCorrect(false);
-        scienceQuestion11.setPhotourl("");
+        AssessmentQuestion assessmentQuestion5 = new AssessmentQuestion();
+        assessmentQuestion5.setAnsdesc("test");
+        assessmentQuestion5.setUpdatedby("1");
+        assessmentQuestion5.setQlevel("2");
+        assessmentQuestion5.setAddedby("1");
+        assessmentQuestion5.setLanguageid("1");
+        assessmentQuestion5.setLessonid("42");
+        assessmentQuestion5.setQtid(QuestionType.FILL_IN_THE_BLANK_WITH_OPTION);
+        assessmentQuestion5.setQid("5382");
+        assessmentQuestion5.setSubjectid("27");
+        assessmentQuestion5.setAddedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion5.setUpdatedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion5.setTopicid("27");
+        assessmentQuestion5.setAnswer("True");
+        assessmentQuestion5.setQname("Fill in the blank with option (If our body did not have bones ...........)");
+        assessmentQuestion5.setMarksPerQuestion("0");
+        assessmentQuestion5.setIsAttempted(false);
+        assessmentQuestion5.setIsCorrect(false);
+        assessmentQuestion5.setPhotourl("");
 
-        ArrayList<ScienceQuestion> scienceQuestionsList = new ArrayList<>();
-        scienceQuestionsList.add(scienceQuestion);
-        scienceQuestionsList.add(scienceQuestion2);
-        scienceQuestionsList.add(scienceQuestionTrueFalse);
-        scienceQuestionsList.add(scienceQuestion5);
+        AssessmentQuestion assessmentQuestion6 = new AssessmentQuestion();
+        assessmentQuestion6.setAnsdesc("Movement would have been impossible ");
+        assessmentQuestion6.setUpdatedby("1");
+        assessmentQuestion6.setQlevel("2");
+        assessmentQuestion6.setAddedby("1");
+        assessmentQuestion6.setLanguageid("1");
+        assessmentQuestion6.setLessonid("42");
+        assessmentQuestion6.setQtid(QuestionType.FILL_IN_THE_BLANK);
+        assessmentQuestion6.setQid("5383");
+        assessmentQuestion6.setSubjectid("27");
+        assessmentQuestion6.setAddedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion6.setUpdatedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion6.setTopicid("27");
+        assessmentQuestion6.setAnswer("Movement would have been impossible ");
+        assessmentQuestion6.setQname("Fill in the blank (If there were no joints between the bones ...........)");
+        assessmentQuestion6.setMarksPerQuestion("0");
+        assessmentQuestion6.setIsAttempted(false);
+        assessmentQuestion6.setIsCorrect(false);
+        assessmentQuestion6.setPhotourl("");
 
-        for (int i = 0; i < scienceQuestionsList.size(); i++) {
-            scienceQuestionsList.get(i).setPaperid(assessmentSession);
-            String qid = scienceQuestionsList.get(i).getQid();
+        AssessmentQuestion assessmentQuestion7 = new AssessmentQuestion();
+        assessmentQuestion7.setAnsdesc("Movement would have been impossible ");
+        assessmentQuestion7.setUpdatedby("1");
+        assessmentQuestion7.setQlevel("2");
+        assessmentQuestion7.setAddedby("1");
+        assessmentQuestion7.setLanguageid("1");
+        assessmentQuestion7.setLessonid("42");
+        assessmentQuestion7.setQtid(QuestionType.ARRANGE_SEQUENCE);
+        assessmentQuestion7.setQid("5384");
+        assessmentQuestion7.setSubjectid("27");
+        assessmentQuestion7.setAddedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion7.setUpdatedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion7.setTopicid("27");
+        assessmentQuestion7.setAnswer("Movement would have been impossible ");
+        assessmentQuestion7.setQname("Arrange Sequence (1. Word  2. Paragraph  3. Sentence  4. Letters  5. Phrase)");
+        assessmentQuestion7.setMarksPerQuestion("0");
+        assessmentQuestion7.setIsAttempted(false);
+        assessmentQuestion7.setIsCorrect(false);
+        assessmentQuestion7.setPhotourl("");
+
+        AssessmentQuestion assessmentQuestion8 = new AssessmentQuestion();
+        assessmentQuestion8.setAnsdesc("We would't have been able to bend");
+        assessmentQuestion8.setUpdatedby("1");
+        assessmentQuestion8.setQlevel("2");
+        assessmentQuestion8.setAddedby("1");
+        assessmentQuestion8.setLanguageid("1");
+        assessmentQuestion8.setLessonid("42");
+        assessmentQuestion8.setQtid(QuestionType.VIDEO);
+        assessmentQuestion8.setQid("5385");
+        assessmentQuestion8.setSubjectid("27");
+        assessmentQuestion8.setAddedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion8.setUpdatedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion8.setTopicid("27");
+        assessmentQuestion8.setAnswer("We would't have been able to bend");
+        assessmentQuestion8.setQname("Video (If our backbone was made of one single bone .....)");
+        assessmentQuestion8.setMarksPerQuestion("0");
+        assessmentQuestion8.setIsAttempted(false);
+        assessmentQuestion8.setIsCorrect(false);
+        assessmentQuestion8.setPhotourl("");
+
+        AssessmentQuestion assessmentQuestion9 = new AssessmentQuestion();
+        assessmentQuestion9.setAnsdesc("Convection of heat");
+        assessmentQuestion9.setUpdatedby("1");
+        assessmentQuestion9.setQlevel("2");
+        assessmentQuestion9.setAddedby("1");
+        assessmentQuestion9.setLanguageid("1");
+        assessmentQuestion9.setLessonid("42");
+        assessmentQuestion9.setQtid(QuestionType.AUDIO);
+        assessmentQuestion9.setQid("5386");
+        assessmentQuestion9.setSubjectid("27");
+        assessmentQuestion9.setAddedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion9.setUpdatedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion9.setTopicid("27");
+        assessmentQuestion9.setAnswer("Convection of heat");
+        assessmentQuestion9.setQname("Audio (What is the main reason behind wind blowing on Earth?)");
+        assessmentQuestion9.setMarksPerQuestion("0");
+        assessmentQuestion9.setIsAttempted(false);
+        assessmentQuestion9.setIsCorrect(false);
+        assessmentQuestion9.setPhotourl("");
+
+
+        AssessmentQuestion assessmentQuestion11 = new AssessmentQuestion();
+        assessmentQuestion11.setAnsdesc("Mercury expands on heating");
+        assessmentQuestion11.setUpdatedby("1");
+        assessmentQuestion11.setQlevel("2");
+        assessmentQuestion11.setAddedby("1");
+        assessmentQuestion11.setLanguageid("1");
+        assessmentQuestion11.setLessonid("42");
+        assessmentQuestion11.setQtid(QuestionType.AUDIO);
+        assessmentQuestion11.setQid("5387");
+        assessmentQuestion11.setSubjectid("27");
+        assessmentQuestion11.setAddedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion11.setUpdatedtime("2019-06-11T11:33:35.763");
+        assessmentQuestion11.setTopicid("27");
+        assessmentQuestion11.setAnswer("Mercury expands on heating");
+        assessmentQuestion11.setQname("Text question with Keywords (Why does the mercury in a thermometer rise with increase in temperature?)");
+        assessmentQuestion11.setMarksPerQuestion("0");
+        assessmentQuestion11.setIsAttempted(false);
+        assessmentQuestion11.setIsCorrect(false);
+        assessmentQuestion11.setPhotourl("");
+
+        ArrayList<AssessmentQuestion> assessmentQuestionsList = new ArrayList<>();
+        assessmentQuestionsList.add(assessmentQuestion);
+        assessmentQuestionsList.add(assessmentQuestion2);
+        assessmentQuestionsList.add(assessmentQuestionTrueFalse);
+        assessmentQuestionsList.add(assessmentQuestion5);
+
+        for (int i = 0; i < assessmentQuestionsList.size(); i++) {
+            assessmentQuestionsList.get(i).setPaperid(assessmentSession);
+            String qid = assessmentQuestionsList.get(i).getQid();
             // ArrayList<ScienceQuestionChoice> scienceQuestionChoiceList = (ArrayList<ScienceQuestionChoice>) AppDatabase.getDatabaseInstance(ScienceAssessmentActivity.this).getScienceQuestionChoicesDao().getQuestionChoicesByQID(qid);
-            ArrayList<ScienceQuestionChoice> scienceQuestionChoiceList = new ArrayList<>();
+            ArrayList<SubOptions> subOptionsList = new ArrayList<>();
             for (int k = 0; k < 4; k++) {
-                ScienceQuestionChoice scienceQuestionChoice = new ScienceQuestionChoice();
-                scienceQuestionChoice.setQcid("A" + k);
-                scienceQuestionChoice.setQid("1254");
-                scienceQuestionChoice.setChoicename("Choicename" + k);
+                SubOptions subOptions = new SubOptions();
+                subOptions.setQcid("A" + k);
+                subOptions.setQid("1254");
+                subOptions.setChoicename("Choicename" + k);
                 if (k == 1)
-                    scienceQuestionChoice.setCorrect("true");
+                    subOptions.setCorrect("true");
                 else
-                    scienceQuestionChoice.setCorrect("false");
-                scienceQuestionChoiceList.add(scienceQuestionChoice);
+                    subOptions.setCorrect("false");
+                subOptionsList.add(subOptions);
             }
 
-            scienceQuestionsList.get(i).setLstquestionchoice(scienceQuestionChoiceList);
+            assessmentQuestionsList.get(i).setLstquestionchoice(subOptionsList);
         }
 
-        ScienceQuestion scienceQuestionMatchThePair = new ScienceQuestion();
-        scienceQuestionMatchThePair.setAnsdesc("2143");
-        scienceQuestionMatchThePair.setUpdatedby("1");
-        scienceQuestionMatchThePair.setQlevel("1");
-        scienceQuestionMatchThePair.setAddedby("1");
-        scienceQuestionMatchThePair.setLanguageid("1");
-        scienceQuestionMatchThePair.setLessonid("42");
-        scienceQuestionMatchThePair.setQtid(QuestionType.MATCHING_PAIR);
-        scienceQuestionMatchThePair.setQid("5343");
-        scienceQuestionMatchThePair.setSubjectid("27");
-        scienceQuestionMatchThePair.setAddedtime("2019-06-11T11:33:35.763");
-        scienceQuestionMatchThePair.setUpdatedtime("2019-06-11T11:33:35.763");
-        scienceQuestionMatchThePair.setTopicid("27");
-        scienceQuestionMatchThePair.setAnswer("2143");
-        scienceQuestionMatchThePair.setQname("match The pair");
-        scienceQuestionMatchThePair.setMarksPerQuestion("0");
-        scienceQuestionMatchThePair.setIsAttempted(false);
-        scienceQuestionMatchThePair.setIsCorrect(false);
-        scienceQuestionMatchThePair.setPhotourl("");
+        AssessmentQuestion assessmentQuestionMatchThePair = new AssessmentQuestion();
+        assessmentQuestionMatchThePair.setAnsdesc("2143");
+        assessmentQuestionMatchThePair.setUpdatedby("1");
+        assessmentQuestionMatchThePair.setQlevel("1");
+        assessmentQuestionMatchThePair.setAddedby("1");
+        assessmentQuestionMatchThePair.setLanguageid("1");
+        assessmentQuestionMatchThePair.setLessonid("42");
+        assessmentQuestionMatchThePair.setQtid(QuestionType.MATCHING_PAIR);
+        assessmentQuestionMatchThePair.setQid("5343");
+        assessmentQuestionMatchThePair.setSubjectid("27");
+        assessmentQuestionMatchThePair.setAddedtime("2019-06-11T11:33:35.763");
+        assessmentQuestionMatchThePair.setUpdatedtime("2019-06-11T11:33:35.763");
+        assessmentQuestionMatchThePair.setTopicid("27");
+        assessmentQuestionMatchThePair.setAnswer("2143");
+        assessmentQuestionMatchThePair.setQname("match The pair");
+        assessmentQuestionMatchThePair.setMarksPerQuestion("0");
+        assessmentQuestionMatchThePair.setIsAttempted(false);
+        assessmentQuestionMatchThePair.setIsCorrect(false);
+        assessmentQuestionMatchThePair.setPhotourl("");
 
-        ScienceQuestionChoice scienceQuestionChoice1 = new ScienceQuestionChoice("20640", "5343", "3", "4", "false", "", "");
-        ScienceQuestionChoice scienceQuestionChoice2 = new ScienceQuestionChoice("20639", "5343", "4", "3", "false", "", "");
-        ScienceQuestionChoice scienceQuestionChoice3 = new ScienceQuestionChoice("20638", "5343", "1", "2", "false", "", "");
-        ScienceQuestionChoice scienceQuestionChoice4 = new ScienceQuestionChoice("20637", "5343", "2", "1", "false", "", "");
+        SubOptions subOptions1 = new SubOptions("20640", "5343", "3", "4", "false", "", "");
+        SubOptions subOptions2 = new SubOptions("20639", "5343", "4", "3", "false", "", "");
+        SubOptions subOptions3 = new SubOptions("20638", "5343", "1", "2", "false", "", "");
+        SubOptions subOptions4 = new SubOptions("20637", "5343", "2", "1", "false", "", "");
 
-        ArrayList<ScienceQuestionChoice> scienceQuestionChoiceList = new ArrayList<>();
-        scienceQuestionChoiceList.add(scienceQuestionChoice1);
-        scienceQuestionChoiceList.add(scienceQuestionChoice2);
-        scienceQuestionChoiceList.add(scienceQuestionChoice3);
-        scienceQuestionChoiceList.add(scienceQuestionChoice4);
+        ArrayList<SubOptions> subOptionsList = new ArrayList<>();
+        subOptionsList.add(subOptions1);
+        subOptionsList.add(subOptions2);
+        subOptionsList.add(subOptions3);
+        subOptionsList.add(subOptions4);
 
 
-        ArrayList<ScienceQuestionChoice> scienceQuestionChoiceList7 = new ArrayList<>();
-        ScienceQuestionChoice scienceQuestionChoice11 = new ScienceQuestionChoice("20704", "5384", "1", "Letters", "true", "", "");
-        ScienceQuestionChoice scienceQuestionChoice22 = new ScienceQuestionChoice("20705", "5384", "2", "Word", "true", "", "");
-        ScienceQuestionChoice scienceQuestionChoice33 = new ScienceQuestionChoice("20706", "5384", "3", "Phrase", "true", "", "");
-        ScienceQuestionChoice scienceQuestionChoice44 = new ScienceQuestionChoice("20707", "5384", "4", "Sentence", "true", "", "");
-        ScienceQuestionChoice scienceQuestionChoice55 = new ScienceQuestionChoice("20708", "5384", "5", "Paragraph", "true", "", "");
-        scienceQuestionChoiceList7.add(scienceQuestionChoice55);
-        scienceQuestionChoiceList7.add(scienceQuestionChoice11);
-        scienceQuestionChoiceList7.add(scienceQuestionChoice22);
-        scienceQuestionChoiceList7.add(scienceQuestionChoice33);
-        scienceQuestionChoiceList7.add(scienceQuestionChoice44);
+        ArrayList<SubOptions> subOptionsList7 = new ArrayList<>();
+        SubOptions subOptions11 = new SubOptions("20704", "5384", "1", "Letters", "true", "", "");
+        SubOptions subOptions22 = new SubOptions("20705", "5384", "2", "Word", "true", "", "");
+        SubOptions subOptions33 = new SubOptions("20706", "5384", "3", "Phrase", "true", "", "");
+        SubOptions subOptions44 = new SubOptions("20707", "5384", "4", "Sentence", "true", "", "");
+        SubOptions subOptions55 = new SubOptions("20708", "5384", "5", "Paragraph", "true", "", "");
+        subOptionsList7.add(subOptions55);
+        subOptionsList7.add(subOptions11);
+        subOptionsList7.add(subOptions22);
+        subOptionsList7.add(subOptions33);
+        subOptionsList7.add(subOptions44);
 
-        scienceQuestion7.setLstquestionchoice(scienceQuestionChoiceList7);
+        assessmentQuestion7.setLstquestionchoice(subOptionsList7);
 
-        scienceQuestionMatchThePair.setLstquestionchoice(scienceQuestionChoiceList);
-        scienceQuestionsList.add(scienceQuestionMatchThePair);
-        scienceQuestionsList.add(scienceQuestion6);
-        scienceQuestionsList.add(scienceQuestion7);
-        scienceQuestionsList.add(scienceQuestion8);
+        assessmentQuestionMatchThePair.setLstquestionchoice(subOptionsList);
+        assessmentQuestionsList.add(assessmentQuestionMatchThePair);
+        assessmentQuestionsList.add(assessmentQuestion6);
+        assessmentQuestionsList.add(assessmentQuestion7);
+        assessmentQuestionsList.add(assessmentQuestion8);
 
         String path = getInternalPath();
 
         AssessmentLibrary.getAssessmentLibrary(this)
-                .setQuestionList(scienceQuestionsList)
+                .setQuestionList(assessmentQuestionsList)
                 .setStoragePath(path)
                 .setBackGroundColor(R.color.dark_blue)//default black
                 .setSelectedLanguageCode("1")//default is 1
-                .setVideoMonitoring(true)//default false
+                .setVideoMonitoring(true)    //default false
+                .setExamDuration("20")      //default 30
                 .build()
                 .setOnAssessmentCompleteListener(new OnAssessmentComplete() {
                     @Override
-                    public void OnResult(List<ScienceQuestion> questionList) {
+                    public void OnResult(List<AssessmentQuestion> questionList) {
                         if (questionList.size() > 0) {
                             Log.d("OnResult:::", "OnResult: " + questionList);
                         }

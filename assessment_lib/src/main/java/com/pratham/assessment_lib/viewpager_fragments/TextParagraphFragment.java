@@ -25,7 +25,7 @@ import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
 import com.pratham.assessment_lib.custom.gif_viewer.GifView;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity;
 import com.pratham.assessment_lib.services.stt_service_new.ContinuousSpeechService_New;
@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import static android.provider.MediaStore.Video.VideoColumns.LANGUAGE;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.assessPath;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.getFileName;
 import static com.pratham.assessment_lib.Utility.Assessment_Utility.setOdiaFont;
@@ -91,7 +90,7 @@ public class TextParagraphFragment extends Fragment implements STT_Result_New.st
     private static final String SCIENCE_QUESTION = "scienceQuestion";
 
     private int pos;
-    private ScienceQuestion scienceQuestion;
+    private AssessmentQuestion assessmentQuestion;
 
     public TextParagraphFragment() {
         // Required empty public constructor
@@ -102,7 +101,7 @@ public class TextParagraphFragment extends Fragment implements STT_Result_New.st
         context = getActivity();
         if (getArguments() != null) {
             pos = getArguments().getInt(POS, 0);
-            scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
+            assessmentQuestion = (AssessmentQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
             assessmentAnswerListener = (ScienceAssessmentActivity) getActivity();
 
         }
@@ -113,11 +112,11 @@ public class TextParagraphFragment extends Fragment implements STT_Result_New.st
 
     }
 
-    public static TextParagraphFragment newInstance(int pos, ScienceQuestion scienceQuestion) {
+    public static TextParagraphFragment newInstance(int pos, AssessmentQuestion assessmentQuestion) {
         TextParagraphFragment_ textParagraphFragment = new TextParagraphFragment_();
         Bundle args = new Bundle();
         args.putInt("pos", pos);
-        args.putSerializable("scienceQuestion", scienceQuestion);
+        args.putSerializable("scienceQuestion", assessmentQuestion);
         textParagraphFragment.setArguments(args);
         return textParagraphFragment;
     }
@@ -153,16 +152,16 @@ public class TextParagraphFragment extends Fragment implements STT_Result_New.st
         setWords();
         setOdiaFont(getActivity(), question);
 //        question.setText(scienceQuestion.getQname());
-        if (!scienceQuestion.getPhotourl().equalsIgnoreCase("")) {
+        if (!assessmentQuestion.getPhotourl().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
-            String fileName = getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
+            String fileName = getFileName(assessmentQuestion.getQid(), assessmentQuestion.getPhotourl());
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
             String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
 
-            String path = scienceQuestion.getPhotourl();
+            String path = assessmentQuestion.getPhotourl();
             String[] imgPath = path.split("\\.");
             int len;
             if (imgPath.length > 0)
@@ -199,10 +198,10 @@ public class TextParagraphFragment extends Fragment implements STT_Result_New.st
     }
 
     private void setWords() {
-        splitWords = Arrays.asList(scienceQuestion.getQname().split(" "));
+        splitWords = Arrays.asList(assessmentQuestion.getQname().split(" "));
 
         wordCount = new HashMap<String, Integer>();
-        StringTokenizer para = new StringTokenizer(scienceQuestion.getQname().toLowerCase());
+        StringTokenizer para = new StringTokenizer(assessmentQuestion.getQname().toLowerCase());
         int tokenCount = para.countTokens();
         while (para.hasMoreTokens()) {
             String word = para.nextToken();
@@ -454,7 +453,7 @@ public class TextParagraphFragment extends Fragment implements STT_Result_New.st
         //todo set marks according to total marks of paper pattern
 //        if (getPercentage() > 35) scienceQuestion.setIsCorrect(true);
 
-        assessmentAnswerListener.setAnswerInActivity("" + calculateMarks(), sttResult.toString(), scienceQuestion.getQid(), null);
+        assessmentAnswerListener.setAnswerInActivity("" + calculateMarks(), sttResult.toString(), assessmentQuestion.getQid(), null);
 
     }
 
@@ -493,7 +492,7 @@ public class TextParagraphFragment extends Fragment implements STT_Result_New.st
         for (int i = 0; i < sttResult.size(); i++) {
             System.out.println("LogTag" + " onResults :  " + sttResult.get(i));
 
-            if (sttResult.get(i).equalsIgnoreCase(scienceQuestion.getAnswer()))
+            if (sttResult.get(i).equalsIgnoreCase(assessmentQuestion.getAnswer()))
                 sttRes = sttResult.get(i);
             else sttRes = sttResult.get(0);
         }
@@ -520,12 +519,12 @@ public class TextParagraphFragment extends Fragment implements STT_Result_New.st
 //        addLearntWords(splitWordsPunct, wordsResIdList);
 //        addScore(0, "Words:" + word, correctWordCount, correctArr.length, wordTime, " ");
         this.sttResult.append(" ").append(sttRes);
-        assessmentAnswerListener.setAnswerInActivity("" + calculateMarks(), this.sttResult.toString(), scienceQuestion.getQid(), null);
+        assessmentAnswerListener.setAnswerInActivity("" + calculateMarks(), this.sttResult.toString(), assessmentQuestion.getQid(), null);
 
     }
 
     private int calculateMarks() {
-        int marks = (getPercentage() * Integer.parseInt(scienceQuestion.getOutofmarks())) / 100;
+        int marks = (getPercentage() * Integer.parseInt(assessmentQuestion.getOutofmarks())) / 100;
         return marks;
     }
 

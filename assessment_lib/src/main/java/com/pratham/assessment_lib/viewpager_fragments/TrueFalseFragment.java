@@ -16,7 +16,7 @@ import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
 import com.pratham.assessment_lib.custom.gif_viewer.GifView;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity;
 
@@ -54,7 +54,7 @@ public class TrueFalseFragment extends Fragment {
     private static final String SCIENCE_QUESTION = "scienceQuestion";
 
     private int pos;
-    private ScienceQuestion scienceQuestion;
+    private AssessmentQuestion assessmentQuestion;
 
     public TrueFalseFragment() {
         // Required empty public constructor
@@ -64,7 +64,7 @@ public class TrueFalseFragment extends Fragment {
     public void init(){
         if (getArguments() != null) {
             pos = getArguments().getInt(POS, 0);
-            scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
+            assessmentQuestion = (AssessmentQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
             assessmentAnswerListener = (ScienceAssessmentActivity) getActivity();
 
         }
@@ -72,11 +72,11 @@ public class TrueFalseFragment extends Fragment {
 
     }
 
-    public static TrueFalseFragment newInstance(int pos, ScienceQuestion scienceQuestion) {
+    public static TrueFalseFragment newInstance(int pos, AssessmentQuestion assessmentQuestion) {
         TrueFalseFragment_ trueFalseFragment = new TrueFalseFragment_();
         Bundle args = new Bundle();
         args.putInt("pos", pos);
-        args.putSerializable("scienceQuestion", scienceQuestion);
+        args.putSerializable("scienceQuestion", assessmentQuestion);
         trueFalseFragment.setArguments(args);
         return trueFalseFragment;
     }
@@ -111,17 +111,17 @@ public class TrueFalseFragment extends Fragment {
     public void setTrueFalseQuestion() {
 
         setOdiaFont(getActivity(), question);
-        question.setText(scienceQuestion.getQname());
-        if (!scienceQuestion.getPhotourl().equalsIgnoreCase("")) {
+        question.setText(assessmentQuestion.getQname());
+        if (!assessmentQuestion.getPhotourl().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
-            String fileName = getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
+            String fileName = getFileName(assessmentQuestion.getQid(), assessmentQuestion.getPhotourl());
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
             String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
 
-            String path = scienceQuestion.getPhotourl();
+            String path = assessmentQuestion.getPhotourl();
             String[] imgPath = path.split("\\.");
             int len;
             if (imgPath.length > 0)
@@ -167,7 +167,7 @@ public class TrueFalseFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                questionTypeListener.setAnswer("", radioButtonTrue.getText().toString(), scienceQuestion.getQid(), null);
-                assessmentAnswerListener.setAnswerInActivity("", radioButtonTrue.getText().toString(), scienceQuestion.getQid(), null);
+                assessmentAnswerListener.setAnswerInActivity("", radioButtonTrue.getText().toString(), assessmentQuestion.getQid(), null);
                 radioButtonTrue.setSelected(true);
                 radioButtonTrue.setBackground(getActivity().getResources().getDrawable(R.drawable.rounded_corner_dialog));
                 radioButtonFalse.setBackground(getActivity().getResources().getDrawable(R.drawable.ripple_rectangle));
@@ -180,7 +180,7 @@ public class TrueFalseFragment extends Fragment {
         radioButtonFalse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                assessmentAnswerListener.setAnswerInActivity("", radioButtonFalse.getText().toString(), scienceQuestion.getQid(), null);
+                assessmentAnswerListener.setAnswerInActivity("", radioButtonFalse.getText().toString(), assessmentQuestion.getQid(), null);
 //                questionTypeListener.setAnswer("", radioButtonFalse.getText().toString(), scienceQuestion.getQid(), null);
                 radioButtonFalse.setSelected(true);
                 radioButtonFalse.setTextColor(Assessment_Utility.selectedColor);
@@ -214,7 +214,7 @@ public class TrueFalseFragment extends Fragment {
             }
         });*/
 
-        if (scienceQuestion.getUserAnswer().equalsIgnoreCase("true")) {
+        if (assessmentQuestion.getUserAnswer().equalsIgnoreCase("true")) {
             radioButtonTrue.setSelected(true);
             radioButtonTrue.setBackground(getActivity().getResources().getDrawable(R.drawable.rounded_corner_dialog));
             radioButtonFalse.setBackground(getActivity().getResources().getDrawable(R.drawable.ripple_rectangle));
@@ -223,7 +223,7 @@ public class TrueFalseFragment extends Fragment {
             radioButtonFalse.setTextColor(getActivity().getResources().getColor(R.color.white));
 
 
-        } else if (scienceQuestion.getUserAnswer().equalsIgnoreCase("false")) {
+        } else if (assessmentQuestion.getUserAnswer().equalsIgnoreCase("false")) {
             radioButtonFalse.setSelected(true);
             radioButtonFalse.setTextColor(Assessment_Utility.selectedColor);
             radioButtonTrue.setSelected(false);

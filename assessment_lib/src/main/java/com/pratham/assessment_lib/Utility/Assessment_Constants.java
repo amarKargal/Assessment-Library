@@ -15,6 +15,7 @@ public class Assessment_Constants {
     //  public static boolean isTablet=false;
     //  public static String SELECTED_EXAM_ID="2035";
     public static String SELECTED_LANGUAGE = "1";
+    public static String EXAM_DURATION;
     //public static final String ASSESSMENT_TYPE = "practice";
     //public static final String SELECTED_SUBJECT_ID = "21";
     public static final String currentSession = "211111";

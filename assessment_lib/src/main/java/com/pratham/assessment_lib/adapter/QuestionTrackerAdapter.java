@@ -10,20 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pratham.assessment_lib.R;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 import com.pratham.assessment_lib.interfaces.QuestionTrackerListener;
 import com.pratham.assessment_lib.science.bottomFragment.BottomQuestionFragment;
 
 import java.util.List;
 
 public class QuestionTrackerAdapter extends RecyclerView.Adapter<QuestionTrackerAdapter.MyViewHolder> {
-    List<ScienceQuestion> scienceQuestionList;
+    List<AssessmentQuestion> assessmentQuestionList;
     Context context;
     QuestionTrackerListener questionTrackerListener;
     BottomQuestionFragment bottomQuestionFragment;
 
-    public QuestionTrackerAdapter(BottomQuestionFragment bottomQuestionFragment, Context context, List<ScienceQuestion> scienceQuestions) {
-        this.scienceQuestionList = scienceQuestions;
+    public QuestionTrackerAdapter(BottomQuestionFragment bottomQuestionFragment, Context context, List<AssessmentQuestion> assessmentQuestions) {
+        this.assessmentQuestionList = assessmentQuestions;
         this.context = context;
         questionTrackerListener = (QuestionTrackerListener) context;
         this.bottomQuestionFragment=bottomQuestionFragment;
@@ -50,10 +50,10 @@ public class QuestionTrackerAdapter extends RecyclerView.Adapter<QuestionTracker
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
-        ScienceQuestion scienceQuestion = scienceQuestionList.get(i);
+        AssessmentQuestion assessmentQuestion = assessmentQuestionList.get(i);
         final int queNo = i + 1;
         myViewHolder.text.setText(queNo + "");
-        if (scienceQuestion.getIsAttempted())
+        if (assessmentQuestion.getIsAttempted())
 //            myViewHolder.text.setBackgroundColor(context.getResources().getColor(R.color.colorGreen));
             myViewHolder.text.setBackground(context.getResources().getDrawable(R.drawable.ripple_round_attempted));
         else
@@ -71,6 +71,6 @@ public class QuestionTrackerAdapter extends RecyclerView.Adapter<QuestionTracker
 
     @Override
     public int getItemCount() {
-        return scienceQuestionList.size();
+        return assessmentQuestionList.size();
     }
 }

@@ -1,6 +1,6 @@
 package com.pratham.assessment_lib.supportive;
 
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 import com.pratham.assessment_lib.interfaces.OnAssessmentComplete;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class ResponseListener implements OnAssessmentComplete {
             if (questionList != null)
                 onAssessmentComplete.OnResult(questionList);
             else
-                onAssessmentComplete.OnResult(new ArrayList<ScienceQuestion>());
+                onAssessmentComplete.OnResult(new ArrayList<AssessmentQuestion>());
         }
     }
 }

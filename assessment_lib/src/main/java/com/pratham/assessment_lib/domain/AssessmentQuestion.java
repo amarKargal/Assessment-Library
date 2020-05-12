@@ -1,16 +1,10 @@
 package com.pratham.assessment_lib.domain;
-
-
-
 import androidx.annotation.NonNull;
-
-
 import com.pratham.assessment_lib.Utility.QuestionType;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-public class ScienceQuestion implements Serializable {
+public class AssessmentQuestion implements Serializable {
 
     private String ansdesc;
 
@@ -26,9 +20,9 @@ public class ScienceQuestion implements Serializable {
 
     private String lessonid;
     //@Embedded
-    private ArrayList<ScienceQuestionChoice> lstquestionchoice;
+    private ArrayList<SubOptions> lstquestionchoice;
     //@Ignore
-    List<ScienceQuestionChoice> matchingNameList = null;
+    List<SubOptions> matchingNameList = null;
 
     private QuestionType qtid;
     @NonNull
@@ -186,11 +180,11 @@ public class ScienceQuestion implements Serializable {
         this.lessonid = lessonid;
     }
 
-    public ArrayList<ScienceQuestionChoice> getLstquestionchoice() {
+    public ArrayList<SubOptions> getLstquestionchoice() {
         return lstquestionchoice;
     }
 
-    public void setLstquestionchoice(ArrayList<ScienceQuestionChoice> lstquestionchoice) {
+    public void setLstquestionchoice(ArrayList<SubOptions> lstquestionchoice) {
         this.lstquestionchoice = lstquestionchoice;
     }
 
@@ -314,11 +308,11 @@ public class ScienceQuestion implements Serializable {
         this.paperid = paperid;
     }
 
-    public List<ScienceQuestionChoice> getMatchingNameList() {
+    public List<SubOptions> getMatchingNameList() {
         return matchingNameList;
     }
 
-    public void setMatchingNameList(List<ScienceQuestionChoice> matchingNameList) {
+    public void setMatchingNameList(List<SubOptions> matchingNameList) {
         this.matchingNameList = matchingNameList;
     }
 

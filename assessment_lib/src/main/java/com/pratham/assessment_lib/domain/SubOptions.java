@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 //@Entity
-public class ScienceQuestionChoice implements Serializable {
+public class SubOptions implements Serializable {
 
     @NonNull
    // @PrimaryKey
@@ -24,7 +24,7 @@ public class ScienceQuestionChoice implements Serializable {
 
 
     //todo #alter remove
-    public ScienceQuestionChoice(String qcid, String qid, String matchingname, String choicename, String correct, String matchingurl, String choiceurl) {
+    public SubOptions(String qcid, String qid, String matchingname, String choicename, String correct, String matchingurl, String choiceurl) {
         this.qcid = qcid;
         this.qid = qid;
         this.matchingname = matchingname;
@@ -34,7 +34,7 @@ public class ScienceQuestionChoice implements Serializable {
         this.choiceurl = choiceurl;
     }
 
-    public ScienceQuestionChoice() {
+    public SubOptions() {
     }
 
     public String getMyIscorrect() {

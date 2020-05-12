@@ -16,14 +16,12 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
-import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
+import com.pratham.assessment_lib.domain.SubOptions;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.interfaces.StartDragListener;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity;
@@ -38,8 +36,8 @@ import java.util.List;
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.assessPath;
 
 public class MatchPairDragDropAdapter extends RecyclerView.Adapter<MatchPairDragDropAdapter.MyViewHolder> implements ItemMoveCallback.ItemTouchHelperContract {
-    List<ScienceQuestionChoice> draggedList = new ArrayList<>();
-    private List<ScienceQuestionChoice> data;
+    List<SubOptions> draggedList = new ArrayList<>();
+    private List<SubOptions> data;
     Context context;
     //    DragDropListener dragDropListener;
     //    QuestionTypeListener questionTypeListener;
@@ -65,7 +63,7 @@ public class MatchPairDragDropAdapter extends RecyclerView.Adapter<MatchPairDrag
         }
     }
 
-    public MatchPairDragDropAdapter(MatchThePairFragment fragment, List<ScienceQuestionChoice> data, Context context) {
+    public MatchPairDragDropAdapter(MatchThePairFragment fragment, List<SubOptions> data, Context context) {
         this.data = data;
         this.context = context;
 //        questionTypeListener = scienceAdapter;
@@ -86,11 +84,11 @@ public class MatchPairDragDropAdapter extends RecyclerView.Adapter<MatchPairDrag
 //        if(data.get(position))
         draggedList.clear();
         if (data.size() > 0) {
-            ScienceQuestionChoice scienceQuestionChoice = data.get(position);
-            if (!scienceQuestionChoice.getMatchingurl().equalsIgnoreCase("")) {
-                final String path = /*Assessment_Constants.loadOnlineImagePath +*/ scienceQuestionChoice.getMatchingurl();
+            SubOptions subOptions = data.get(position);
+            if (!subOptions.getMatchingurl().equalsIgnoreCase("")) {
+                final String path = /*Assessment_Constants.loadOnlineImagePath +*/ subOptions.getMatchingurl();
 
-                String fileName = Assessment_Utility.getFileName(scienceQuestionChoice.getQid(), scienceQuestionChoice.getMatchingurl());
+                String fileName = Assessment_Utility.getFileName(subOptions.getQid(), subOptions.getMatchingurl());
                 final String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
 
@@ -126,7 +124,7 @@ public class MatchPairDragDropAdapter extends RecyclerView.Adapter<MatchPairDrag
                 });
             } else {
                 holder.rl_img.setVisibility(View.GONE);
-                holder.mTitle.setText(scienceQuestionChoice.getMatchingname());
+                holder.mTitle.setText(subOptions.getMatchingname());
             }
 
             holder.mTitle.setOnTouchListener(new View.OnTouchListener() {

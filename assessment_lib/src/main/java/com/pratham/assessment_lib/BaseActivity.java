@@ -22,71 +22,77 @@ import java.util.ArrayList;
 import java.util.List;
 
 @EActivity(resName = "activity_base")
-public class BaseActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback{
-  //  public static String assessPath = "";
+public class BaseActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+    //  public static String assessPath = "";
     //public static int defaultColor;
     public static ColorStateList colorStateList;
     public static boolean muteFlg = false;
     private static AudioManager audioManager;
+    private boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    //    assessPath= Assessment_Utility.getInternalPath(this);
+        //    assessPath= Assessment_Utility.getInternalPath(this);
 
-      //  Assessment_Utility.setDefaultColor(defaultColor);
+        //  Assessment_Utility.setDefaultColor(defaultColor);
     }
 
-    protected void requestRunTimePermissions(final Activity activity, final String [] permissions, final int customPermissionConstant){
-        if(permissions.length==1){
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,permissions[0])){
+    protected void requestRunTimePermissions(final Activity activity, final String[] permissions, final int customPermissionConstant) {
+        if (permissions.length == 1) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
 
-                Snackbar.make(findViewById(android.R.id.content),"App needs permission to work",Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                Snackbar.make(findViewById(android.R.id.content), "App needs permission to work", Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ActivityCompat.requestPermissions(activity,permissions,customPermissionConstant);
+                                ActivityCompat.requestPermissions(activity, permissions, customPermissionConstant);
                             }
                         }).show();
-            }else {
-                ActivityCompat.requestPermissions(this,new String[]{permissions[0]},customPermissionConstant);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{permissions[0]}, customPermissionConstant);
             }
-        }else if(permissions.length>1 && customPermissionConstant== Assessment_Constants.LIBRARY_PERMISSIONS){
-            final List<String> deniedPermissions=new ArrayList<String>();
+        } else if (permissions.length > 1 && customPermissionConstant == Assessment_Constants.LIBRARY_PERMISSIONS) {
+            final List<String> deniedPermissions = new ArrayList<String>();
 
-            for(String permission: permissions){
-                if(ActivityCompat.checkSelfPermission(this,permission)== PackageManager.PERMISSION_DENIED){
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
                     deniedPermissions.add(permission);
                 }
             }
-            if(deniedPermissions.size()==1){
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this,deniedPermissions.get(0))){
+            if (deniedPermissions.size() == 1) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, deniedPermissions.get(0))) {
 
-                    Snackbar.make(findViewById(android.R.id.content),"App needs permission to work",Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                    Snackbar.make(findViewById(android.R.id.content), "App needs permission to work", Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    String [] temp=deniedPermissions.toArray(new String[deniedPermissions.size()]);
-                                    ActivityCompat.requestPermissions(activity,temp,customPermissionConstant);
+                                    String[] temp = deniedPermissions.toArray(new String[deniedPermissions.size()]);
+                                    ActivityCompat.requestPermissions(activity, temp, customPermissionConstant);
+                                }
+                            }).show();
+                } else {
+                    String[] temp = deniedPermissions.toArray(new String[deniedPermissions.size()]);
+                    ActivityCompat.requestPermissions(activity, temp, customPermissionConstant);
+                }
+            } else if (deniedPermissions.size() > 1) {
+                final String[] temp = deniedPermissions.toArray(new String[deniedPermissions.size()]);
+                if (flag) {
+                    Snackbar.make(findViewById(android.R.id.content), "This functionality needs multiple app permissions", Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ActivityCompat.requestPermissions(activity, temp, customPermissionConstant);
                                 }
                             }).show();
                 }else {
-                    String [] temp=deniedPermissions.toArray(new String[deniedPermissions.size()]);
-                    ActivityCompat.requestPermissions(activity,temp,customPermissionConstant);
+                    ActivityCompat.requestPermissions(activity, temp, customPermissionConstant);
                 }
-            }else if(deniedPermissions.size()>1){
-                final String [] temp=deniedPermissions.toArray(new String[deniedPermissions.size()]);
-                Snackbar.make(findViewById(android.R.id.content),"This functionality needs multiple app permissions",Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ActivityCompat.requestPermissions(activity,temp,customPermissionConstant);
-                            }
-                        }).show();
             }
         }
     }
-        public boolean isPermissionsGranted(Context context, String permissions[]) {
+
+    public boolean isPermissionsGranted(Context context, String permissions[]) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             return true;
 
@@ -101,33 +107,26 @@ public class BaseActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
 
-
-    protected boolean checkWhetherAllPermissionsPresentForPhotoTagging(String [] permissionsNeeded){
-        for(String permission: permissionsNeeded){
-            if(ActivityCompat.checkSelfPermission(this,permission)==PackageManager.PERMISSION_DENIED){
+    protected boolean checkWhetherAllPermissionsPresentForPhotoTagging(String[] permissionsNeeded) {
+        for (String permission : permissionsNeeded) {
+            if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
                 return false;
             }
         }
         return true;
     }
 
-    protected String[] getDeniedPermissionsAmongPhototaggingPermissions(String [] permissionsNeeded){
-        String [] deniedPermissionsArray;
-        final List<String> deniedPermissions=new ArrayList<String>();
-        for(String permission: permissionsNeeded){
-            if(ActivityCompat.checkSelfPermission(this,permission)==PackageManager.PERMISSION_DENIED){
+    protected String[] getDeniedPermissionsAmongPhototaggingPermissions(String[] permissionsNeeded) {
+        String[] deniedPermissionsArray;
+        final List<String> deniedPermissions = new ArrayList<String>();
+        for (String permission : permissionsNeeded) {
+            if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
                 deniedPermissions.add(permission);
             }
         }
-        deniedPermissionsArray=deniedPermissions.toArray(new String[deniedPermissions.size()]);
+        deniedPermissionsArray = deniedPermissions.toArray(new String[deniedPermissions.size()]);
         return deniedPermissionsArray;
     }
-
-
-
-
-
-
 
 
     public static void setMute(int m) {

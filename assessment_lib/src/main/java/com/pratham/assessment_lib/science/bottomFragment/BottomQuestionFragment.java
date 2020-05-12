@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.adapter.QuestionTrackerAdapter;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 import com.pratham.assessment_lib.interfaces.QuestionTrackerListener;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class BottomQuestionFragment extends BottomSheetDialogFragment {
     RecyclerView rvQuestion;
     Button saveAssessment;
     /*Context context;*/
-    List<ScienceQuestion> scienceQuestionList;
+    List<AssessmentQuestion> assessmentQuestionList;
     QuestionTrackerListener questionTrackerListener;
 
    /* public BottomQuestionFragment(Context context, List<ScienceQuestion> scienceQuestionList) {
@@ -51,7 +51,7 @@ public class BottomQuestionFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.question_list_fragment, container, false);
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        scienceQuestionList = (List<ScienceQuestion>) getArguments().get("questionList");
+        assessmentQuestionList = (List<AssessmentQuestion>) getArguments().get("questionList");
         initViews(view);
         return view;
     }
@@ -72,7 +72,7 @@ public class BottomQuestionFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         questionTrackerListener = (QuestionTrackerListener) getActivity();
-        QuestionTrackerAdapter questionTrackerAdapter = new QuestionTrackerAdapter(this, getActivity(), scienceQuestionList);
+        QuestionTrackerAdapter questionTrackerAdapter = new QuestionTrackerAdapter(this, getActivity(), assessmentQuestionList);
         LinearLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 5);
         rvQuestion.setLayoutManager(linearLayoutManager);
         rvQuestion.setAdapter(questionTrackerAdapter);

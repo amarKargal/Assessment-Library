@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
 import com.pratham.assessment_lib.adapter.ArrangeSeqDragDropAdapter;
 import com.pratham.assessment_lib.custom.gif_viewer.GifView;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
-import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
+import com.pratham.assessment_lib.domain.SubOptions;
 import com.pratham.assessment_lib.interfaces.StartDragListener;
 
 
@@ -56,7 +55,7 @@ public class ArrangeSequenceFragment extends Fragment implements StartDragListen
     private static final String SCIENCE_QUESTION = "scienceQuestion";
 
     private int pos;
-    private ScienceQuestion scienceQuestion;
+    private AssessmentQuestion scienceQuestion;
     ItemTouchHelper touchHelper;
 
 
@@ -64,11 +63,11 @@ public class ArrangeSequenceFragment extends Fragment implements StartDragListen
         // Required empty public constructor
     }
 
-    public static ArrangeSequenceFragment newInstance(int pos, ScienceQuestion scienceQuestion) {
+    public static ArrangeSequenceFragment newInstance(int pos, AssessmentQuestion assessmentQuestion) {
         ArrangeSequenceFragment_ arrangeSequenceFragment = new ArrangeSequenceFragment_();
         Bundle args = new Bundle();
         args.putInt(POS, pos);
-        args.putSerializable(SCIENCE_QUESTION, scienceQuestion);
+        args.putSerializable(SCIENCE_QUESTION, assessmentQuestion);
         arrangeSequenceFragment.setArguments(args);
         return arrangeSequenceFragment;
     }
@@ -78,7 +77,7 @@ public class ArrangeSequenceFragment extends Fragment implements StartDragListen
     public void init() {
         if (getArguments() != null) {
             pos = getArguments().getInt(POS, 0);
-            scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
+            scienceQuestion = (AssessmentQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
         }
         setArrangeSeqQuestion();
 
@@ -173,7 +172,7 @@ public class ArrangeSequenceFragment extends Fragment implements StartDragListen
         });
 
 
-        List<ScienceQuestionChoice> AnswerList = new ArrayList<>();
+        List<SubOptions> AnswerList = new ArrayList<>();
 
         if (!scienceQuestion.getUserAnswer().equalsIgnoreCase("")) {
             String[] ansIds = scienceQuestion.getUserAnswer().split(",");
@@ -186,10 +185,10 @@ public class ArrangeSequenceFragment extends Fragment implements StartDragListen
 
 
 //        List list1 = new ArrayList();
-        List<ScienceQuestionChoice> shuffledList = new ArrayList<>();
+        List<SubOptions> shuffledList = new ArrayList<>();
         //todo alter
          //    List<ScienceQuestionChoice> pairList = AppDatabase.getDatabaseInstance(getActivity()).getScienceQuestionChoicesDao().getQuestionChoicesByQID(scienceQuestion.getQid());
-        List<ScienceQuestionChoice> pairList=scienceQuestion.getLstquestionchoice();
+        List<SubOptions> pairList=scienceQuestion.getLstquestionchoice();
         Log.d("wwwwwwwwwww", pairList.size() + "");
         if (!pairList.isEmpty()) {
           /*  for (int p = 0; p < pairList.size(); p++) {

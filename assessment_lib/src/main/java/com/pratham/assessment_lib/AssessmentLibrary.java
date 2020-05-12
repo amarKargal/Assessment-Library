@@ -11,7 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity_;
 import com.pratham.assessment_lib.supportive.ResponseListener;
 
@@ -21,12 +21,13 @@ import java.util.List;
 
 public class AssessmentLibrary implements Serializable {
     private int BackGroundColor;
-    private List<ScienceQuestion> questionList;
+    private List<AssessmentQuestion> questionList;
     private static AssessmentLibrary assessmentLibrary;
     private static Context mContext;
     private boolean isVideoMonitoring = false;
     private String storagePath;
     private String selectedLanguageCode = "1";
+    private String examDuration="0";
 
     private AssessmentLibrary() {
     }
@@ -105,7 +106,7 @@ public class AssessmentLibrary implements Serializable {
      *
      * @return A ArrayList representing all assignment questions
      */
-    public List<ScienceQuestion> getQuestionList() {
+    public List<AssessmentQuestion> getQuestionList() {
         return questionList;
     }
 
@@ -115,7 +116,7 @@ public class AssessmentLibrary implements Serializable {
      * @param questionList representing all questions to show in assignment
      * @return object of AssessmentLibraryInput
      */
-    public AssessmentLibrary setQuestionList(ArrayList<ScienceQuestion> questionList) {
+    public AssessmentLibrary setQuestionList(ArrayList<AssessmentQuestion> questionList) {
         this.questionList = questionList;
         return assessmentLibrary;
     }
@@ -149,6 +150,16 @@ public class AssessmentLibrary implements Serializable {
      */
     public AssessmentLibrary setVideoMonitoring(boolean videoMonitoring) {
         isVideoMonitoring = videoMonitoring;
+        return assessmentLibrary;
+    }
+
+    public String getExamDuration() {
+        return examDuration;
+
+    }
+
+    public AssessmentLibrary setExamDuration(String examDuration) {
+        this.examDuration = examDuration;
         return assessmentLibrary;
     }
 }

@@ -15,7 +15,7 @@ import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.AudioUtil;
 import com.pratham.assessment_lib.custom.gif_viewer.GifView;
-import com.pratham.assessment_lib.domain.ScienceQuestion;
+import com.pratham.assessment_lib.domain.AssessmentQuestion;
 import com.pratham.assessment_lib.interfaces.AssessmentAnswerListener;
 import com.pratham.assessment_lib.interfaces.AudioPlayerInterface;
 import com.pratham.assessment_lib.science.ScienceAssessmentActivity;
@@ -62,7 +62,7 @@ public class AudioFragment extends Fragment implements AudioPlayerInterface {
     private static final String SCIENCE_QUESTION = "scienceQuestion";
 
     private int pos;
-    private ScienceQuestion scienceQuestion;
+    private AssessmentQuestion assessmentQuestion;
     AssessmentAnswerListener assessmentAnswerListener;
 
 
@@ -71,11 +71,11 @@ public class AudioFragment extends Fragment implements AudioPlayerInterface {
     }
 
 
-    public static AudioFragment newInstance(int pos, ScienceQuestion scienceQuestion) {
+    public static AudioFragment newInstance(int pos, AssessmentQuestion assessmentQuestion) {
         AudioFragment_ audioFragment = new AudioFragment_();
         Bundle args = new Bundle();
         args.putInt("pos", pos);
-        args.putSerializable("scienceQuestion", scienceQuestion);
+        args.putSerializable("scienceQuestion", assessmentQuestion);
         audioFragment.setArguments(args);
         return audioFragment;
     }
@@ -84,7 +84,7 @@ public class AudioFragment extends Fragment implements AudioPlayerInterface {
     public void init() {
         if (getArguments() != null) {
             pos = getArguments().getInt(POS, 0);
-            scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
+            assessmentQuestion = (AssessmentQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
             assessmentAnswerListener = (ScienceAssessmentActivity) getActivity();
 
         }
@@ -124,19 +124,19 @@ public class AudioFragment extends Fragment implements AudioPlayerInterface {
     public void setAudioQuestion() {
         setOdiaFont(getActivity(), question);
 
-        if (scienceQuestion.getQname().equalsIgnoreCase(""))
+        if (assessmentQuestion.getQname().equalsIgnoreCase(""))
             question.setText("Play the audio");
         else
-            question.setText(scienceQuestion.getQname());
+            question.setText(assessmentQuestion.getQname());
         rl_answer_audio.setVisibility(View.GONE);
-        if (!scienceQuestion.getPhotourl().equalsIgnoreCase("")) {
+        if (!assessmentQuestion.getPhotourl().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);
 
-            fileName = getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
+            fileName = getFileName(assessmentQuestion.getQid(), assessmentQuestion.getPhotourl());
 //            path = Environment.getExternalStorageDirectory().toString() + "/.Assessment/Content/Downloaded" + "/" + fileName;
             localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
-            String path = scienceQuestion.getPhotourl();
+            String path = assessmentQuestion.getPhotourl();
             String[] imgPath = path.split("\\.");
             int len;
             if (imgPath.length > 0)
@@ -178,20 +178,20 @@ public class AudioFragment extends Fragment implements AudioPlayerInterface {
             questionImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showZoomDialog(getActivity(), scienceQuestion.getPhotourl(), localPath);
+                    showZoomDialog(getActivity(), assessmentQuestion.getPhotourl(), localPath);
                 }
             });
             questionGif.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showZoomDialog(getActivity(), scienceQuestion.getPhotourl(), localPath);
+                    showZoomDialog(getActivity(), assessmentQuestion.getPhotourl(), localPath);
                 }
             });
 
 
         } else questionImage.setVisibility(View.GONE);
 
-        if (!scienceQuestion.getUserAnswer().equalsIgnoreCase("")) {
+        if (!assessmentQuestion.getUserAnswer().equalsIgnoreCase("")) {
             rl_answer_audio.setVisibility(View.VISIBLE);
         }
 
@@ -255,7 +255,7 @@ public class AudioFragment extends Fragment implements AudioPlayerInterface {
     @Click(resName = "iv_start_audio")
     public void startAudio() {
         try {
-            String fileName = scienceQuestion.getQid() + "_" + scienceQuestion.getPaperid() + ".mp3";
+            String fileName = assessmentQuestion.getQid() + "_" + assessmentQuestion.getPaperid() + ".mp3";
 
 //            String path = Environment.getExternalStorageDirectory().toString() + "/.Assessment/Content/Answers/" + fileName;
             String path = assessPath + Assessment_Constants.STORE_ANSWER_MEDIA_PATH + "/" + fileName;
@@ -263,9 +263,9 @@ public class AudioFragment extends Fragment implements AudioPlayerInterface {
                 isAudioRecording = false;
                 iv_start_audio.setImageResource(R.drawable.ic_mic_24dp);
                 AudioUtil.stopRecording();
-                scienceQuestion.setUserAnswer(path);
+                assessmentQuestion.setUserAnswer(path);
                 rl_answer_audio.setVisibility(View.VISIBLE);
-                assessmentAnswerListener.setAnswerInActivity("", path, scienceQuestion.getQid(), null);
+                assessmentAnswerListener.setAnswerInActivity("", path, assessmentQuestion.getQid(), null);
 
 
             } else {
@@ -286,7 +286,7 @@ public class AudioFragment extends Fragment implements AudioPlayerInterface {
     @Click(resName = "iv_answer_audio")
     public void onAnswerPlayClick() {
         try {
-            String fileName = scienceQuestion.getQid() + "_" + scienceQuestion.getPaperid() + ".mp3";
+            String fileName = assessmentQuestion.getQid() + "_" + assessmentQuestion.getPaperid() + ".mp3";
             String path = assessPath + Assessment_Constants.STORE_ANSWER_MEDIA_PATH + "/" + fileName;
             if (isAnsPlaying) {
                 isAnsPlaying = false;
@@ -320,7 +320,7 @@ public class AudioFragment extends Fragment implements AudioPlayerInterface {
     public void onPause() {
         super.onPause();
 //        if(audioPlayerInterface!=null)
-        String fileName = scienceQuestion.getQid() + "_" + scienceQuestion.getPaperid() + ".mp3";
+        String fileName = assessmentQuestion.getQid() + "_" + assessmentQuestion.getPaperid() + ".mp3";
 
 //            String path = Environment.getExternalStorageDirectory().toString() + "/.Assessment/Content/Answers/" + fileName;
         String path = assessPath + Assessment_Constants.STORE_ANSWER_MEDIA_PATH + "/" + fileName;
@@ -329,9 +329,9 @@ public class AudioFragment extends Fragment implements AudioPlayerInterface {
             isAudioRecording = false;
             iv_start_audio.setImageResource(R.drawable.ic_mic_24dp);
             AudioUtil.stopRecording();
-            scienceQuestion.setUserAnswer(path);
+            assessmentQuestion.setUserAnswer(path);
             rl_answer_audio.setVisibility(View.VISIBLE);
-            assessmentAnswerListener.setAnswerInActivity("", path, scienceQuestion.getQid(), null);
+            assessmentAnswerListener.setAnswerInActivity("", path, assessmentQuestion.getQid(), null);
 
 
         }

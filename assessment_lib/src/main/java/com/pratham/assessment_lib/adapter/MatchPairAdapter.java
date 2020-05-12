@@ -15,25 +15,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 
 import com.pratham.assessment_lib.R;
 import com.pratham.assessment_lib.Utility.Assessment_Constants;
 import com.pratham.assessment_lib.Utility.Assessment_Utility;
-import com.pratham.assessment_lib.domain.ScienceQuestionChoice;
+import com.pratham.assessment_lib.domain.SubOptions;
 
 import java.util.List;
 
 import static com.pratham.assessment_lib.Utility.Assessment_Constants.assessPath;
 
 public class MatchPairAdapter extends RecyclerView.Adapter<MatchPairAdapter.MyViewHolder> {
-    List<ScienceQuestionChoice> pairList;
+    List<SubOptions> pairList;
     Context context;
 
-    public MatchPairAdapter(List<ScienceQuestionChoice> pairList, Context context) {
+    public MatchPairAdapter(List<SubOptions> pairList, Context context) {
         this.pairList = pairList;
         this.context = context;
     }
@@ -81,11 +79,11 @@ public class MatchPairAdapter extends RecyclerView.Adapter<MatchPairAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int i) {
-        final ScienceQuestionChoice scienceQuestionChoice = pairList.get(i);
-        if (!scienceQuestionChoice.getChoiceurl().equalsIgnoreCase("")) {
-            final String path = /*Assessment_Constants.loadOnlineImagePath +*/ scienceQuestionChoice.getChoiceurl();
+        final SubOptions subOptions = pairList.get(i);
+        if (!subOptions.getChoiceurl().equalsIgnoreCase("")) {
+            final String path = /*Assessment_Constants.loadOnlineImagePath +*/ subOptions.getChoiceurl();
 
-            String fileName = Assessment_Utility.getFileName(scienceQuestionChoice.getQid(), scienceQuestionChoice.getChoiceurl());
+            String fileName = Assessment_Utility.getFileName(subOptions.getQid(), subOptions.getChoiceurl());
             final String localPath = assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
 
 
@@ -133,7 +131,7 @@ public class MatchPairAdapter extends RecyclerView.Adapter<MatchPairAdapter.MyVi
             });
         } else {
             holder.rl_img.setVisibility(View.GONE);
-            holder.text.setText(scienceQuestionChoice.getChoicename());
+            holder.text.setText(subOptions.getChoicename());
         }
 
     }
