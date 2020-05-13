@@ -304,7 +304,7 @@ public class ImageAnswerFragment extends Fragment {
                 try {
 
                     chooseImageDialog.cancel();
-                    if (Assessment_Constants.VIDEOMONITORING) {
+                    if (Assessment_Constants.VIDEO_MONITORING) {
 //                        assessmentAnswerListener.pauseVideoMonitoring();
                         VideoMonitoringService.releaseMediaRecorder();
                     }
@@ -416,7 +416,7 @@ public class ImageAnswerFragment extends Fragment {
             }
 
 //            assessmentAnswerListener.resumeVideoMonitoring();
-            if (Assessment_Constants.VIDEOMONITORING)
+            if (Assessment_Constants.VIDEO_MONITORING)
                 scienceAssessmentActivity.startCameraService();
 
         } catch (Exception e) {

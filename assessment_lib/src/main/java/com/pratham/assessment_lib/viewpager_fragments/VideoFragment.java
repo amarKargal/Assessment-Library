@@ -183,7 +183,7 @@ public class VideoFragment extends Fragment {
 
     @Click(resName = "btn_capture_video")
     public void captureVideo() {
-        if (Assessment_Constants.VIDEOMONITORING) {
+        if (Assessment_Constants.VIDEO_MONITORING) {
 //            assessmentAnswerListener.pauseVideoMonitoring();
             VideoMonitoringService.releaseMediaRecorder();
         }
@@ -343,7 +343,7 @@ public class VideoFragment extends Fragment {
                 out.close();
                 showCapturedVideo();
 //                assessmentAnswerListener.resumeVideoMonitoring();
-                if (Assessment_Constants.VIDEOMONITORING)
+                if (Assessment_Constants.VIDEO_MONITORING)
                     scienceAssessmentActivity.startCameraService();
 
             }

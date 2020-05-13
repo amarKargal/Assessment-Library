@@ -183,7 +183,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
     @AfterExtras
     public void checkIntentValue() {
         assessmentQuestionList = assessmentLibrary.getQuestionList();
-        Assessment_Constants.VIDEOMONITORING = assessmentLibrary.isVideoMonitoring();
+        Assessment_Constants.VIDEO_MONITORING = assessmentLibrary.isVideoMonitoring();
         Assessment_Utility.initWiseF(getApplicationContext());
         assessPath = assessmentLibrary.getStoragePath();
         Assessment_Constants.SELECTED_LANGUAGE = assessmentLibrary.getSelectedLanguageCode();
@@ -216,7 +216,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         mediaProgressDialog = new ProgressDialog(this);
 //        showSelectTopicDialog();
         if (checkWhetherAllPermissionsPresentForPhotoTagging(permissionsNeededAssessmentLib)) {
-            if (Assessment_Constants.VIDEOMONITORING) {
+            if (Assessment_Constants.VIDEO_MONITORING) {
                 VideoMonitor.initCamera(this, texture_view);
                 frame_video_monitoring.setVisibility(View.VISIBLE);
            /* btn_save_Assessment.setVisibility(View.GONE);
@@ -940,7 +940,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         if (isCameraQuestion) {
 
             VideoMonitoringService.releaseMediaRecorder();
-            Assessment_Constants.VIDEOMONITORING = false;
+            Assessment_Constants.VIDEO_MONITORING = false;
             texture_view.setVisibility(View.GONE);
             tv_timer.setTextColor(Color.BLACK);
             frame_video_monitoring.setVisibility(View.GONE);
@@ -1007,7 +1007,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
 //        showStartAssessment();
         setProgressBarAndTimer();
 
-        if (Assessment_Constants.VIDEOMONITORING) {
+        if (Assessment_Constants.VIDEO_MONITORING) {
 
             //******* Video monitoring *******
 
@@ -1109,7 +1109,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                     btn_save_Assessment.setVisibility(View.GONE);
                     showDoneAnimation();
                 } else {
-                    if (!Assessment_Constants.VIDEOMONITORING) {
+                    if (!Assessment_Constants.VIDEO_MONITORING) {
 //                        btn_save_Assessment.setBackground(getResources().getDrawable(R.drawable.ripple_round));
                         btn_save_Assessment.setImageDrawable(getResources().getDrawable(R.drawable.ic_right_arrow));
                         btn_save_Assessment.setVisibility(View.VISIBLE);
@@ -1225,7 +1225,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                     btn_save_Assessment.setBackground(getResources().getDrawable(R.drawable.ripple_round));
                 }*/
                 Animation animation = AnimationUtils.loadAnimation(ScienceAssessmentActivity.this, R.anim.zoom_in);
-                if (!Assessment_Constants.VIDEOMONITORING) {
+                if (!Assessment_Constants.VIDEO_MONITORING) {
 //                    btn_save_Assessment.setVisibility(View.VISIBLE);
 //                    btn_save_Assessment.startAnimation(animation);
                     if (assessmentQuestionList.size() == (queCnt + 1)) {
@@ -2215,7 +2215,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         /*if (speech != null)
             speech.stopListening();*/
 //        speech = null;
-        if (Assessment_Constants.VIDEOMONITORING)
+        if (Assessment_Constants.VIDEO_MONITORING)
             VideoMonitoringService.releaseMediaRecorder();
 //        stopService(serviceIntent);
 
@@ -2356,7 +2356,7 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LIBRARY_PERMISSIONS && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (checkWhetherAllPermissionsPresentForPhotoTagging(permissionsNeededAssessmentLib)) {
-                if (Assessment_Constants.VIDEOMONITORING) {
+                if (Assessment_Constants.VIDEO_MONITORING) {
                     VideoMonitor.initCamera(this, texture_view);
                     frame_video_monitoring.setVisibility(View.VISIBLE);
                 }
@@ -2370,24 +2370,22 @@ public class ScienceAssessmentActivity extends BaseActivity implements DiscreteS
                     }
                 }).show();
             }
-        } else if (permissions.length > 1) {
+        } else if (permissions.length >= 1) {
             if (requestCode == LIBRARY_PERMISSIONS) {
                 if (checkWhetherAllPermissionsPresentForPhotoTagging(permissionsNeededAssessmentLib)) {
-                    if (checkWhetherAllPermissionsPresentForPhotoTagging(permissionsNeededAssessmentLib)) {
-                        if (Assessment_Constants.VIDEOMONITORING) {
-                            VideoMonitor.initCamera(this, texture_view);
-                            frame_video_monitoring.setVisibility(View.VISIBLE);
-                        }
-                        generatePaperPattern();
-                    } else {
-                        Snackbar.make(findViewById(android.R.id.content), getString(R.string.Permissions_denied_message),
-                                Snackbar.LENGTH_INDEFINITE).setAction("ENABLE", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ActivityCompat.requestPermissions(ScienceAssessmentActivity.this, getDeniedPermissionsAmongPhototaggingPermissions(permissionsNeededAssessmentLib), LIBRARY_PERMISSIONS);
-                            }
-                        }).show();
+                    if (Assessment_Constants.VIDEO_MONITORING) {
+                        VideoMonitor.initCamera(this, texture_view);
+                        frame_video_monitoring.setVisibility(View.VISIBLE);
                     }
+                    generatePaperPattern();
+                } else {
+                    Snackbar.make(findViewById(android.R.id.content), getString(R.string.Permissions_denied_message),
+                            Snackbar.LENGTH_INDEFINITE).setAction("ENABLE", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ActivityCompat.requestPermissions(ScienceAssessmentActivity.this, getDeniedPermissionsAmongPhototaggingPermissions(permissionsNeededAssessmentLib), LIBRARY_PERMISSIONS);
+                        }
+                    }).show();
                 }
             }
         }

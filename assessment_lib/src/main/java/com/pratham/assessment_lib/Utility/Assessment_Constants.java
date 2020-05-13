@@ -8,7 +8,7 @@ public class Assessment_Constants {
     public static final String [] permissionsNeededAssessmentLib =new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
 
 
-    public static boolean VIDEOMONITORING = false;
+    public static boolean VIDEO_MONITORING = false;
     public static String assessPath;
     public static int LIBRARY_PERMISSIONS=100;
     //public static boolean isShowcaseDisplayed=false;

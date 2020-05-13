@@ -41,7 +41,6 @@ public class BaseActivity extends AppCompatActivity implements ActivityCompat.On
     protected void requestRunTimePermissions(final Activity activity, final String[] permissions, final int customPermissionConstant) {
         if (permissions.length == 1) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
-
                 Snackbar.make(findViewById(android.R.id.content), "App needs permission to work", Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
                         new View.OnClickListener() {
                             @Override
